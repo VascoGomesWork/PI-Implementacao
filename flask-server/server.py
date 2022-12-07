@@ -9,6 +9,8 @@ from datetime import datetime
 # .\venv\Scripts\activate -> activate virtual envirement
 # pip install -r .\requirements.txt
 
+# teste github
+
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
 
