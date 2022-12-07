@@ -29,3 +29,16 @@ class Tools(db.Model):
 class ToolsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Tools
+
+
+class Projetos(db.Model):
+    __tablename__ = "projetos"
+    id = db.Column(db.Integer, primary_key=True, unique=True, default=get_uuid)
+    nome = db.Column(db.String(345), nullable=False)
+    observacoes = db.Column(db.String(345), nullable=False)
+    data_inicio = db.Column(db.Date, nullable=False)
+    data_fim = db.Column(db.Date, nullable=False)
+
+class ProjetosSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Projetos

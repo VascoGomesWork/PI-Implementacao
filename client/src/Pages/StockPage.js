@@ -42,7 +42,7 @@ const StockPage = () => {
         Add tool
       </button>
       <button type="button" key="removeBtn" onClick={removeTool}>
-        Remove tool
+        Update tool
       </button>
       <button type="button" key="exitBtn" onClick={exit}>
         Exit
