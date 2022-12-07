@@ -20,6 +20,10 @@ const StockPage = () => {
     window.location.href = "/addtool";
   };
 
+    const addProject = async () => {
+        window.location.href = "/addproject";
+    };
+
   const removeTool = async () => {
     window.location.href = "/removetool";
   };
@@ -41,6 +45,9 @@ const StockPage = () => {
       <button type="button" key="addBtn" onClick={addTool}>
         Add tool
       </button>
+        <button type="button" key="addBtn" onClick={addProject}>
+            Add Project
+        </button>
       <button type="button" key="removeBtn" onClick={removeTool}>
         Update tool
       </button>

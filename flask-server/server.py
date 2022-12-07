@@ -74,6 +74,26 @@ def remove_tool():
         "quantity": remove_tool.quantity
     })
 
+# Add new project
+@app.route("/addproject", methods=["POST"])
+def add_project():
+    nome = request.json["nome"]
+    observacoes = request.json["observacoes"]
+    data_inicio = request.json["data_inicio"]
+    data_fim = request.json["data_fim"]
+
+    new_project = Projetos(nome=nome, observacoes=observacoes, data_inicio=data_inicio, data_fim=data_fim)
+    db.session.add(new_project)
+    db.session.commit()
+
+    return jsonify({
+        "id": new_project.id,
+        "nome": new_tool.nome,
+        "observacoes": new_tool.observacoes,
+        "data_inicio": new_tool.data_inicio,
+        "data_fim": new_tool.data_fim,
+    })
+
 # Register route
 @app.route("/register", methods=["POST"])
 def register_user():
