@@ -14,6 +14,26 @@ const LandingPage = () => {
     window.location.href = "/stock";
   };
 
+  const adicionarMaterial = async () => {
+    window.location.href = "/addmaterial";
+  };
+
+  const atualizarStocks = async () => {
+    window.location.href = "/updatematerial";
+  };
+
+  const adicionarProjeto = async () => {
+    window.location.href = "/addproject";
+  };
+
+  const adicionarTipoMaterial = async () => {
+    window.location.href = "/addmaterialtype";
+  };
+
+  const verProjetos = async () => {
+    window.location.href = "/showprojects";
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -27,15 +47,27 @@ const LandingPage = () => {
 
   return (
     <div>
-      <h1>Welcome to this React App</h1>
+      <h1>Sistema de controlo de Stocks SPEPSI</h1>
       {user.length != 0 ? (
         <div>
           <h2>Logged in!</h2>
           <h3>Email: {user.email}</h3>
           <h3>ID: {user.id}</h3>
 
-          <button onClick={checkStocks}>Check Stocks</button>
+          <button onClick={checkStocks}>Listar Materiais</button>
+          <br />
+          <button onClick={adicionarMaterial}>Adiocinar Material</button>
+          <br />
+          <button onClick={atualizarStocks}>Atualizar Stocks</button>
+          <br />
+          <button onClick={adicionarProjeto}>Adicionar Projeto</button>
+          <br />
+          <button onClick={adicionarTipoMaterial}>Adicionar Tipo Material</button>
+          <br />
+          <button onClick={verProjetos}>Ver Projeto</button>
+          <br />
           <button onClick={logoutUser}>Logout</button>
+          <br />
         </div>
       ) : (
         <div>

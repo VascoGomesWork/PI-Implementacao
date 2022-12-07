@@ -16,7 +16,7 @@ const AddProjectPage = () => {
         data_inicio,
         data_fim,
       });
-      window.location.href = "/stock";
+      window.location.href = "/";
     } catch (e) {
       if (e.response.status == 401) {
         alert("Invalid Project Info");

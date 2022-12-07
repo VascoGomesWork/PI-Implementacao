@@ -5,40 +5,106 @@ from flask_marshmallow import Marshmallow
 db = SQLAlchemy()
 ma = Marshmallow()
 
+
 def get_uuid():
     return uuid4().hex
 
 # TABLES
-class Users(db.Model):
-    __tablename__ = "users"
-    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+# User Table
+class User(db.Model):
+    __tablename__ = "user"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    nome = db.Column(db.String(345), unique=True)
     email = db.Column(db.String(345), unique=True)
+    telefone = db.Column(db.String(345), unique=True)
+    tipo_utilizador = db.Column(db.String(345), unique=True)
     password = db.Column(db.Text(), nullable=False)
 
 class UsersSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Users
+        model = User
 
+# Tipo Material Table
+class Tipo_Material(db.Model):
+    __tablename__ = "tipo_material"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    tipo = db.Column(db.String(345))
 
-class Tools(db.Model):
-    __tablename__ = "tools"
-    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
-    name = db.Column(db.String(345))
-    quantity = db.Column(db.Integer)
-
-class ToolsSchema(ma.SQLAlchemyAutoSchema):
+class Tipo_MaterialSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Tools
+        model = Tipo_Material
 
-
-class Projetos(db.Model):
-    __tablename__ = "projetos"
-    id = db.Column(db.Integer, primary_key=True, unique=True, default=get_uuid)
+# Projeto Table
+class Projeto(db.Model):
+    __tablename__ = "projeto"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     nome = db.Column(db.String(345), nullable=False)
     observacoes = db.Column(db.String(345), nullable=False)
-    data_inicio = db.Column(db.Date, nullable=False)
-    data_fim = db.Column(db.Date, nullable=False)
+    data_inicio = db.Column(db.DateTime, nullable=False)
+    data_fim = db.Column(db.DateTime, nullable=False)
 
-class ProjetosSchema(ma.SQLAlchemyAutoSchema):
+
+class ProjetoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Projetos
+        model = Projeto
+
+# Kit_Material Table
+class Kit_Material(db.Model):
+    __tablename__ = "kit_material"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    nome = db.Column(db.String(345), nullable=False)
+    observacao = db.Column(db.String(345), nullable=False)
+
+class Kit_MaterialSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Kit_Material
+
+# Material Table
+class Material(db.Model):
+    __tablename__ = "material"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    nome = db.Column(db.String(345), nullable=False)
+    quantidade = db.Column(db.Integer, nullable=False)
+    observacao = db.Column(db.Integer, nullable=False)
+    data = db.Column(db.Date, nullable=False)
+    # FK Tipo Material
+    id_tipo_material = db.Column(db.Integer, db.ForeignKey('tipo_material.id'))
+    tipo_material = db.relationship('Tipo_Material', backref='material')
+    # FK Kit Material
+    id_kit_material = db.Column(db.Integer, db.ForeignKey('kit_material.id'))
+    kit_material = db.relationship('Kit_Material', backref='material')
+    # FK Projeto
+    id_projeto = db.Column(db.Integer, db.ForeignKey('projeto.id'))
+    projeto = db.relationship('Projeto', backref='material')
+
+class MaterialSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Material
+
+
+# Requisitar_Devolver Table
+class Requisitar_Devolver(db.Model):
+    __tablename__ = "requisitar_devolver"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    nome_pessoa_requisitar = db.Column(db.String(345), nullable=False)
+    boolean_projeto = db.Column(db.Boolean, nullable=False)
+    nome_projeto = db.Column(db.String(345), nullable=False)
+    esta_requisitado = db.Column(db.Boolean, nullable=False)
+    esta_devolvido = db.Column(db.Boolean, nullable=False)
+    quantidade_requisitada = db.Column(db.Integer, nullable=False)
+    data_requisicao = db.Column(db.DateTime, nullable=False)
+    data_devolucao_prevista = db.Column(db.DateTime, nullable=False)
+    data_devolucao_real = db.Column(db.DateTime, nullable=False)
+    # FK User
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='user')
+    # FK Material
+    id_material = db.Column(db.Integer, db.ForeignKey('material.id'))
+    material = db.relationship('Material', backref='material')
+    # FK Kit Material
+    id_kit_material = db.Column(db.Integer, db.ForeignKey('kit_material.id'))
+    kit = db.relationship('Kit_Material', backref='kit_material')
+
+class Requisitar_DevolverSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Requisitar_Devolver

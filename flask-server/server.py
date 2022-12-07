@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request, jsonify, session
 from flask_bcrypt import Bcrypt
 from flask_session import Session
-from models import db, Users, Tools, ToolsSchema
+from models import db, User, Material, MaterialSchema, Projeto, ProjetoSchema, Requisitar_Devolver, Requisitar_DevolverSchema, Tipo_Material, Tipo_MaterialSchema, Kit_Material, Kit_MaterialSchema
 from config import ApplicationConfig
 from flask_cors import CORS, cross_origin
+from datetime import datetime
 
 # .\venv\Scripts\activate -> activate virtual envirement
 # pip install -r .\requirements.txt
@@ -27,7 +28,7 @@ def get_curretn_user():
     if not user_id:
         return jsonify({"error": "Unauthorized"}), 401
 
-    user = Users.query.filter_by(id=user_id).first()
+    user = User.query.filter_by(id=user_id).first()
     return jsonify({
         "id": user.id,
         "email": user.email
@@ -36,42 +37,65 @@ def get_curretn_user():
 # Get All Tools
 @app.route("/stock", methods=["GET", "POST"])
 def view_stock():
-    stock = Tools.query.all()
-    tools_schema = ToolsSchema(many=True)
-    result = tools_schema.dump(stock)
+    stock = Material.query.all()
+    material_schema = MaterialSchema(many=True)
+    result = material_schema.dump(stock)
 
     return jsonify({ "stock" : result })
 
+# Get All Projects
+@app.route("/showprojects", methods=["GET", "POST"])
+def show_projects():
+    projects = Projeto.query.all()
+    project_schema = ProjetoSchema(many=True)
+    result = project_schema.dump(projects)
+
+    return jsonify({ "projects" : result })
+
 # Add new tool
-@app.route("/addtool", methods=["POST"])
-def add_tool():
+@app.route("/addmaterial", methods=["POST"])
+def add_material():
     name = request.json["name"]
     quantity = request.json["quantity"]
 
-    new_tool = Tools(name=name, quantity=quantity)
-    db.session.add(new_tool)
+    new_material = Material(name=name, quantity=quantity)
+    db.session.add(new_material)
     db.session.commit()
 
     return jsonify({
-        "id": new_tool.id,
-        "name": new_tool.name,
-        "quantity": new_tool.quantity
+        "id": new_material.id,
+        "name": new_material.name,
+        "quantity": new_material.quantity
     })
 
-# Remove tool
-@app.route("/removetool", methods=["POST"])
-def remove_tool():
-    name = request.json["name"]
-    quantity = request.json["quantity"]
+# Add new material type
+@app.route("/addmaterialtype", methods=["POST"])
+def add_material_type():
+    tipo = request.json["tipo"]
 
-    remove_tool = Tools.query.filter_by(name=name).first()
-    remove_tool.quantity = int(quantity)
+    new_material_type = Tipo_Material(tipo=tipo)
+    db.session.add(new_material_type)
     db.session.commit()
 
     return jsonify({
-        "id": remove_tool.id,
-        "name": remove_tool.name,
-        "quantity": remove_tool.quantity
+        "id": new_material_type.id,
+        "name": new_material_type.tipo,
+    })
+
+# Remove Material
+@app.route("/updatematerial", methods=["POST"])
+def update_material():
+    name = request.json["name"]
+    quantity = request.json["quantity"]
+
+    remove_material = Material.query.filter_by(name=name).first()
+    remove_material.quantity = int(quantity)
+    db.session.commit()
+
+    return jsonify({
+        "id": remove_material.id,
+        "name": remove_material.name,
+        "quantity": remove_material.quantity
     })
 
 # Add new project
@@ -79,19 +103,22 @@ def remove_tool():
 def add_project():
     nome = request.json["nome"]
     observacoes = request.json["observacoes"]
-    data_inicio = request.json["data_inicio"]
-    data_fim = request.json["data_fim"]
+    # convert string to date #
+    #data_inicio = request.json["data_inicio"]
+    data_inicio = datetime.strptime(request.json["data_inicio"], '%d-%m-%Y')
+    #data_fim = request.json["data_fim"]
+    data_fim = datetime.strptime(request.json["data_fim"], '%d-%m-%Y')
 
-    new_project = Projetos(nome=nome, observacoes=observacoes, data_inicio=data_inicio, data_fim=data_fim)
+    new_project = Projeto(nome=nome, observacoes=observacoes, data_inicio=data_inicio, data_fim=data_fim)
     db.session.add(new_project)
     db.session.commit()
 
     return jsonify({
         "id": new_project.id,
-        "nome": new_tool.nome,
-        "observacoes": new_tool.observacoes,
-        "data_inicio": new_tool.data_inicio,
-        "data_fim": new_tool.data_fim,
+        "nome": new_project.nome,
+        "observacoes": new_project.observacoes,
+        "data_inicio": new_project.data_inicio,
+        "data_fim": new_project.data_fim,
     })
 
 # Register route
@@ -99,14 +126,17 @@ def add_project():
 def register_user():
     email = request.json["email"]
     password = request.json["password"]
+    nome = request.json["nome"]
+    telefone = request.json["telefone"]
+    tipo_utilizador = "normal"
 
     # Verifies if user exists
-    user_exist = Users.query.filter_by(email=email).first() is not None
+    user_exist = User.query.filter_by(email=email).first() is not None
     if user_exist:
         return jsonify({"error": "User already exist"}), 409
 
     hashed_password = bcrypt.generate_password_hash(password)
-    new_user = Users(email=email, password=hashed_password)
+    new_user = User(nome=nome, email=email, telefone=telefone, tipo_utilizador=tipo_utilizador, password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
 
@@ -115,7 +145,10 @@ def register_user():
 
     return jsonify({
         "id": new_user.id,
-        "email": new_user.email
+        "email": new_user.email,
+        "nome": new_user.nome,
+        "telefone": new_user.telefone,
+        "tipo_utilizador": new_user.tipo_utilizador
     })
 
 # Login route
@@ -125,7 +158,7 @@ def login_user():
     password = request.json["password"]
 
     # Verifies if user exists
-    user = Users.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first()
     if user is None:
         return jsonify({"error": "Unauthorized"}), 401
 

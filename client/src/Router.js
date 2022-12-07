@@ -4,9 +4,11 @@ import NotFound from "./Pages/NotFound";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
 import StockPage from "./Pages/StockPage";
-import AddtoolPage from "./Pages/AddtoolPage";
-import RemovetoolPage from "./Pages/RemovetoolPage";
+import AddmaterialPage from "./Pages/AddmaterialPage";
+import UpdatematerialPage from "./Pages/UpdatematerialPage";
 import AddProjectPage from "./Pages/AddProjectPage";
+import AddmaterialtypePage from "./Pages/AddmaterialtypePage"
+import ShowProjectsPage from "./Pages/ShowProjectsPage"
 
 const Router = () => {
   return (
@@ -17,9 +19,11 @@ const Router = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/stock" element={<StockPage />} />
-        <Route path="/addtool" element={<AddtoolPage />} />
+        <Route path="/addmaterial" element={<AddmaterialPage />} />
         <Route path="/addproject" element={<AddProjectPage />} />
-        <Route path="/removetool" element={<RemovetoolPage />} />
+        <Route path="/updatematerial" element={<UpdatematerialPage />} />
+        <Route path="/addmaterialtype" element={<AddmaterialtypePage />} />
+        <Route path="/showprojects" element={<ShowProjectsPage />} />
       </Routes>
     </BrowserRouter>
   );

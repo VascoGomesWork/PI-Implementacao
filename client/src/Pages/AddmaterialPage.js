@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
 
-const AddtoolPage = () => {
+const AddmaterialPage = () => {
   const [name, setName] = useState([]);
   const [quantity, setQuantity] = useState([]);
 
@@ -49,4 +49,4 @@ const AddtoolPage = () => {
   );
 };
 
-export default AddtoolPage;
+export default AddmaterialPage;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
 
-const RemovetoolPage = () => {
+const UpdatematerialPage = () => {
   const [name, setName] = useState([]);
   const [quantity, setQuantity] = useState([]);
   const [options, setOptions] = useState([]);
@@ -61,4 +61,4 @@ const RemovetoolPage = () => {
   );
 };
 
-export default RemovetoolPage;
+export default UpdatematerialPage;
