@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import httpClient from "../httpClient";
 //import httpClient from "../httpClient";
 
 export default function RealizarRequisicoesPage(){
@@ -13,20 +14,33 @@ export default function RealizarRequisicoesPage(){
     const [lista_materiais, setListaMateriais] = useState([]);
     const [data_entrega_prevista, setDataEntregaPrevista] = useState([]);
 
-    const fazerRequisicao = async (e) => {
+        //console.log("Nome = " + nome);
+        //console.log("Projeto = " + projeto);
+        //console.log("Nome Projeto = " + nome_projeto);
+        //console.log("Material = " + material);
+        //console.log("Quantidade de Material = " + quantidade_material);
+        //console.log("Lista de Materiais = " + lista_materiais);
+        //console.log("Data Entrega Prevista = " + data_entrega_prevista);
 
-        setListaMateriais(([]) => ([{
-            "material":material,
-            "quantidade_material":quantidade_material
-        }]));
+        const searchMaterial = async (e) => {
+            console.log("Search = " + search);
+            try{
+                await httpClient.post("//localhost:5000/showmaterialsbyname",{
+                    search
+                })
+            } catch (e) {
+                if (e.response.status === 401) {
+                    alert("Invalid Material Info");
+                }
+            }
+        }
 
-        console.log("Nome = " + nome);
-        console.log("Projeto = " + projeto);
-        console.log("Nome Projeto = " + nome_projeto);
-        console.log("Material = " + material);
-        console.log("Quantidade de Material = " + quantidade_material);
-        console.log("Lista de Materiais = " + lista_materiais);
-        console.log("Data Entrega Prevista = " + data_entrega_prevista);
+        const fazerRequisicao = async (e) => {
+
+            setListaMateriais(([]) => ([{
+                "material":material,
+                "quantidade_material":quantidade_material
+            }]));
 
         /*try {
 
@@ -45,23 +59,6 @@ export default function RealizarRequisicoesPage(){
         }*/
     };
 
-    const searchMaterial = async(e) =>{
-        //Colocar Dados da SearchBox
-
-        console.log("Search Bar = " + search);
-        console.log("Combobox Material = " + combobox_material_kit);
-
-        /*try{
-            const response = await httpClient.post("//localhost:5000/searchmaterial", {
-                search,
-                combobox_material_kit
-            })
-        } catch (e) {
-            if (e.response.status == 401) {
-                alert("Invalid Type Info");
-            }
-        }*/
-    }
 
     return (
         <div>
@@ -114,11 +111,9 @@ export default function RealizarRequisicoesPage(){
                     <label>Material ou Kit </label>
                     <select
                         type="search"
-                        value={combobox_material_kit}
-                        onChange={(e) => setComboboxMaterialKit(e.target.value)}
-                        id="">
-                        <option value="Material">Material</option>
-                        <option value="Kit">Kit</option>
+                        onChange={(choice) => setComboboxMaterialKit(choice.target.value)}>
+                        <option key="Material" value="Material">Material</option>
+                        <option key="Kit" value="Kit">Kit</option>
                     </select>
 
                     <button type="button" onClick={searchMaterial}>

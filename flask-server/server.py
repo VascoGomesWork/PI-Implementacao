@@ -35,6 +35,15 @@ def get_curretn_user():
         "email": user.email
     })
 
+# Get Materials By Name
+@app.route("/showmaterialsbyname", methods=["GET", "POST"])
+def materials_list():
+    materials_list = Material.query.filter_by(nome=request.json["search"]).first()
+    material_schema = MaterialSchema(many=True)
+    result = material_schema.dump(materials_list)
+
+    return jsonify({ "materials_list" : result })
+
 # Get All Materials
 @app.route("/stock", methods=["GET", "POST"])
 def view_stock():
