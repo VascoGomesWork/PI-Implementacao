@@ -18,6 +18,14 @@ const LandingPage = () => {
     window.location.href = "/realizarrequisicoes";
   };
 
+  const realizarDevolucoes = async () => {
+    window.location.href = "/returnmaterials";
+  };
+
+  const criarKits = async () => {
+    window.location.href = "/createkits";
+  };
+
   const adicionarMaterial = async () => {
     window.location.href = "/addmaterial";
   };
@@ -60,7 +68,7 @@ const LandingPage = () => {
 
           <button onClick={realizarRequisicoes}>Realizar Requisições - X</button>
           <br />
-          <button onClick={checkStocks}>Realizar Devoluções - X</button>
+          <button onClick={realizarDevolucoes}>Realizar Devoluções - X</button>
           <br />
           <button onClick={checkStocks}>Lista de Materiais</button>
           <br />
@@ -68,7 +76,7 @@ const LandingPage = () => {
           <br />
           <button onClick={adicionarMaterial}>Adicionar Material</button>
           <br />
-          <button onClick={adicionarMaterial}>Criar Kit de Material - X</button>
+          <button onClick={criarKits}>Criar Kit de Material - X</button>
           <br />
           <button onClick={adicionarMaterial}>Lista de Kits - X</button>
           <br />

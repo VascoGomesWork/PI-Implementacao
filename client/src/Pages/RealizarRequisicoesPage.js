@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import httpClient from "../httpClient";
 //import httpClient from "../httpClient";
 
@@ -22,8 +22,17 @@ export default function RealizarRequisicoesPage(){
         //console.log("Lista de Materiais = " + lista_materiais);
         //console.log("Data Entrega Prevista = " + data_entrega_prevista);
 
+        //Sets Default Value
+        useEffect(() => {
+            setComboboxMaterialKit("Material")
+        }, []);
+
         const searchMaterial = async (e) => {
             console.log("Search = " + search);
+
+
+
+            console.log("Combobox Material Kit = " + combobox_material_kit)
             try{
                 await httpClient.post("//localhost:5000/showmaterialsbyname",{
                     search
