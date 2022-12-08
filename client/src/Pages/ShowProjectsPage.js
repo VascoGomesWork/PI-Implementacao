@@ -23,20 +23,27 @@ const ShowProjectsPage = () => {
   return (
     <div>
       <div>
-        <h1>Listar Projetos: </h1>
-        {projects.map((item) => (
-          <p key={item.id}>
-            <table>
-            <td>
-                <tr>{item.nome}</tr>
-                <tr>{item.observacoes}</tr>
-                <tr>{item.data_inicio}</tr>
-                <tr>{item.data_fim}</tr>
-            </td>
-            </table>
-          </p>
-        ))}
+        <h1>Listar Projetos </h1>
+        <div>
+          <table border="1">
+            <tr>
+              <th>Projeto</th>
+              <th>Observações</th>
+              <th>Data de Inicio</th>
+              <th>Data de Fim</th>
+            </tr>
+            {projects.map((item) => (
+              <tr key={item.id}>
+                <th>{item.nome}</th>
+                <th>{item.observacoes}</th>
+                <th>{item.data_inicio}</th>
+                <th>{item.data_fim}</th>
+              </tr>
+            ))}
+          </table>
+        </div>
       </div>
+      <br />
       <button type="button" key="exitBtn" onClick={exit}>
         Sair
       </button>

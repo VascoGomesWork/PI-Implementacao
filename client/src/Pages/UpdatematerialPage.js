@@ -4,13 +4,13 @@ import httpClient from "../httpClient";
 const UpdatematerialPage = () => {
   const [stocks, setStocks] = useState([]);
   const [id, setId] = useState([]);
-  const [quantity, setQuantity] = useState([]);
+  const [quantidade, setQuantidade] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
-        await httpClient.get("//localhost:5000/stock");
-        setStocks(stocks.data.stock);
+        const stock = await httpClient.get("//localhost:5000/stock");
+        setStocks(stock.data.stock);
       } catch (error) {
         console.log("Error getting stocks");
       }
@@ -18,10 +18,12 @@ const UpdatematerialPage = () => {
   }, []);
 
   const updateStock = async (e) => {
+    console.log("id: ", id)
+    console.log("qty: ", quantidade)
     try {
       await httpClient.post("//localhost:5000/updatestock", {
         id,
-        //quantidade,
+        quantidade,
       });
       window.location.href = "/updatematerial";
     } catch (e) {
@@ -39,7 +41,7 @@ const UpdatematerialPage = () => {
     <div>
       <h1>Atualizar Stocks</h1>
       <div>
-        <table>
+        <table border='1'>
           <tr>
             <th>Material</th>
             <th>Observação</th>
@@ -57,8 +59,8 @@ const UpdatematerialPage = () => {
               <th>
                 <input
                   type="number"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
+                  //value={quantidade}
+                  onChange={(e) => {setQuantidade(e.target.value); setId(item.id)}}
                   id=""
                 />
               </th>
@@ -71,8 +73,9 @@ const UpdatematerialPage = () => {
           ))}
         </table>
       </div>
+      <br />
       <button type="button" key="exitBtn" onClick={exit}>
-        Exit
+        Sair
       </button>
     </div>
   );
