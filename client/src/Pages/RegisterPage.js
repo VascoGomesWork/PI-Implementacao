@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+//import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import httpClient from "../httpClient";
 
 const RegisterPage = () => {
@@ -9,7 +10,7 @@ const RegisterPage = () => {
 
   const registerUser = async (e) => {
     try {
-      const response = await httpClient.post("//localhost:5000/register", {
+      await httpClient.post("//localhost:5000/register", {
         email,
         password,
         nome,
@@ -17,7 +18,7 @@ const RegisterPage = () => {
       });
       window.location.href = "/";
     } catch (e) {
-      if (e.response.status == 401) {
+      if (e.response.status === 401) {
         alert("Invalid Credentials");
       }
     }

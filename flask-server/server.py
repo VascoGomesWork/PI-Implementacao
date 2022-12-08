@@ -10,8 +10,6 @@ from datetime import datetime
 # .\venv\Scripts\activate -> activate virtual envirement
 # pip install -r .\requirements.txt
 
-# teste github
-
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
 
@@ -73,16 +71,19 @@ def add_material():
     data = datetime.now()
     # FKs
     type = Tipo_Material.query.filter_by(id=request.json["tipo_material"]).first()
-    project = Projeto.query.filter_by(id=request.json["projeto"]).first()
-    kit = Kit_Material.query.filter_by(id=1).first()
+    # verifies if the material is associated with a project
+    if request.json["projeto"] == "0":
+        project = None
+    else:
+        project = Projeto.query.filter_by(id=request.json["projeto"]).first().id
 
     new_material = Material(nome=nome,
                             quantidade=quantidade,
                             observacao=observacao,
                             data=data,
                             id_tipo_material=type.id,
-                            id_kit_material=kit.id,
-                            id_projeto=project.id)
+                            id_kit_material=None,
+                            id_projeto=project)
     
     db.session.add(new_material)
     db.session.commit()
@@ -112,20 +113,20 @@ def add_material_type():
         "name": new_material_type.tipo,
     })
 
-# Remove Material
-@app.route("/updatematerial", methods=["POST"])
-def update_material():
-    name = request.json["name"]
-    quantity = request.json["quantity"]
+# Update Stocks
+@app.route("/updatestock", methods=["POST"])
+def update_stock():
+    nome = request.json["nome"]
+    quantidade = request.json["quantidade"]
 
-    remove_material = Material.query.filter_by(name=name).first()
-    remove_material.quantity = int(quantity)
+    new_stock = Material.query.filter_by(nome=nome).first()
+    new_stock.quantidade = int(quantidade)
     db.session.commit()
 
     return jsonify({
-        "id": remove_material.id,
-        "name": remove_material.name,
-        "quantity": remove_material.quantity
+        "id": new_stock.id,
+        "name": new_stock.nome,
+        "quantity": new_stock.quantidade
     })
 
 # Add new project
@@ -208,7 +209,6 @@ def login_user():
 def logout_user():
     session.pop("user_id")
     return "200"
-
 
 # Main
 if __name__ == "__main__":

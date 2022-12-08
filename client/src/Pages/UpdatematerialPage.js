@@ -2,61 +2,78 @@ import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
 
 const UpdatematerialPage = () => {
-  const [name, setName] = useState([]);
+  const [stocks, setStocks] = useState([]);
+  const [id, setId] = useState([]);
   const [quantity, setQuantity] = useState([]);
-  const [options, setOptions] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const stock = await httpClient.get("//localhost:5000/stock");
-        setOptions(stock.data.stock);
+        await httpClient.get("//localhost:5000/stock");
+        setStocks(stocks.data.stock);
       } catch (error) {
         console.log("Error getting stocks");
       }
     })();
   }, []);
 
-  const removeTool = async (e) => {
-    console.log("TOOL NNAME => ", name);
+  const updateStock = async (e) => {
     try {
-      const response = await httpClient.post("//localhost:5000/removetool", {
-        name,
-        quantity,
+      await httpClient.post("//localhost:5000/updatestock", {
+        id,
+        quantidade,
       });
-      window.location.href = "/stock";
+      window.location.href = "/updatematerial";
     } catch (e) {
-      if (e.response.status == 401) {
-        alert("Invalid Tool Info");
+      if (e.response.status === 401) {
+        alert("Invalid Material Info");
       }
     }
   };
 
+  const exit = async () => {
+    window.location.href = "/";
+  };
+
   return (
     <div>
-      <h1>Update Stock</h1>
-      <form>
-        <div>
-          <label>Name </label>
-          <select onChange={(choice) => setName(choice.target.value)}>
-            {options.map((item) => (
-              <option key={item.id} value={item.name}>{item.name}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Quantity </label>
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            id=""
-          />
-        </div>
-        <button type="button" onClick={removeTool}>
-          Update
-        </button>
-      </form>
+      <h1>Atualizar Stocks</h1>
+      <div>
+        <table>
+          <tr>
+            <th>Material</th>
+            <th>Observação</th>
+            <th>Data de Aquisição</th>
+            <th>Quantidade</th>
+            <th>Nova Quantidade</th>
+            <th>Atualizar</th>
+          </tr>
+          {stocks.map((item) => (
+            <tr key={item.id}>
+              <th>{item.nome}</th>
+              <th>{item.observacao}</th>
+              <th>{item.data}</th>
+              <th>{item.quantidade}</th>
+              <th>
+                <input
+                  type="number"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  id=""
+                />
+              </th>
+              <th>
+                <button type="button" onClick={updateStock}>
+                  Atualizar
+                </button>
+              </th>
+            </tr>
+          ))}
+        </table>
+      </div>
+      <button type="button" key="exitBtn" onClick={exit}>
+        Exit
+      </button>
     </div>
   );
 };

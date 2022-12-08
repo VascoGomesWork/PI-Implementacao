@@ -1,6 +1,5 @@
 import React, {useState} from "react";
-import httpClient from "../httpClient";
-import {onHidden} from "web-vitals/dist/modules/lib/onHidden";
+//import httpClient from "../httpClient";
 
 export default function RealizarRequisicoesPage(){
 
