@@ -1,50 +1,112 @@
 import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
 
-//Teste
-
 const AddmaterialPage = () => {
-  const [name, setName] = useState([]);
-  const [quantity, setQuantity] = useState([]);
+  const [nome, setNome] = useState([]);
+  const [quantidade, setQuantidade] = useState([]);
+  const [observacao, setObservacao] = useState([]);
+  // FKs
+  const [tipo_material, setTipo_material] = useState([]);
+  const [projeto, setProjeto] = useState([]);
+  // List of Projects and types of materials
+  const [tipos, setTipos] = useState([]);
+  const [projetos, setProjetos] = useState([]);
 
-  const addTool = async (e) => {
+  const addMaterial = async (e) => {
+    console.log("lista tipos", tipos)
+    console.log("lista projs", projetos)
+    console.log("tipo: ", tipo_material)
+    console.log("nome proj: ", projeto)
     try {
-      const response = await httpClient.post("//localhost:5000/addtool", {
-        name,
-        quantity,
+      const response = await httpClient.post("//localhost:5000/addmaterial", {
+        nome,
+        quantidade,
+        observacao,
+        tipo_material,
+        projeto
       });
-      window.location.href = "/stock";
+      window.location.href = "/";
     } catch (e) {
       if (e.response.status == 401) {
-        alert("Invalid Tool Info");
+        alert("Invalid Material Info");
       }
     }
   };
 
+  //get list of types of materials
+  useEffect(() => {
+    (async () => {
+      try {
+        const types = await httpClient.get("//localhost:5000/showtypesmaterials");
+        setTipos(types.data.types);
+      } catch (error) {
+        console.log("Error getting types of materials");
+      }
+    })();
+  }, []);
+
+  //get list of projects
+  useEffect(() => {
+    (async () => {
+      try {
+        const projects = await httpClient.get("//localhost:5000/showprojects");
+        setProjetos(projects.data.projects);
+      } catch (error) {
+        console.log("Error getting projects");
+      }
+    })();
+  }, []);
+
   return (
     <div>
-      <h1>Add new tool</h1>
+      <h1>Adiconar novo material</h1>
       <form>
         <div>
-          <label>Name </label>
+          <label>Nome do Material </label>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
             id=""
           />
         </div>
         <div>
-          <label>Quantity </label>
+          <label>Quantidade </label>
           <input
             type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
+            value={quantidade}
+            onChange={(e) => setQuantidade(e.target.value)}
             id=""
           />
         </div>
-        <button type="button" onClick={addTool}>
-          Add
+        <div>
+          <label>Observações </label>
+          <input
+            type="text"
+            value={observacao}
+            onChange={(e) => setObservacao(e.target.value)}
+            id=""
+          />
+        </div>
+        <div>
+          <label>Tipo de Material </label>
+          <select onChange={(choice) => setTipo_material(choice.target.value)}>
+            {tipos.map((item) => (
+              <option key={item.id} value={item.id}>{item.tipo}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label>Associar a Projeto </label>
+          <select onChange={(choice) => setProjeto(choice.target.value)}>
+            <option key="0" value="0">Não associar</option>
+            {projetos.map((item) => (
+              <option key={item.id} value={item.id}>{item.nome}</option>
+            ))}
+          </select>
+        </div>
+        <button type="button" onClick={addMaterial}>
+          Adicionar Material
         </button>
       </form>
     </div>

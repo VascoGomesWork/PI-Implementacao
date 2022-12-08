@@ -36,7 +36,7 @@ def get_curretn_user():
         "email": user.email
     })
 
-# Get All Tools
+# Get All Materials
 @app.route("/stock", methods=["GET", "POST"])
 def view_stock():
     stock = Material.query.all()
@@ -54,20 +54,47 @@ def show_projects():
 
     return jsonify({ "projects" : result })
 
-# Add new tool
-@app.route("/addmaterial", methods=["POST"])
-def add_material():
-    name = request.json["name"]
-    quantity = request.json["quantity"]
+# Get All types of materials
+@app.route("/showtypesmaterials", methods=["GET", "POST"])
+def show_types_materials():
+    types = Tipo_Material.query.all()
+    materials_type_schema = Tipo_MaterialSchema(many=True)
+    result = materials_type_schema.dump(types)
 
-    new_material = Material(name=name, quantity=quantity)
+    return jsonify({ "types" : result })
+
+# Add new material
+@app.route("/addmaterial", methods=["GET", "POST"])
+def add_material():
+    nome = request.json["nome"]
+    quantidade = request.json["quantidade"]
+    observacao = request.json["observacao"]
+    data = datetime.now()
+    # FKs
+    tipo_material = int(request.json["tipo_material"])
+    kit_material = 1 #none
+    projeto = int(request.json["projeto"])
+
+    print("************************ADDED MATERIAL********************")
+    new_material = Material(nome=nome,
+                            quantidade=quantidade,
+                            observacao=observacao,
+                            data=data, tipo_material=tipo_material,
+                            kit_material=kit_material,
+                            projeto=projeto)
+    
     db.session.add(new_material)
     db.session.commit()
 
     return jsonify({
         "id": new_material.id,
-        "name": new_material.name,
-        "quantity": new_material.quantity
+        "nome": new_material.nome,
+        "quantidade": new_material.quantidade,
+        "observacao": new_material.observacao,
+        "data": new_material.data,
+        "tipo_material": new_material.tipo_material,
+        "kit_material": new_material.kit_material,
+        "projeto": new_material.projeto
     })
 
 # Add new material type

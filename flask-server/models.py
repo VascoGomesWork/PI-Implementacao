@@ -43,7 +43,6 @@ class Projeto(db.Model):
     data_inicio = db.Column(db.DateTime, nullable=False)
     data_fim = db.Column(db.DateTime, nullable=False)
 
-
 class ProjetoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Projeto
