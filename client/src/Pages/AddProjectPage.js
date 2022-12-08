@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+//import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import httpClient from "../httpClient";
 
 const AddProjectPage = () => {
@@ -10,7 +11,7 @@ const AddProjectPage = () => {
 
   const addProject = async (e) => {
     try {
-      const response = await httpClient.post("//localhost:5000/addproject", {
+      await httpClient.post("//localhost:5000/addproject", {
         nome,
         observacoes,
         data_inicio,
@@ -18,7 +19,7 @@ const AddProjectPage = () => {
       });
       window.location.href = "/";
     } catch (e) {
-      if (e.response.status == 401) {
+      if (e.response.status === 401) {
         alert("Invalid Project Info");
       }
     }

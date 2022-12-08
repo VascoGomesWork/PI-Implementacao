@@ -18,7 +18,7 @@ const AddmaterialPage = () => {
     console.log("tipo: ", tipo_material)
     console.log("nome proj: ", projeto)
     try {
-      const response = await httpClient.post("//localhost:5000/addmaterial", {
+      await httpClient.post("//localhost:5000/addmaterial", {
         nome,
         quantidade,
         observacao,
@@ -27,7 +27,7 @@ const AddmaterialPage = () => {
       });
       window.location.href = "/";
     } catch (e) {
-      if (e.response.status == 401) {
+      if (e.response.status === 401) {
         alert("Invalid Material Info");
       }
     }
@@ -38,6 +38,8 @@ const AddmaterialPage = () => {
     (async () => {
       try {
         const types = await httpClient.get("//localhost:5000/showtypesmaterials");
+        // default choice
+        setTipo_material(1)
         setTipos(types.data.types);
       } catch (error) {
         console.log("Error getting types of materials");
@@ -50,6 +52,8 @@ const AddmaterialPage = () => {
     (async () => {
       try {
         const projects = await httpClient.get("//localhost:5000/showprojects");
+        // default choice
+        setProjeto(1)
         setProjetos(projects.data.projects);
       } catch (error) {
         console.log("Error getting projects");

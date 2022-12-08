@@ -52,7 +52,7 @@ const LandingPage = () => {
   return (
     <div>
       <h1>Sistema de controlo de Stocks SPEPSI</h1>
-      {user.length != 0 ? (
+      {user.length !== 0 ? (
         <div>
           <h2>Logged in!</h2>
           <h3>Email: {user.email}</h3>
