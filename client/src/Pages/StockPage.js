@@ -14,8 +14,7 @@ const StockPage = () => {
       }
     })();
   }, []);
-  console.log(stocks);
-
+  //console.log(stocks);
   const exit = async () => {
     window.location.href = "/";
   };
@@ -24,12 +23,26 @@ const StockPage = () => {
     <div>
       <div>
         <h1>Current Stock: </h1>
-        {stocks.map((item) => (
-          <p key={item.id}>
-            {item.nome} = {item.quantidade} = {item.observacao}
-          </p>
-        ))}
+        <div>
+          <table border="1">
+            <tr>
+              <th>Material</th>
+              <th>Quantidade</th>
+              <th>Observações</th>
+              <th>Data de Aquisição</th>
+            </tr>
+            {stocks.map((item) => (
+              <tr key={item.id}>
+                <th>{item.nome}</th>
+                <th>{item.quantidade}</th>
+                <th>{item.observacao}</th>
+                <th>{item.data}</th>
+              </tr>
+            ))}
+          </table>
+        </div>
       </div>
+      <br />
       <button type="button" key="exitBtn" onClick={exit}>
         Exit
       </button>

@@ -125,10 +125,10 @@ def add_material_type():
 # Update Stocks
 @app.route("/updatestock", methods=["POST"])
 def update_stock():
-    nome = request.json["nome"]
+    id = request.json["id"]
     quantidade = request.json["quantidade"]
 
-    new_stock = Material.query.filter_by(nome=nome).first()
+    new_stock = Material.query.filter_by(id=id).first()
     new_stock.quantidade = int(quantidade)
     db.session.commit()
 
