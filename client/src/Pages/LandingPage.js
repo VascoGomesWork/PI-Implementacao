@@ -14,6 +14,10 @@ const LandingPage = () => {
     window.location.href = "/stock";
   };
 
+  const realizarRequisicoes = async () => {
+    window.location.href = "/realizarrequisicoes";
+  };
+
   const adicionarMaterial = async () => {
     window.location.href = "/addmaterial";
   };
@@ -54,17 +58,27 @@ const LandingPage = () => {
           <h3>Email: {user.email}</h3>
           <h3>ID: {user.id}</h3>
 
-          <button onClick={checkStocks}>Listar Materiais</button>
+          <button onClick={realizarRequisicoes}>Realizar Requisições - X</button>
           <br />
-          <button onClick={adicionarMaterial}>Adiocinar Material</button>
+          <button onClick={checkStocks}>Realizar Devoluções - X</button>
+          <br />
+          <button onClick={checkStocks}>Lista de Materiais</button>
           <br />
           <button onClick={atualizarStocks}>Atualizar Stocks</button>
           <br />
+          <button onClick={adicionarMaterial}>Adicionar Material</button>
+          <br />
+          <button onClick={adicionarMaterial}>Criar Kit de Material - X</button>
+          <br />
+          <button onClick={adicionarMaterial}>Lista de Kits - X</button>
+          <br />
           <button onClick={adicionarProjeto}>Adicionar Projeto</button>
           <br />
-          <button onClick={adicionarTipoMaterial}>Adicionar Tipo Material</button>
+          <button onClick={adicionarTipoMaterial}>Adicionar Tipo Material - Remover Depois</button>
           <br />
-          <button onClick={verProjetos}>Ver Projeto</button>
+          <button onClick={verProjetos}>Criar Projeto - X</button>
+          <br />
+          <button onClick={verProjetos}>Lista de Projetos</button>
           <br />
           <button onClick={logoutUser}>Logout</button>
           <br />
