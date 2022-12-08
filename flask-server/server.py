@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request, jsonify, session
 from flask_bcrypt import Bcrypt
 from flask_session import Session
-from models import db, User, Material, MaterialSchema, Projeto, ProjetoSchema, Requisitar_Devolver, Requisitar_DevolverSchema, Tipo_Material, Tipo_MaterialSchema, Kit_Material, Kit_MaterialSchema
+from models import *
+#from models import db, User, Material, MaterialSchema, Projeto, ProjetoSchema, Requisitar_Devolver, Requisitar_DevolverSchema, Tipo_Material, Tipo_MaterialSchema, Kit_Material, Kit_MaterialSchema
 from config import ApplicationConfig
 from flask_cors import CORS, cross_origin
 from datetime import datetime
@@ -71,17 +72,17 @@ def add_material():
     observacao = request.json["observacao"]
     data = datetime.now()
     # FKs
-    tipo_material = int(request.json["tipo_material"])
-    kit_material = 1 #none
-    projeto = int(request.json["projeto"])
+    type = Tipo_Material.query.filter_by(id=request.json["tipo_material"]).first()
+    project = Projeto.query.filter_by(id=request.json["projeto"]).first()
+    kit = Kit_Material.query.filter_by(id=1).first()
 
-    print("************************ADDED MATERIAL********************")
     new_material = Material(nome=nome,
                             quantidade=quantidade,
                             observacao=observacao,
-                            data=data, tipo_material=tipo_material,
-                            kit_material=kit_material,
-                            projeto=projeto)
+                            data=data,
+                            id_tipo_material=type.id,
+                            id_kit_material=kit.id,
+                            id_projeto=project.id)
     
     db.session.add(new_material)
     db.session.commit()
@@ -92,9 +93,9 @@ def add_material():
         "quantidade": new_material.quantidade,
         "observacao": new_material.observacao,
         "data": new_material.data,
-        "tipo_material": new_material.tipo_material,
-        "kit_material": new_material.kit_material,
-        "projeto": new_material.projeto
+        "tipo_material": new_material.id_tipo_material,
+        "kit_material": new_material.id_kit_material,
+        "projeto": new_material.id_projeto
     })
 
 # Add new material type

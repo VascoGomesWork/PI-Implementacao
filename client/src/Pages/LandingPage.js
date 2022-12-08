@@ -76,7 +76,7 @@ const LandingPage = () => {
           <br />
           <button onClick={adicionarTipoMaterial}>Adicionar Tipo Material - Remover Depois</button>
           <br />
-          <button onClick={verProjetos}>Criar Projeto - X</button>
+          <button onClick={adicionarProjeto}>Criar Projeto</button>
           <br />
           <button onClick={verProjetos}>Lista de Projetos</button>
           <br />

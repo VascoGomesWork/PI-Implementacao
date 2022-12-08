@@ -16,18 +16,6 @@ const StockPage = () => {
   }, []);
   console.log(stocks);
 
-  const addTool = async () => {
-    window.location.href = "/addtool";
-  };
-
-    const addProject = async () => {
-        window.location.href = "/addproject";
-    };
-
-  const removeTool = async () => {
-    window.location.href = "/removetool";
-  };
-
   const exit = async () => {
     window.location.href = "/";
   };
@@ -38,19 +26,10 @@ const StockPage = () => {
         <h1>Current Stock: </h1>
         {stocks.map((item) => (
           <p key={item.id}>
-            {item.name} = {item.quantity}
+            {item.nome} = {item.quantidade} = {item.observacao}
           </p>
         ))}
       </div>
-      <button type="button" key="addBtn" onClick={addTool}>
-        Add tool
-      </button>
-        <button type="button" key="addBtn" onClick={addProject}>
-            Add Project
-        </button>
-      <button type="button" key="removeBtn" onClick={removeTool}>
-        Update tool
-      </button>
       <button type="button" key="exitBtn" onClick={exit}>
         Exit
       </button>
