@@ -21,7 +21,7 @@ const UpdatematerialPage = () => {
     try {
       await httpClient.post("//localhost:5000/updatestock", {
         id,
-        quantidade,
+        //quantidade,
       });
       window.location.href = "/updatematerial";
     } catch (e) {
