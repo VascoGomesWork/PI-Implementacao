@@ -16,10 +16,10 @@ export default function RealizarRequisicoesPage(){
 
     const fazerRequisicao = async (e) => {
 
-        setListaMateriais(([]) => ({
+        setListaMateriais(([]) => ([{
             "material":material,
             "quantidade_material":quantidade_material
-        }));
+        }]));
 
         console.log("Nome = " + nome);
         console.log("Projeto = " + projeto);
