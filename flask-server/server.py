@@ -38,7 +38,8 @@ def get_curretn_user():
 # Get Materials By Name
 @app.route("/showmaterialsbyname", methods=["GET", "POST"])
 def materials_list():
-    materials_list = Material.query.filter_by(nome=request.json["search"]).first()
+    print("REQUEST = ", request.query_string)
+    materials_list = Material.query.filter_by(nome=request.query_string).all()
     material_schema = MaterialSchema(many=True)
     result = material_schema.dump(materials_list)
 

@@ -1,26 +1,48 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ListMaterialItem from "./ListMaterialItem";
+import httpClient from "../httpClient";
 
 export default function CreateMaterialsKitsPage(){
 
     const [nome, setNome] = useState()
     const [search, setSearch] = useState()
     const [observacoes, setObservacoes] = useState()
+    const [materiaisList, setMateriaisList] = useState()
 
     const searchData = async (e) => {
 
         console.log("e = " + e.target.value)
 
-        const {name, value, type} = e.target
+        setSearch(e.target.value)
 
-        setSearch(prevState => ({
-            ...prevState,
-            [search]: e.target.value
-        }))
+        console.log("Search = " + search)
 
-        console.log("Search = " + JSON.stringify(search.search))
-        console.log("Search = " + search.search)
+        /*try {
+            await httpClient.post("//localhost:5000/showmaterialsbyname", {
+                search
+            }, config);
+        } catch (e) {
+            if (e.response.status === 401) {
+                alert("Invalid Material Info");
+            }
+        }*/
     }
+
+    //get list of materials
+    useEffect(() => {
+        (async () => {
+            try {
+                const materials = await httpClient.get("//localhost:5000/showmaterialsbyname");
+                // default choice
+                setSearch(search)
+                setMateriaisList(materials.data.material)
+            } catch (error) {
+                console.log("Error getting materials");
+            }
+        })();
+    }, []);
+
+    console.log("Lista de Materiais = " + materiaisList)
 
     const criarKit = async (e) => {
 
