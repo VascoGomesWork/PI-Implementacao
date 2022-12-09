@@ -12,6 +12,7 @@ import ShowProjectsPage from "./Pages/ShowProjectsPage"
 import RealizarRequisicoesPage from "./Pages/RealizarRequisicoesPage";
 import ReturnMaterialsPage from "./Pages/ReturnsMaterialsPage";
 import CreateMaterialsKitsPage from "./Pages/CreateMaterialsKitsPage";
+import ShowKitsPage from "./Pages/ShowKitsPage";
 
 const Router = () => {
   return (
@@ -30,6 +31,7 @@ const Router = () => {
         <Route path="/updatematerial" element={<UpdatematerialPage />} />
         <Route path="/addmaterialtype" element={<AddmaterialtypePage />} />
         <Route path="/showprojects" element={<ShowProjectsPage />} />
+        <Route path="/showkits" element={<ShowKitsPage />} />
       </Routes>
     </BrowserRouter>
   );

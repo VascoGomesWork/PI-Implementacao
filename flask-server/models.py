@@ -45,6 +45,7 @@ class Material(db.Model):
 class MaterialSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Material
+        include_fk = True
 
 # Projeto Table
 class Projeto(db.Model):

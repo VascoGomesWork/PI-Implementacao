@@ -46,6 +46,10 @@ const LandingPage = () => {
     window.location.href = "/showprojects";
   };
 
+  const verKits = async () => {
+    window.location.href = "/showkits";
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -78,7 +82,7 @@ const LandingPage = () => {
           <br />
           <button onClick={criarKits}>Criar Kit de Material - X</button>
           <br />
-          <button onClick={adicionarMaterial}>Lista de Kits - X</button>
+          <button onClick={verKits}>Lista de Kits</button>
           <br />
           <button onClick={adicionarProjeto}>Adicionar Projeto</button>
           <br />
