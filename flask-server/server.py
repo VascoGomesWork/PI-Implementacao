@@ -162,6 +162,24 @@ def add_project():
         "data_fim": new_project.data_fim,
     })
 
+# Get all kits names
+@app.route("/getkitsnames", methods=["GET", "POST"])
+def get_kits_names():
+    kits_list = Kit_Material.query.filter_by().all()
+    material_schema = MaterialSchema(many=True)
+    result = material_schema.dump(kits_list)
+
+    return jsonify({ "kits_names" : result })
+
+# Get all kits
+@app.route("/getkits", methods=["GET", "POST"])
+def get_kits():
+    kits_list = Material.query.filter(Material.kit_material!=None).all()
+    material_schema = MaterialSchema(many=True)
+    result = material_schema.dump(kits_list)
+
+    return jsonify({ "kits" : result })
+
 # Register route
 @app.route("/register", methods=["POST"])
 def register_user():
