@@ -15,7 +15,22 @@ export default function CreateMaterialsKitsPage(){
 
         setSearch(e.target.value)
 
-        console.log("Search = " + search)
+
+        fetch(`//localhost:5000/showmaterialsbyname?search=`+search)
+            .then(res => res.json())
+            .then(data => {
+                console.log("DATA = " + JSON.stringify(data.materials_list))
+                console.log("NOME = " + data.materials_list[0].nome)
+                console.log("QUANTIDADE = " + data.materials_list[0].quantidade)
+
+                setMateriaisList(prevData => ({
+                    ...prevData,
+                    array:[{
+                        nome:data.materials_list[0].nome,
+                        quantidade:data.materials_list[0].quantidade }]
+                }))
+            })
+
 
         /*try {
             await httpClient.post("//localhost:5000/showmaterialsbyname", {
@@ -28,21 +43,7 @@ export default function CreateMaterialsKitsPage(){
         }*/
     }
 
-    //get list of materials
-    useEffect(() => {
-        (async () => {
-            try {
-                const materials = await httpClient.get("//localhost:5000/showmaterialsbyname");
-                // default choice
-                setSearch(search)
-                setMateriaisList(materials.data.material)
-            } catch (error) {
-                console.log("Error getting materials");
-            }
-        })();
-    }, []);
-
-    console.log("Lista de Materiais = " + materiaisList)
+    console.log("Lista de Materiais = " + JSON.stringify(materiaisList))
 
     const criarKit = async (e) => {
 
@@ -75,7 +76,7 @@ export default function CreateMaterialsKitsPage(){
                 <div>
                     <label>Lista de Materiais </label>
                     <ul>
-                        <ListMaterialItem />
+                        <ListMaterialItem materialsList={materiaisList}/>
                     </ul>
                 </div>
                 <div>

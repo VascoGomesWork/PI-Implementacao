@@ -38,8 +38,9 @@ def get_curretn_user():
 # Get Materials By Name
 @app.route("/showmaterialsbyname", methods=["GET", "POST"])
 def materials_list():
-    print("REQUEST = ", request.query_string)
-    materials_list = Material.query.filter_by(nome=request.query_string).all()
+    #How to get Parameters out of URL -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
+    print("REQUEST = ", request.args.get("search"))
+    materials_list = Material.query.filter_by(nome=request.args.get("search")).all()
     material_schema = MaterialSchema(many=True)
     result = material_schema.dump(materials_list)
 

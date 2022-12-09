@@ -1,21 +1,24 @@
 import React, {useState} from "react";
 
-export default function ListMaterialItem(){
+export default class ListMaterialItem extends React.Component{
 
-    const [material, setMaterial] = useState()
-    const [quantidade_material, setQuantidadeMaterial] = useState()
+    constructor(props) {
+        super(props);
+    }
 
-    return(
-        <li>
-            <label>Material: </label>
-            <input type="text" value={material} onChange={(e) => setMaterial(e.target.value)}/>
-            <label>Quantidade </label>
-            <input
-                type="text"
-                value={quantidade_material}
-                onChange={(e) => setQuantidadeMaterial(e.target.value)}
-                id=""/>
-            <button type="button" >Apagar</button>
-        </li>
-    )
+    //this.props.materialsList.nome
+    render() {
+        return (
+            <li>
+                <label>Material: </label>
+
+                <input type="text" value={this.props.materialsList!==undefined ? this.props.materialsList["array"][0].nome : this.props.materialsList}/>
+                <label>Quantidade </label>
+                <input
+                    type="text"
+                    value={this.props.materialsList!==undefined ? this.props.materialsList["array"][0].quantidade : this.props.materialsList}/>
+                <button type="button">Apagar</button>
+            </li>
+        )
+    }
 }
