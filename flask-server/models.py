@@ -110,3 +110,4 @@ class Requisitar_Devolver(db.Model):
 class Requisitar_DevolverSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Requisitar_Devolver
+        include_fk = True

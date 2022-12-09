@@ -8,16 +8,25 @@ export default class ListMaterialItem extends React.Component{
 
     //this.props.materialsList.nome
     render() {
+
+        function changeQuantity(){
+
+        }
+
         return (
-            <li>
+            //How to solve missing key error -> https://sentry.io/answers/unique-key-prop/
+            //How to pass data from child to parent -> https://bobbyhadz.com/blog/react-pass-data-from-child-to-parent
+            <li key={this.props.materialsAtributes}>
                 <label>Material: </label>
 
-                <input type="text" value={this.props.materialsList!==undefined ? this.props.materialsList["array"][0].nome : this.props.materialsList}/>
+                <input type="text" id={"nome"} defaultValue={this.props.materialsAtributes!==undefined ? this.props.materialsAtributes.nome : this.props.materialsAtributes}/>
                 <label>Quantidade </label>
                 <input
                     type="text"
-                    value={this.props.materialsList!==undefined ? this.props.materialsList["array"][0].quantidade : this.props.materialsList}/>
-                <button type="button">Apagar</button>
+                    id={"quantidade"}
+                    onChange={changeQuantity}
+                    value={this.props.materialsAtributes!==undefined ? this.props.materialsAtributes.quantidade : this.props.materialsAtributes}/>
+                <button type="button" onClick={event => this.props.evento(this.props.materialsAtributes.id)}> {this.props.id === 1 ? "1 - Adicionar ao Kit" : "2 - Apagar" } </button>
             </li>
         )
     }

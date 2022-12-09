@@ -40,7 +40,8 @@ def get_curretn_user():
 def materials_list():
     #How to get Parameters out of URL -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
     print("REQUEST = ", request.args.get("search"))
-    materials_list = Material.query.filter_by(nome=request.args.get("search")).all()
+    #How to check if a column contains substring -> https://stackoverflow.com/questions/4926757/sqlalchemy-query-where-a-column-contains-a-substring
+    materials_list = Material.query.filter(Material.nome.contains(request.args.get("search"))).all()
     material_schema = MaterialSchema(many=True)
     result = material_schema.dump(materials_list)
 
