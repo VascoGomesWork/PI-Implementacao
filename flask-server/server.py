@@ -147,10 +147,9 @@ def add_project():
     nome = request.json["nome"]
     observacoes = request.json["observacoes"]
     # convert string to date #
-    #data_inicio = request.json["data_inicio"]
-    data_inicio = datetime.strptime(request.json["data_inicio"], '%d-%m-%Y')
+    data_inicio = datetime.strptime(request.json["data_inicio"], '%Y-%m-%d')
     #data_fim = request.json["data_fim"]
-    data_fim = datetime.strptime(request.json["data_fim"], '%d-%m-%Y')
+    data_fim = datetime.strptime(request.json["data_fim"], '%Y-%m-%d')
 
     new_project = Projeto(nome=nome, observacoes=observacoes, data_inicio=data_inicio, data_fim=data_fim)
     db.session.add(new_project)
