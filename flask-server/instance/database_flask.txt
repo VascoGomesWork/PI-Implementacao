@@ -106,7 +106,7 @@ class Requisitar_Devolver(db.Model):
     material = db.relationship('Material', backref='material')
     # FK Kit Material
     id_kit = db.Column(db.Integer, db.ForeignKey('kit.id'))
-    kit = db.relationship('Kit', backref='kit')
+    kit = db.relationship('Kit', backref='requisitar_devolver')
 
 class Requisitar_DevolverSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
