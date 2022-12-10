@@ -9,7 +9,7 @@ export default function CreateMaterialsKitsPage(){
     const [observacoes, setObservacoes] = useState()
     const [materiaisList, setMateriaisList] = useState()
 
-    const [materialsKitList, setMaterialsKitList] = useState([])
+    const [materialsKitList, setMaterialsKitList] = useState([])// = ["TESTE"]
 
     const searchData = async (e) => {
 
@@ -26,9 +26,13 @@ export default function CreateMaterialsKitsPage(){
                 //Map is not a function -> https://stackoverflow.com/questions/30142361/react-js-uncaught-typeerror-this-props-data-map-is-not-a-function
                 setMateriaisList(data.materials_list)
 
-                setSearch(prevData => ({
-                    "":""
-                }))
+                //Adds Elements to an Object
+                /*materialsArray.push()
+                materialsArray[i] = {
+                    ...ingredientsArray[i],
+                    imagem: data.image,
+                    consistencia: data.consistency
+                }*/
             })
 
 
@@ -45,32 +49,48 @@ export default function CreateMaterialsKitsPage(){
 
     console.log("Lista de Materiais = " + JSON.stringify(materiaisList))
 
-    const criarKit = async (e) => {
+    const materialsKitList1 = async (e) => {
 
     }
 
     function evento(id) {
-        console.log("EVENTO")
-        console.log("ID = " + id)
+        //console.log("EVENTO")
+        //console.log("ID = " + id)
         //Qual Evento que foi selecionado
         for(let i = 0; i < materiaisList.length; i++){
-            if(materiaisList[i].id === id){
-                console.log("NOME = " + materiaisList[i].nome)
-                console.log("QUANTIDADE = " + materiaisList[i].quantidade)
+            //console.log("ID Materiais = " + materiaisList[i].id)
+            if(materiaisList[i].id === id) {
+                //console.log("DATA ID = " + materiaisList[i].id)
+                //console.log("DATA NOME = " + materiaisList[i].nome)
+                //console.log("DATA QUANTIDADE = " + materiaisList[i].quantidade)
 
-                materialsKitList.push({
+                //Colocar na Lista do kit
+                /*materialsKitList.push({
                     nome:materiaisList[i].nome,
                     quantidade:materiaisList[i].quantidade
-                })
+                })*/
 
+                materialsKitList.push(
+                    {nome:materiaisList[i].nome,
+                        quantidade:materiaisList[i].quantidade}
+                )
 
-                console.log("KIT LIST = " + JSON.stringify(materialsKitList))
+                //Changes prevState to fix 2 bugs:
+                //  search variable being the same as the search box withouth a letter "delay"
+                //  makes a change in search and makes .map function work
+                //If it Works don't mess with it
+                setSearch(preState => ({
+                    ...preState, "":""
+                }))
+
+                console.log("Kit de Materiais = " + JSON.stringify(materialsKitList))
+                //console.log("Kit de Materiais 1 Nome = " + materialsKitList[0].nome)
+                //console.log("Kit de Materiais 1 Quantidade = " + materialsKitList[0].quantidade)
             }
         }
-        //Dar Ordem para adicionar os materiais ao kit no componente parent
     }
 
-    function createKit(id){
+    function removeMaterial(id){
 
     }
 
@@ -111,12 +131,10 @@ export default function CreateMaterialsKitsPage(){
                 <div>
                     <label>Lista de Materiais Presentes no Kit</label>
                     <ul>
-                        {materialsKitList !== undefined ? "DADOS MAP = " + JSON.stringify(materialsKitList) : "Não Dá"}
                         {   //Map not working -> https://stackoverflow.com/questions/69080597/%C3%97-typeerror-cannot-read-properties-of-undefined-reading-map
-                            materialsKitList?.map((materialsKitsAtributes) => (
-                                <ListMaterialItem materialsAtributes={materialsKitsAtributes} id={2} evento={createKit}/>
+                            materialsKitList?.map((materialsKitListAtributes) => (
+                                <ListMaterialItem materialsAtributes={materialsKitListAtributes} id={2} evento={removeMaterial}/>
                             ))}
-                        <ListMaterialItem materialsList={materiaisList} id={2}/>
                     </ul>
                 </div>
                 <div>
@@ -128,7 +146,7 @@ export default function CreateMaterialsKitsPage(){
                         id=""
                     />
                 </div>
-                <button type="button" onClick={criarKit}>
+                <button type="button" onClick={materialsKitList1}>
                     Criar Novo Kit
                 </button>
             </form>
