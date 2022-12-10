@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import httpClient from "../httpClient";
 
+//test
+
 const AddProjectPage = () => {
   const [nome, setNome] = useState([]);
   const [observacoes, setObservacoes] = useState([]);
@@ -57,12 +59,6 @@ const AddProjectPage = () => {
             max="2999-12-31"
             onChange={(e) => setDataInicio(e.target.value)}
           ></input>
-          {/**<input
-              type="text"
-              value={data_inicio}
-              onChange={(e) => setDataInicio(e.target.value)}
-              id=""
-        />*/}
         </div>
         <div>
           <label>Data Fim </label>
@@ -75,12 +71,6 @@ const AddProjectPage = () => {
             max="2999-12-31"
             onChange={(e) => {setDataFim(e.target.value); console.log(data_fim)}}
           ></input>
-          {/**<input
-            type="text"
-            value={data_fim}
-            onChange={(e) => setDataFim(e.target.value)}
-            id=""
-        />*/}
         </div>
         <br />
         <button type="button" onClick={addProject}>
