@@ -4,10 +4,10 @@ import httpClient from "../httpClient";
 
 export default function CreateMaterialsKitsPage(){
 
-    const [nome, setNome] = useState()
-    const [search, setSearch] = useState()
-    const [observacoes, setObservacoes] = useState()
-    const [materiaisList, setMateriaisList] = useState()
+    const [nome, setNome] = useState([])
+    const [search, setSearch] = useState([])
+    const [observacoes, setObservacoes] = useState([])
+    const [materiaisList, setMateriaisList] = useState([])
     const [quantityList, setQuantityList] = useState([])
 
     const [materialsKitList, setMaterialsKitList] = useState([])
@@ -101,22 +101,21 @@ export default function CreateMaterialsKitsPage(){
     }
 
     function changeQuantity(id,quantidade){
-        console.log("CHANGE QUATITY ")
+        /*console.log("CHANGE QUATITY ")
         console.log("Materials List QUANTIDADE = " + materiaisList[0].quantidade)
         console.log("QUANTIDADE = " + quantidade)
         console.log("Materials List ID = " + materiaisList[0].id)
-        console.log("ID = " + id)
-        for(let i = 0; i < materiaisList[i].length; i++) {
+        console.log("ID = " + id)*/
+        for(let i = 0; i < materiaisList.length; i++) {
             if (materiaisList[i].id === id && quantidade <= materiaisList[i].quantidade) {
-                console.log("TESTE")
-                setQuantityList(prevState => ({
-                    ...prevState,
-                    quantidade
-                }))
+                //console.log("TESTE")
+                materialsKitList[i].quantidade = quantidade
             }
         }
+        //Changes the value of Quantidade in Materials Kit List to Send to Database
+        //materialsKitList.quantidade = quantityList
 
-        console.log("QUANTITY LIST = " + JSON.stringify(quantityList))
+        //console.log("QUANTITY LIST = " + JSON.stringify(materialsKitList))
     }
 
     return (
