@@ -86,6 +86,11 @@ def add_kits_material():
     print("OBSERVACAO SERVER = ", observacao)
     new_kit = Kit(nome=nome, observacao=observacao)
 
+    db.session.add(new_kit)
+    db.session.commit()
+
+    print("LENGH ID MATERIAL = ", len(kit_id_material))
+
     # Loops through kit_id_material list
     for i in range(len(kit_id_material)):
         print("ID MATERIAL SERVER = ", kit_id_material[i].get('id'))
@@ -93,11 +98,8 @@ def add_kits_material():
                               id_kit=new_kit.id,
                               id_material=kit_id_material[i].get('id'))
        
-        db.session.add(new_kit)
+        db.session.add(new_kit_material)
         db.session.commit()
-
-    db.session.add(new_kit)
-    db.session.commit()
 
 
     return jsonify({
