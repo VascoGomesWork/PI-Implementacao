@@ -9,7 +9,7 @@ export default function CreateMaterialsKitsPage(){
     const [observacoes, setObservacoes] = useState()
     const [materiaisList, setMateriaisList] = useState()
 
-    const [materialsKitList, setMaterialsKitList] = useState()
+    const [materialsKitList, setMaterialsKitList] = useState([])
 
     const searchData = async (e) => {
 
@@ -26,13 +26,9 @@ export default function CreateMaterialsKitsPage(){
                 //Map is not a function -> https://stackoverflow.com/questions/30142361/react-js-uncaught-typeerror-this-props-data-map-is-not-a-function
                 setMateriaisList(data.materials_list)
 
-                //Adds Elements to an Object
-                /*materialsArray.push()
-                materialsArray[i] = {
-                    ...ingredientsArray[i],
-                    imagem: data.image,
-                    consistencia: data.consistency
-                }*/
+                setSearch(prevData => ({
+                    "":""
+                }))
             })
 
 
@@ -57,8 +53,25 @@ export default function CreateMaterialsKitsPage(){
         console.log("EVENTO")
         console.log("ID = " + id)
         //Qual Evento que foi selecionado
+        for(let i = 0; i < materiaisList.length; i++){
+            if(materiaisList[i].id === id){
+                console.log("NOME = " + materiaisList[i].nome)
+                console.log("QUANTIDADE = " + materiaisList[i].quantidade)
 
+                materialsKitList.push({
+                    nome:materiaisList[i].nome,
+                    quantidade:materiaisList[i].quantidade
+                })
+
+
+                console.log("KIT LIST = " + JSON.stringify(materialsKitList))
+            }
+        }
         //Dar Ordem para adicionar os materiais ao kit no componente parent
+    }
+
+    function createKit(id){
+
     }
 
     return (
@@ -98,6 +111,11 @@ export default function CreateMaterialsKitsPage(){
                 <div>
                     <label>Lista de Materiais Presentes no Kit</label>
                     <ul>
+                        {materialsKitList !== undefined ? "DADOS MAP = " + JSON.stringify(materialsKitList) : "Não Dá"}
+                        {   //Map not working -> https://stackoverflow.com/questions/69080597/%C3%97-typeerror-cannot-read-properties-of-undefined-reading-map
+                            materialsKitList?.map((materialsKitsAtributes) => (
+                                <ListMaterialItem materialsAtributes={materialsKitsAtributes} id={2} evento={createKit}/>
+                            ))}
                         <ListMaterialItem materialsList={materiaisList} id={2}/>
                     </ul>
                 </div>
