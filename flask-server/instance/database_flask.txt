@@ -100,13 +100,13 @@ class Requisitar_Devolver(db.Model):
     data_devolucao_real = db.Column(db.DateTime, nullable=False)
     # FK User
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref='user')
+    #user = db.relationship('User', backref='user')
     # FK Material
     id_material = db.Column(db.Integer, db.ForeignKey('material.id'))
-    material = db.relationship('Material', backref='material')
+    #material = db.relationship('Material', backref='material')
     # FK Kit Material
     id_kit = db.Column(db.Integer, db.ForeignKey('kit.id'))
-    kit = db.relationship('Kit', backref='requisitar_devolver')
+    #kit = db.relationship('Kit', backref='kit')
 
 class Requisitar_DevolverSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
