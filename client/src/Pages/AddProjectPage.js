@@ -8,6 +8,7 @@ const AddProjectPage = () => {
   const [data_inicio, setDataInicio] = useState([]);
   const [data_fim, setDataFim] = useState([]);
 
+
   const addProject = async (e) => {
     try {
       await httpClient.post("//localhost:5000/addproject", {
@@ -26,7 +27,7 @@ const AddProjectPage = () => {
 
   return (
     <div>
-      <h1>Adicionar novo projeto</h1>
+      <h1>Add New Project</h1>
       <form>
         <div>
           <label>Nome </label>
@@ -37,55 +38,38 @@ const AddProjectPage = () => {
             id=""
           />
         </div>
+
         <div>
           <label>Observações </label>
           <input
-            type="text"
-            value={observacoes}
-            onChange={(e) => setObservacoes(e.target.value)}
-            id=""
+              type="text"
+              value={observacoes}
+              onChange={(e) => setObservacoes(e.target.value)}
+              id=""
           />
         </div>
+
         <div>
           <label>Data Inicio </label>
           <input
-            type="date"
-            id="start"
-            name="trip-start"
-            value={data_inicio}
-            min="2009-01-01"
-            max="2999-12-31"
-            onChange={(e) => setDataInicio(e.target.value)}
-          ></input>
-          {/**<input
               type="text"
               value={data_inicio}
               onChange={(e) => setDataInicio(e.target.value)}
               id=""
-        />*/}
+          />
         </div>
+
         <div>
           <label>Data Fim </label>
           <input
-            type="date"
-            id="end"
-            name="trip-start"
-            value={data_fim}
-            min="2009-01-01"
-            max="2999-12-31"
-            onChange={(e) => {setDataFim(e.target.value); console.log(data_fim)}}
-          ></input>
-          {/**<input
-            type="text"
-            value={data_fim}
-            onChange={(e) => setDataFim(e.target.value)}
-            id=""
-        />*/}
+              type="text"
+              value={data_fim}
+              onChange={(e) => setDataFim(e.target.value)}
+              id=""
+          />
         </div>
-        <br />
-        <button type="button" onClick={addProject}>
-          Add Project
-        </button>
+
+        <button type="button" onClick={addProject}>Add Project</button>
       </form>
     </div>
   );
