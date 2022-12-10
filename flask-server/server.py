@@ -213,11 +213,19 @@ def get_kits_names():
 # Get all kits
 @app.route("/getkits", methods=["GET", "POST"])
 def get_kits():
-    kits_list = Material.query.filter(Material.kit_material!=None).all()
-    material_schema = MaterialSchema(many=True)
-    result = material_schema.dump(kits_list)
 
-    return jsonify({ "kits" : result })
+    #Get Kit Data
+    kits_material_list = Kit_Material.query.all()
+    kit_material_schema = Kit_MaterialSchema(many=True)
+    result_kit_material = kit_material_schema.dump(kits_material_list)
+
+    #Uses Kit Data to Search Material Data
+    #for i range(result_kit_material) :
+        #kit
+
+    #Returns it
+
+    #return jsonify({ "kits" : result })
 
 # Register route
 @app.route("/register", methods=["POST"])
