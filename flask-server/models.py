@@ -80,7 +80,7 @@ class Kit_Material(db.Model):
     id_kit = db.Column(db.Integer, db.ForeignKey('kit.id'))
     id_material = db.Column(db.Integer, db.ForeignKey('material.id'))
 
-class Kit_Material(ma.SQLAlchemyAutoSchema):
+class Kit_MaterialSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Kit_Material
         include_fk = True
@@ -122,8 +122,7 @@ class Kit(db.Model):
     requisitar_devolver = db.relationship('Requisitar_Devolver', backref='kit')
     kit_material = db.relationship('Kit_Material', backref='kit')
 
-class Kit(ma.SQLAlchemyAutoSchema):
+class KitSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Kit
-        include_fk = True
 

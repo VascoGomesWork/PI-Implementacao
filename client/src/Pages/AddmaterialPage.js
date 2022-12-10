@@ -13,10 +13,6 @@ const AddmaterialPage = () => {
   const [projetos, setProjetos] = useState([]);
 
   const addMaterial = async (e) => {
-    console.log("lista tipos", tipos)
-    console.log("lista projs", projetos)
-    console.log("tipo: ", tipo_material)
-    console.log("nome proj: ", projeto)
     try {
       await httpClient.post("//localhost:5000/addmaterial", {
         nome,

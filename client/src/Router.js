@@ -13,6 +13,8 @@ import RealizarRequisicoesPage from "./Pages/RealizarRequisicoesPage";
 import ReturnMaterialsPage from "./Pages/ReturnsMaterialsPage";
 import CreateMaterialsKitsPage from "./Pages/CreateMaterialsKitsPage";
 import ShowKitsPage from "./Pages/ShowKitsPage";
+//teste de requisicoes
+import RequisicoesPage from "./Pages/RequisicoesPage";
 
 const Router = () => {
   return (
@@ -24,7 +26,7 @@ const Router = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/stock" element={<StockPage />} />
         <Route path="/addmaterial" element={<AddmaterialPage />} />
-        <Route path="/realizarrequisicoes" element={<RealizarRequisicoesPage />} />
+        <Route path="/realizarrequisicoes" element={<RequisicoesPage />} />
         <Route path="/createkits" element={<CreateMaterialsKitsPage />} />
         <Route path="/returnmaterials" element={<ReturnMaterialsPage />} />
         <Route path="/addproject" element={<AddProjectPage />} />
