@@ -82,6 +82,8 @@ def add_kits_material():
     observacao = request.json["observacoes"]
 
     #Inserts Data in Kit Table
+    print("NOME SERVER = ", nome)
+    print("OBSERVACAO SERVER = ", observacao)
     new_kit = Kit(nome=nome, observacao=observacao)
 
     db.session.add(new_kit)
