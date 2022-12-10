@@ -53,7 +53,7 @@ const AddmaterialPage = () => {
       try {
         const projects = await httpClient.get("//localhost:5000/showprojects");
         // default choice
-        setProjeto(1)
+        setProjeto("0")
         setProjetos(projects.data.projects);
       } catch (error) {
         console.log("Error getting projects");
