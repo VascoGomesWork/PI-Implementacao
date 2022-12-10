@@ -34,23 +34,27 @@ export default function CreateMaterialsKitsPage(){
                     consistencia: data.consistency
                 }*/
             })
-
-
-        /*try {
-            await httpClient.post("//localhost:5000/showmaterialsbyname", {
-                search
-            }, config);
-        } catch (e) {
-            if (e.response.status === 401) {
-                alert("Invalid Material Info");
-            }
-        }*/
     }
 
     console.log("Lista de Materiais = " + JSON.stringify(materiaisList))
 
-    const materialsKitList1 = async (e) => {
+    const createMaterialsKit = async (e) => {
 
+        for(let i = 0; i < materialsKitList.length; i++){
+            console.log("MATERIALS ID = " + materialsKitList[i].id)
+        }
+
+        try {
+            await httpClient.post("//localhost:5000/addmaterialskit", {
+                nome,
+                materialsKitList,
+                observacoes
+            });
+        } catch (e) {
+            if (e.response.status === 401) {
+                alert("Invalid Material Info");
+            }
+        }
     }
 
     function evento(id) {
@@ -71,8 +75,11 @@ export default function CreateMaterialsKitsPage(){
                 })*/
 
                 materialsKitList.push(
-                    {nome:materiaisList[i].nome,
-                        quantidade:materiaisList[i].quantidade}
+                    {
+                        id:materiaisList[i].id,
+                        nome:materiaisList[i].nome,
+                        quantidade:materiaisList[i].quantidade
+                    }
                 )
 
                 //Changes prevState to fix 2 bugs:
@@ -91,7 +98,12 @@ export default function CreateMaterialsKitsPage(){
     }
 
     function removeMaterial(id){
-
+        /*for(let i = 0; i < materialsKitList.length; i++) {
+            if(materialsKitList[i].id === id) {
+                materialsKitList.pop(materialsKitList[i].nome)
+                materialsKitList.pop(materialsKitList[i].quantidade)
+            }
+        }*/
     }
 
     return (
@@ -146,7 +158,7 @@ export default function CreateMaterialsKitsPage(){
                         id=""
                     />
                 </div>
-                <button type="button" onClick={materialsKitList1}>
+                <button type="button" onClick={createMaterialsKit}>
                     Criar Novo Kit
                 </button>
             </form>

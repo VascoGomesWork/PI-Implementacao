@@ -74,6 +74,40 @@ def show_types_materials():
 
     return jsonify({ "types" : result })
 
+# Add new materials kit
+@app.route("/addmaterialskit", methods=["GET", "POST"])
+def add_kits_material():
+    nome = request.json["nome"]
+    kit_id_material = request.json["materialsKitList"]
+    observacao = request.json["observacoes"]
+
+    #Inserts Data in Kit Table
+    new_kit = Kit(nome=nome, observacao=observacao)
+
+    db.session.add(new_kit)
+    db.session.commit()
+
+    # Loops through kit_id_material list
+    for i in range(len(kit_id_material)):
+       print("ID MATERIAL SERVER = ", kit_id_material[i].get('id'))
+       new_kit_material = Kit_Material(
+                              id_kit=new_kit.id,
+                              id_material=kit_id_material[i].get('id'),
+                              )
+
+    db.session.add(new_kit)
+    db.session.commit()
+
+
+    return jsonify({
+        "kit_id": new_kit.id,
+        "kit_nome_material": new_kit.nome,
+        "kit_observacoes": new_kit.observacoes,
+        "kit_material_id": new_kit_material.id,
+        "kit_id_fk": new_kit_material.id_kit,
+        "material_id_fk": new_kit_material.id_material,
+    })
+
 # Add new material
 @app.route("/addmaterial", methods=["GET", "POST"])
 def add_material():
