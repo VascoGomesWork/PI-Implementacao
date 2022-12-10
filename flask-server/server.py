@@ -95,6 +95,7 @@ def add_kits_material():
     for i in range(len(kit_id_material)):
         print("ID MATERIAL SERVER = ", kit_id_material[i].get('id'))
         new_kit_material = Kit_Material(
+                              quantidade=kit_id_material[i].get('quantidade'),
                               id_kit=new_kit.id,
                               id_material=kit_id_material[i].get('id'))
        
@@ -219,13 +220,23 @@ def get_kits():
     kit_material_schema = Kit_MaterialSchema(many=True)
     result_kit_material = kit_material_schema.dump(kits_material_list)
 
+    print("RESULT KIT MATERIAL = ", result_kit_material)
+
     #Uses Kit Data to Search Material Data
-    #for i range(result_kit_material) :
-        #kit
+    for i in range(len(result_kit_material)) :
+        print("ID KIT = ", result_kit_material[i]['id_kit'])
+        kit_list = Kit.query.filter_by(id=result_kit_material[i]['id_kit'])
+        kit_schema = KitSchema(many=True)
+        result_kit = kit_schema.dump(kit_list)
+
+        material_list = Material.query.filter_by(id=result_kit_material[i]['id_material'])
+        material_schema = MaterialSchema(many=True)
+        result_material = material_schema.dump(material_list)
 
     #Returns it
+    #Creates Array with Info from Kit and Material
 
-    #return jsonify({ "kits" : result })
+    return jsonify({ "kits" : "teste" })
 
 # Register route
 @app.route("/register", methods=["POST"])

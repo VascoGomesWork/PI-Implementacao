@@ -76,6 +76,7 @@ class Tipo_MaterialSchema(ma.SQLAlchemyAutoSchema):
 class Kit_Material(db.Model):
     __tablename__ = "kit_material"
     id = db.Column(db.Integer, primary_key=True, unique=True)
+    quantidade = db.Column(db.Integer, nullable=False)
     # FK
     id_kit = db.Column(db.Integer, db.ForeignKey('kit.id'))
     id_material = db.Column(db.Integer, db.ForeignKey('material.id'))

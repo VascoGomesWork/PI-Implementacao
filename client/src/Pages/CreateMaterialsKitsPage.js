@@ -8,8 +8,9 @@ export default function CreateMaterialsKitsPage(){
     const [search, setSearch] = useState()
     const [observacoes, setObservacoes] = useState()
     const [materiaisList, setMateriaisList] = useState()
+    const [quantityList, setQuantityList] = useState([])
 
-    const [materialsKitList, setMaterialsKitList] = useState([])// = ["TESTE"]
+    const [materialsKitList, setMaterialsKitList] = useState([])
 
     const searchData = async (e) => {
 
@@ -25,14 +26,6 @@ export default function CreateMaterialsKitsPage(){
 
                 //Map is not a function -> https://stackoverflow.com/questions/30142361/react-js-uncaught-typeerror-this-props-data-map-is-not-a-function
                 setMateriaisList(data.materials_list)
-
-                //Adds Elements to an Object
-                /*materialsArray.push()
-                materialsArray[i] = {
-                    ...ingredientsArray[i],
-                    imagem: data.image,
-                    consistencia: data.consistency
-                }*/
             })
     }
 
@@ -50,6 +43,7 @@ export default function CreateMaterialsKitsPage(){
                 materialsKitList,
                 observacoes
             });
+            window.location.href = "/";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Material Info");
@@ -78,7 +72,7 @@ export default function CreateMaterialsKitsPage(){
                     {
                         id:materiaisList[i].id,
                         nome:materiaisList[i].nome,
-                        quantidade:materiaisList[i].quantidade
+                        quantidade:0
                     }
                 )
 
@@ -104,6 +98,25 @@ export default function CreateMaterialsKitsPage(){
                 materialsKitList.pop(materialsKitList[i].quantidade)
             }
         }*/
+    }
+
+    function changeQuantity(id,quantidade){
+        console.log("CHANGE QUATITY ")
+        console.log("Materials List QUANTIDADE = " + materiaisList[0].quantidade)
+        console.log("QUANTIDADE = " + quantidade)
+        console.log("Materials List ID = " + materiaisList[0].id)
+        console.log("ID = " + id)
+        for(let i = 0; i < materiaisList[i].length; i++) {
+            if (materiaisList[i].id === id && quantidade <= materiaisList[i].quantidade) {
+                console.log("TESTE")
+                setQuantityList(prevState => ({
+                    ...prevState,
+                    quantidade
+                }))
+            }
+        }
+
+        console.log("QUANTITY LIST = " + JSON.stringify(quantityList))
     }
 
     return (
@@ -145,7 +158,7 @@ export default function CreateMaterialsKitsPage(){
                     <ul>
                         {   //Map not working -> https://stackoverflow.com/questions/69080597/%C3%97-typeerror-cannot-read-properties-of-undefined-reading-map
                             materialsKitList?.map((materialsKitListAtributes) => (
-                                <ListMaterialItem materialsAtributes={materialsKitListAtributes} id={2} evento={removeMaterial}/>
+                                <ListMaterialItem materialsAtributes={materialsKitListAtributes} id={2} evento={removeMaterial} evento2={changeQuantity}/>
                             ))}
                     </ul>
                 </div>
