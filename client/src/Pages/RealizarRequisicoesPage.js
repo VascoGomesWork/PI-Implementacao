@@ -7,49 +7,83 @@ export default function RealizarRequisicoesPage(){
     const [nome, setNome] = useState([]);
     const [projeto, setProjeto] = useState([]);
     const [nome_projeto, setNomeProjeto] = useState([]);
-    const [search, setSearch] = useState([]);
-    const [combobox_material_kit, setComboboxMaterialKit] = useState([]);
-    const [material, setMaterial] = useState([]);
-    const [quantidade_material, setQuantidadeMaterial] = useState([]);
-    const [lista_materiais, setListaMateriais] = useState([]);
     const [data_entrega_prevista, setDataEntregaPrevista] = useState([]);
+    const [comboboxMaterialKit, setComboboxMaterialRequisicao] = useState([]);
 
-        //console.log("Nome = " + nome);
-        //console.log("Projeto = " + projeto);
-        //console.log("Nome Projeto = " + nome_projeto);
-        //console.log("Material = " + material);
-        //console.log("Quantidade de Material = " + quantidade_material);
-        //console.log("Lista de Materiais = " + lista_materiais);
-        //console.log("Data Entrega Prevista = " + data_entrega_prevista);
+    const [searchInput, setSearchInput] = useState([]);
+    const [searchResultList, setSearchResultList] = useState([]);
+    const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
 
         //Sets Default Value
         useEffect(() => {
-            setComboboxMaterialKit("Material")
+            //Vai buscar tipos de materiais e preenche a dropdown
+            fetch(`//localhost:5000/showtypesmaterials`)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("TIPOS MATERIAIS = " + JSON.stringify(data.types))
+
+                    setComboboxMaterialRequisicao(prevState => ({
+                        "tipo_material" : data.types.tipo
+                    }))
+                    
+                    console.log("COMBOBOX = " + JSON.stringify(comboboxMaterialKit))
+                });
+            //setComboboxMaterialRequisicao("Material")
         }, []);
 
-        const searchMaterial = async (e) => {
-            console.log("Search = " + search);
 
-
-
-            console.log("Combobox Material Kit = " + combobox_material_kit)
-            try{
-                await httpClient.post("//localhost:5000/showmaterialsbyname",{
-                    search
-                })
-            } catch (e) {
-                if (e.response.status === 401) {
-                    alert("Invalid Material Info");
-                }
-            }
+    const searchMaterials = async () => {
+        if (searchInput.length > 0) {
+            fetch(`//localhost:5000/showmaterialsbyname?search=` + searchInput)
+                .then((res) => res.json())
+                .then((data) => {
+                    setSearchResultList(data.materials_list);
+                });
+            console.log(searchResultList);
         }
+    };
+
+    const addMaterialToRequisicao = async (id, nome, quantidade) => {
+        setRequisicaoMaterialsList([
+            ...requisicaoMaterialsList,
+            {
+                id: id,
+                nome: nome,
+                quantidade: quantidade,
+            },
+        ]);
+    };
+
+    const changeQuantity = async (id, quantity) => {
+        console.log("ID => ", id, "QUANITY =>", quantity);
+
+        requisicaoMaterialsList.forEach((element) => {
+            if (element.id === id) {
+                element.quantidade = quantity;
+            }
+        });
+        console.log("CHANGING AMOUNTS => ", requisicaoMaterialsList);
+    };
+
+    const removeMaterial = async (id, nome, quantidade) => {
+
+        requisicaoMaterialsList.forEach((element) => {
+            if (element.id === id) {
+                console.log("ELEMENT ID = " + element.id)
+                console.log("REMOVE ID = " + id + " NOME = " + nome + " QUANTIDADE = " + quantidade)
+                //How to remove elements from array in javascript -> https://sentry.io/answers/remove-specific-item-from-array/
+                requisicaoMaterialsList.splice(requisicaoMaterialsList.indexOf(element), 1)
+            }
+        });
+        console.log("CHANGING KIT LIST => ", requisicaoMaterialsList);
+        setRequisicaoMaterialsList(requisicaoMaterialsList)
+        //Temporary Fix
+        setSearchInput("");
+
+    };
+
 
         const fazerRequisicao = async (e) => {
-
-            setListaMateriais(([]) => ([{
-                "material":material,
-                "quantidade_material":quantidade_material
-            }]));
 
         /*try {
 
@@ -109,42 +143,84 @@ export default function RealizarRequisicoesPage(){
                     />
                 </div>
                 <div>
-                    <label>Search </label>
+                    <label>Pesquisa: </label>
                     <input
                         type="search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        id=""
-                    />
+                        value={searchInput}
+                        onChange={(e) => {
+                            setSearchInput(e.target.value);
+                            searchMaterials();
+                        }}
+                        id=""/>
 
-                    <label>Material ou Kit </label>
                     <select
-                        type="search"
-                        onChange={(choice) => setComboboxMaterialKit(choice.target.value)}>
-                        <option key="Material" value="Material">Material</option>
-                        <option key="Kit" value="Kit">Kit</option>
+                        onChange={(e) => {
+                            setRequisicaoMaterialsList()
+                        }}
+                        id="">
+                        <option>Material</option>
+                        <option>Ferramenta</option>
+                        <option>Consumivel</option>
                     </select>
-
-                    <button type="button" onClick={searchMaterial}>
-                        Pesquisar Material
-                    </button>
                 </div>
-
                 <div>
                     <label>Lista de Materiais </label>
-                    <ul>
-                        <li>
-                            <label>Material: </label>
-                            <input type="text" value={material} onChange={(e) => setMaterial(e.target.value)}/>
-                            <label>Quantidade </label>
-                            <input
-                            type="text"
-                            value={quantidade_material}
-                            onChange={(e) => setQuantidadeMaterial(e.target.value)}
-                            id=""/>
-                            <button type="button" >Apagar</button>
-                        </li>
-                    </ul>
+                    <table border="1">
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantidade Total</th>
+                            <th>Adicionar</th>
+                        </tr>
+                        {searchResultList?.map((item) => (
+                            <tr key={item.id}>
+                                <th>{item.nome}</th>
+                                <th>{item.quantidade}</th>
+                                <th>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            addMaterialToRequisicao(item.id, item.nome, item.quantidade);
+                                        }}
+                                    >
+                                        Adicionar
+                                    </button>
+                                </th>
+                            </tr>
+                        ))}
+                    </table>
+                </div>
+                <br />
+                <div>
+                    <label>Materiais no Kit </label>
+                    <table border="1">
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantidade no Kit</th>
+                            <th>Adicionar</th>
+                        </tr>
+                        {requisicaoMaterialsList?.map((item) => (
+                            <tr key={item.id}>
+                                <th>{item.nome}</th>
+                                <th>
+                                    <input
+                                        type="number"
+                                        onChange={(e) => changeQuantity(item.id, e.target.value)}
+                                        id=""
+                                    />
+                                </th>
+                                <th>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            removeMaterial(item.id, item.nome, item.quantidade);
+                                        }}
+                                    >
+                                        Remover
+                                    </button>
+                                </th>
+                            </tr>
+                        ))}
+                    </table>
                 </div>
                 <div>
                     <label>Data Entrega Prevista </label>
