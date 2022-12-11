@@ -100,9 +100,17 @@ def show_materials_types_materials():
     print("REQUEST TYPE= ", request.args.get("search_type"))
 
     #How to get data from multiple tables -> https://stackoverflow.com/questions/65642421/how-to-get-data-from-multiple-tables-using-flask-sqlalchemy
-    materials_list = Material.query.filter((
-        Material.nome.contains(request.args.get("search")) & (Material.id_kit_material==int(request.args.get("search_type")))
-        )).all()
+    materials_list = (db.session.query(Material).filter(
+        Material.nome.contains(request.args.get("search")), Material.id_tipo_material==int(request.args.get("search_type")))
+    ).all()
+
+    #materials_list = (Material.query
+    #    .filter(Material.nome.contains(request.args.get("search")))
+    #    .filter(Material.id_kit_material==int(request.args.get("search_type")))).all()
+
+    #materials_list = Material.query.filter((
+    #        Material.nome.contains(request.args.get("search")) & (Material.id_kit_material==int(request.args.get("search_type")))
+    #        )).all()
 
     material_schema = MaterialSchema(many=True)
     result = material_schema.dump(materials_list)
