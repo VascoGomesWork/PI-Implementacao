@@ -8,7 +8,7 @@ export default function RealizarRequisicoesPage(){
     const [projeto, setProjeto] = useState([]);
     const [nome_projeto, setNomeProjeto] = useState([]);
     const [data_entrega_prevista, setDataEntregaPrevista] = useState([]);
-    const [comboboxMaterialKit, setComboboxMaterialRequisicao] = useState([]);
+    const [comboboxMaterialRequisicao, setComboboxMaterialRequisicao] = useState([]);
 
     const [searchInput, setSearchInput] = useState([]);
     const [searchResultList, setSearchResultList] = useState([]);
@@ -16,19 +16,16 @@ export default function RealizarRequisicoesPage(){
 
         //Sets Default Value
         useEffect(() => {
-            //Vai buscar tipos de materiais e preenche a dropdown
-            fetch(`//localhost:5000/showtypesmaterials`)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log("TIPOS MATERIAIS = " + JSON.stringify(data.types))
-
-                    setComboboxMaterialRequisicao(prevState => ({
-                        "tipo_material" : data.types.tipo
-                    }))
-                    
-                    console.log("COMBOBOX = " + JSON.stringify(comboboxMaterialKit))
-                });
-            //setComboboxMaterialRequisicao("Material")
+            (async () => {
+                try {
+                    //Vai buscar tipos de materiais e preenche a dropdown
+                    const types = await httpClient.get(`//localhost:5000/showtypesmaterials`)
+                    console.log("TIPOS MATERIAIS = " + JSON.stringify(types.data))
+                    setComboboxMaterialRequisicao(types.data.types)
+                } catch (e) {
+                    console.log("Error getting types of materials");
+                }})()
+            //console.log("COMBOBOX = " + JSON.stringify(comboboxMaterialRequisicao))
         }, []);
 
 
@@ -158,9 +155,9 @@ export default function RealizarRequisicoesPage(){
                             setRequisicaoMaterialsList()
                         }}
                         id="">
-                        <option>Material</option>
-                        <option>Ferramenta</option>
-                        <option>Consumivel</option>
+                        {comboboxMaterialRequisicao?.map((item) => (
+                            <option value={item.tipo}>{item.tipo}</option>
+                        ))}
                     </select>
                 </div>
                 <div>
