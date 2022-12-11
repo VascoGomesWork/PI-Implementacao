@@ -223,20 +223,42 @@ def get_kits():
     print("RESULT KIT MATERIAL = ", result_kit_material)
 
     #Uses Kit Data to Search Material Data
+    data_array = []
+    counter = 0
+
     for i in range(len(result_kit_material)) :
         print("ID KIT = ", result_kit_material[i]['id_kit'])
         kit_list = Kit.query.filter_by(id=result_kit_material[i]['id_kit'])
         kit_schema = KitSchema(many=True)
         result_kit = kit_schema.dump(kit_list)
+        #Adds the Item result_kit to the array that contains all the kits
+        #array_kit.push(result_kit)
+        print("RESULT KIT = ", result_kit)
 
         material_list = Material.query.filter_by(id=result_kit_material[i]['id_material'])
         material_schema = MaterialSchema(many=True)
         result_material = material_schema.dump(material_list)
+        #Adds the Item result_material to the array that contains all the materials
+        #array_materials.push(result_material)
+
+        data_array.append({
+            "nome_kit_material" : result_kit[counter]['nome'],
+            "nome_material" : result_material[counter]['nome'],
+            "quantidade" : result_kit_material[i]['quantidade'],
+            "observacoes" : result_kit[counter]['observacao']
+        })
+
+        counter+=1
+
+        if counter <= len(result_kit) or counter <= len(result_material):
+            counter = 0
 
     #Returns it
     #Creates Array with Info from Kit and Material
-
-    return jsonify({ "kits" : "teste" })
+    #print("DATA ARRAY = ", data_array)
+    return jsonify({
+        "data_array" : data_array
+         })
 
 # Register route
 @app.route("/register", methods=["POST"])

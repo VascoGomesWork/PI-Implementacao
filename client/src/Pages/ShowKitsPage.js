@@ -9,7 +9,8 @@ const ShowKitsPage = () => {
     (async () => {
       try {
         const kits = await httpClient.get("//localhost:5000/getkits");
-        setKits(kits.data.kits);
+        //console.log("Data Array = " + JSON.stringify(data_array))
+        setKits(kits.data.data_array);
       } catch (error) {
         console.log("Error getting kits");
       }
@@ -43,16 +44,15 @@ const ShowKitsPage = () => {
               <th>Quantidade</th>
               <th>Observações</th>
             </tr>
-            {kits.map((item) => (
-              <tr key={item.id}>
-                {nomeKits.map((x) =>(
-                  x.id === item.id_kit_material ? <th>{x.nome}</th> : null
-                ))}
-                <th>{item.nome}</th>
-                <th>{item.quantidade}</th>
-                <th>{item.observacao}</th>
-              </tr>
+            {kits.map((kit_item) => (
+                <tr key={kit_item.id}>
+                  <th>{kit_item.nome_kit_material}</th>
+                  <th>{kit_item.nome_material}</th>
+                  <th>{kit_item.quantidade}</th>
+                  <th>{kit_item.observacoes}</th>
+                </tr>
             ))}
+            {console.log("DATA ARRAY = " + JSON.stringify(kits))}
           </table>
         </div>
       </div>
