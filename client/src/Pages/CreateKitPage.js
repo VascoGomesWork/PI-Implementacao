@@ -56,7 +56,20 @@ const CreateKitPage = () => {
     console.log("CHANGING AMOUNTS => ", kitMaterialsList);
   };
 
-  const removeMaterial = async () => {};
+  const removeMaterial = async (id, nome, quantidade) => {
+
+    kitMaterialsList.forEach((element) => {
+      if (element.id === id) {
+        console.log("ELEMENT ID = " + element.id)
+        console.log("REMOVE ID = " + id + " NOME = " + nome + " QUANTIDADE = " + quantidade)
+        //How to remove elements from array in javascript -> https://sentry.io/answers/remove-specific-item-from-array/
+        kitMaterialsList.splice(kitMaterialsList.indexOf(element), 1)
+      }
+    });
+    console.log("CHANGING KIT LIST => ", kitMaterialsList);
+    setKitMaterialsList(kitMaterialsList)
+
+  };
 
   return (
     <div>
