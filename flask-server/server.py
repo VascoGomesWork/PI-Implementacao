@@ -22,6 +22,8 @@ with app.app_context():
     db.create_all()
 
 # Get current user
+
+
 @app.route("/@me")
 def get_curretn_user():
     user_id = session.get("user_id")
@@ -36,52 +38,63 @@ def get_curretn_user():
     })
 
 # Get Materials By Name
+
+
 @app.route("/showmaterialsbyname", methods=["GET", "POST"])
 def materials_list():
-    #How to get Parameters out of URL -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
+    # How to get Parameters out of URL -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
     print("REQUEST = ", request.args.get("search"))
-    #How to check if a column contains substring -> https://stackoverflow.com/questions/4926757/sqlalchemy-query-where-a-column-contains-a-substring
-    materials_list = Material.query.filter(Material.nome.contains(request.args.get("search"))).all()
+    # How to check if a column contains substring -> https://stackoverflow.com/questions/4926757/sqlalchemy-query-where-a-column-contains-a-substring
+    materials_list = Material.query.filter(
+        Material.nome.contains(request.args.get("search"))).all()
     material_schema = MaterialSchema(many=True)
     result = material_schema.dump(materials_list)
 
-    return jsonify({ "materials_list" : result })
+    return jsonify({"materials_list": result})
 
 # Get All Materials
+
+
 @app.route("/stock", methods=["GET", "POST"])
 def view_stock():
     stock = Material.query.all()
     material_schema = MaterialSchema(many=True)
     result = material_schema.dump(stock)
 
-    return jsonify({ "stock" : result })
+    return jsonify({"stock": result})
 
 # Get All Projects
+
+
 @app.route("/showprojects", methods=["GET", "POST"])
 def show_projects():
     projects = Projeto.query.all()
     project_schema = ProjetoSchema(many=True)
     result = project_schema.dump(projects)
 
-    return jsonify({ "projects" : result })
+    return jsonify({"projects": result})
 
 # Get All types of materials
+
+
 @app.route("/showtypesmaterials", methods=["GET", "POST"])
 def show_types_materials():
     types = Tipo_Material.query.all()
     materials_type_schema = Tipo_MaterialSchema(many=True)
     result = materials_type_schema.dump(types)
 
-    return jsonify({ "types" : result })
+    return jsonify({"types": result})
 
 # Add new materials kit
+
+
 @app.route("/addmaterialskit", methods=["GET", "POST"])
 def add_kits_material():
     nome = request.json["nome"]
     kit_id_material = request.json["materialsKitList"]
     observacao = request.json["observacoes"]
 
-    #Inserts Data in Kit Table
+    # Inserts Data in Kit Table
     print("NOME SERVER = ", nome)
     print("OBSERVACAO SERVER = ", observacao)
     new_kit = Kit(nome=nome, observacao=observacao)
@@ -95,13 +108,12 @@ def add_kits_material():
     for i in range(len(kit_id_material)):
         print("ID MATERIAL SERVER = ", kit_id_material[i].get('id'))
         new_kit_material = Kit_Material(
-                              quantidade=kit_id_material[i].get('quantidade'),
-                              id_kit=new_kit.id,
-                              id_material=kit_id_material[i].get('id'))
-       
+            quantidade=kit_id_material[i].get('quantidade'),
+            id_kit=new_kit.id,
+            id_material=kit_id_material[i].get('id'))
+
         db.session.add(new_kit_material)
         db.session.commit()
-
 
     return jsonify({
         "kit_id": new_kit.id,
@@ -112,6 +124,33 @@ def add_kits_material():
         "material_id_fk": new_kit_material.id_material,
     })
 
+
+# Add new Kit
+@app.route("/addkit", methods=["POST"])
+def add_kit():
+    kit = request.json["kitMaterialsList"]
+    nomeKit = request.json["nomeKit"]
+    observacao = request.json["observacao"]
+
+    # Adds a new kit
+    new_kit = Kit(nome=nomeKit, observacao=observacao)
+    db.session.add(new_kit)
+    db.session.commit()
+
+    # Adds new kit matrial
+    for item in kit:
+        print(item)
+        new_kit_material = Kit_Material(
+            quantidade=item["quantidade"],
+            id_kit=new_kit.id,
+            id_material=item["id"])
+
+        db.session.add(new_kit_material)
+        db.session.commit()
+
+    return jsonify({})
+
+
 # Add new material
 @app.route("/addmaterial", methods=["GET", "POST"])
 def add_material():
@@ -120,12 +159,14 @@ def add_material():
     observacao = request.json["observacao"]
     data = datetime.now()
     # FKs
-    type = Tipo_Material.query.filter_by(id=request.json["tipo_material"]).first()
+    type = Tipo_Material.query.filter_by(
+        id=request.json["tipo_material"]).first()
     # verifies if the material is associated with a project
     if request.json["projeto"] == "0":
         project = None
     else:
-        project = Projeto.query.filter_by(id=request.json["projeto"]).first().id
+        project = Projeto.query.filter_by(
+            id=request.json["projeto"]).first().id
 
     new_material = Material(nome=nome,
                             quantidade=quantidade,
@@ -134,7 +175,7 @@ def add_material():
                             id_tipo_material=type.id,
                             id_kit_material=None,
                             id_projeto=project)
-    
+
     db.session.add(new_material)
     db.session.commit()
 
@@ -150,6 +191,8 @@ def add_material():
     })
 
 # Add new material type
+
+
 @app.route("/addmaterialtype", methods=["POST"])
 def add_material_type():
     tipo = request.json["tipo"]
@@ -164,6 +207,8 @@ def add_material_type():
     })
 
 # Update Stocks
+
+
 @app.route("/updatestock", methods=["POST"])
 def update_stock():
     id = request.json["id"]
@@ -180,6 +225,8 @@ def update_stock():
     })
 
 # Add new project
+
+
 @app.route("/addproject", methods=["POST"])
 def add_project():
     nome = request.json["nome"]
@@ -190,7 +237,8 @@ def add_project():
     #data_fim = request.json["data_fim"]
     data_fim = datetime.strptime(request.json["data_fim"], '%Y-%m-%d')
 
-    new_project = Projeto(nome=nome, observacoes=observacoes, data_inicio=data_inicio, data_fim=data_fim)
+    new_project = Projeto(nome=nome, observacoes=observacoes,
+                          data_inicio=data_inicio, data_fim=data_fim)
     db.session.add(new_project)
     db.session.commit()
 
@@ -203,64 +251,71 @@ def add_project():
     })
 
 # Get all kits names
+
+
 @app.route("/getkitsnames", methods=["GET", "POST"])
 def get_kits_names():
     kits_list = Kit_Material.query.filter_by().all()
     material_schema = MaterialSchema(many=True)
     result = material_schema.dump(kits_list)
 
-    return jsonify({ "kits_names" : result })
+    return jsonify({"kits_names": result})
 
 # Get all kits
+
+
 @app.route("/getkits", methods=["GET", "POST"])
 def get_kits():
 
-    #Get Kit Data
+    # Get Kit Data
     kits_material_list = Kit_Material.query.all()
     kit_material_schema = Kit_MaterialSchema(many=True)
     result_kit_material = kit_material_schema.dump(kits_material_list)
 
     print("RESULT KIT MATERIAL = ", result_kit_material)
 
-    #Uses Kit Data to Search Material Data
+    # Uses Kit Data to Search Material Data
     data_array = []
     counter = 0
 
-    for i in range(len(result_kit_material)) :
+    for i in range(len(result_kit_material)):
         print("ID KIT = ", result_kit_material[i]['id_kit'])
         kit_list = Kit.query.filter_by(id=result_kit_material[i]['id_kit'])
         kit_schema = KitSchema(many=True)
         result_kit = kit_schema.dump(kit_list)
-        #Adds the Item result_kit to the array that contains all the kits
-        #array_kit.push(result_kit)
+        # Adds the Item result_kit to the array that contains all the kits
+        # array_kit.push(result_kit)
         print("RESULT KIT = ", result_kit)
 
-        material_list = Material.query.filter_by(id=result_kit_material[i]['id_material'])
+        material_list = Material.query.filter_by(
+            id=result_kit_material[i]['id_material'])
         material_schema = MaterialSchema(many=True)
         result_material = material_schema.dump(material_list)
-        #Adds the Item result_material to the array that contains all the materials
-        #array_materials.push(result_material)
+        # Adds the Item result_material to the array that contains all the materials
+        # array_materials.push(result_material)
 
         data_array.append({
-            "nome_kit_material" : result_kit[counter]['nome'],
-            "nome_material" : result_material[counter]['nome'],
-            "quantidade" : result_kit_material[i]['quantidade'],
-            "observacoes" : result_kit[counter]['observacao']
+            "nome_kit_material": result_kit[counter]['nome'],
+            "nome_material": result_material[counter]['nome'],
+            "quantidade": result_kit_material[i]['quantidade'],
+            "observacoes": result_kit[counter]['observacao']
         })
 
-        counter+=1
+        counter += 1
 
         if counter <= len(result_kit) or counter <= len(result_material):
             counter = 0
 
-    #Returns it
-    #Creates Array with Info from Kit and Material
+    # Returns it
+    # Creates Array with Info from Kit and Material
     #print("DATA ARRAY = ", data_array)
     return jsonify({
-        "data_array" : data_array
-         })
+        "data_array": data_array
+    })
 
 # Register route
+
+
 @app.route("/register", methods=["POST"])
 def register_user():
     email = request.json["email"]
@@ -275,7 +330,8 @@ def register_user():
         return jsonify({"error": "User already exist"}), 409
 
     hashed_password = bcrypt.generate_password_hash(password)
-    new_user = User(nome=nome, email=email, telefone=telefone, tipo_utilizador=tipo_utilizador, password=hashed_password)
+    new_user = User(nome=nome, email=email, telefone=telefone,
+                    tipo_utilizador=tipo_utilizador, password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
 
@@ -291,6 +347,8 @@ def register_user():
     })
 
 # Login route
+
+
 @app.route("/login", methods=["POST"])
 def login_user():
     email = request.json["email"]
@@ -313,10 +371,13 @@ def login_user():
     })
 
 # Logout
+
+
 @app.route("/logout", methods=["POST"])
 def logout_user():
     session.pop("user_id")
     return "200"
+
 
 # Main
 if __name__ == "__main__":
