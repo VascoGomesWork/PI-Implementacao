@@ -3,7 +3,6 @@ import httpClient from "../httpClient";
 
 const ShowKitsPage = () => {
   const [kits, setKits] = useState([]);
-  const [nomeKits, setNomeKits] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -17,17 +16,6 @@ const ShowKitsPage = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const nomeKits = await httpClient.get("//localhost:5000/getkitsnames");
-        setNomeKits(nomeKits.data.kits_names);
-      } catch (error) {
-        console.log("Error getting kits names");
-      }
-    })();
-  }, []);
-
   const exit = async () => {
     window.location.href = "/";
   };
@@ -35,24 +23,25 @@ const ShowKitsPage = () => {
   return (
     <div>
       <div>
-        <h1>Listar Kits de Materiais </h1>
+        <h1>Listar Kits de Materiais</h1>
         <div>
-          <table border="1">
-            <tr key="0">
-              <th>Nome do Kit</th>
-              <th>Material</th>
-              <th>Quantidade</th>
-              <th>Observações</th>
-            </tr>
-            {kits.map((kit_item) => (
+          <table border="1" key={"table"}>
+            <tbody>
+              <tr key={"0"}>
+                <th>Nome do Kit</th>
+                <th>Material</th>
+                <th>Quantidade</th>
+                <th>Observações</th>
+              </tr>
+              {kits.map((kit_item) => (
                 <tr key={kit_item.id}>
                   <th>{kit_item.nome_kit_material}</th>
                   <th>{kit_item.nome_material}</th>
                   <th>{kit_item.quantidade}</th>
                   <th>{kit_item.observacoes}</th>
                 </tr>
-            ))}
-            {console.log("DATA ARRAY = " + JSON.stringify(kits))}
+              ))}
+            </tbody>
           </table>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import httpClient from "../httpClient";
 
 const CreateKitPage = () => {
@@ -13,7 +13,7 @@ const CreateKitPage = () => {
       await httpClient.post("//localhost:5000/addkit", {
         nomeKit,
         observacao,
-        kitMaterialsList
+        kitMaterialsList,
       });
       window.location.href = "/";
     } catch (e) {
@@ -56,21 +56,10 @@ const CreateKitPage = () => {
     console.log("CHANGING AMOUNTS => ", kitMaterialsList);
   };
 
-  const removeMaterial = async (id, nome, quantidade) => {
-
-    kitMaterialsList.forEach((element) => {
-      if (element.id === id) {
-        console.log("ELEMENT ID = " + element.id)
-        console.log("REMOVE ID = " + id + " NOME = " + nome + " QUANTIDADE = " + quantidade)
-        //How to remove elements from array in javascript -> https://sentry.io/answers/remove-specific-item-from-array/
-        kitMaterialsList.splice(kitMaterialsList.indexOf(element), 1)
-      }
-    });
-    console.log("CHANGING KIT LIST => ", kitMaterialsList);
-    setKitMaterialsList(kitMaterialsList)
-    //Temporary Fix
-    setSearchInput("");
-
+  const removeMaterial = async (id) => {
+    setKitMaterialsList((kitMaterialsList) =>
+      kitMaterialsList.filter((element) => element.id !== id)
+    );
   };
 
   return (
@@ -102,60 +91,64 @@ const CreateKitPage = () => {
         <div>
           <label>Lista de Materiais </label>
           <table border="1">
-            <tr>
-              <th>Material</th>
-              <th>Quantidade Total</th>
-              <th>Adicionar</th>
-            </tr>
-            {searchResultList?.map((item) => (
-              <tr key={item.id}>
-                <th>{item.nome}</th>
-                <th>{item.quantidade}</th>
-                <th>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      addMaterialToKit(item.id, item.nome, item.quantidade);
-                    }}
-                  >
-                    Adicionar
-                  </button>
-                </th>
+            <tbody>
+              <tr>
+                <th>Material</th>
+                <th>Quantidade Total</th>
+                <th>Adicionar</th>
               </tr>
-            ))}
+              {searchResultList?.map((item) => (
+                <tr key={item.id}>
+                  <th>{item.nome}</th>
+                  <th>{item.quantidade}</th>
+                  <th>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        addMaterialToKit(item.id, item.nome, item.quantidade);
+                      }}
+                    >
+                      Adicionar
+                    </button>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
         <br />
         <div>
           <label>Materiais no Kit </label>
           <table border="1">
-            <tr>
-              <th>Material</th>
-              <th>Quantidade no Kit</th>
-              <th>Adicionar</th>
-            </tr>
-            {kitMaterialsList?.map((item) => (
-              <tr key={item.id}>
-                <th>{item.nome}</th>
-                <th>
-                  <input
-                    type="number"
-                    onChange={(e) => changeQuantity(item.id, e.target.value)}
-                    id=""
-                  />
-                </th>
-                <th>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      removeMaterial(item.id, item.nome, item.quantidade);
-                    }}
-                  >
-                    Remover
-                  </button>
-                </th>
+            <tbody>
+              <tr>
+                <th>Material</th>
+                <th>Quantidade no Kit</th>
+                <th>Adicionar</th>
               </tr>
-            ))}
+              {kitMaterialsList?.map((item) => (
+                <tr key={item.id}>
+                  <th>{item.nome}</th>
+                  <th>
+                    <input
+                      type="number"
+                      onChange={(e) => changeQuantity(item.id, e.target.value)}
+                      id=""
+                    />
+                  </th>
+                  <th>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        removeMaterial(item.id);
+                      }}
+                    >
+                      Remover
+                    </button>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
         <br />

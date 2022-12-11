@@ -295,6 +295,7 @@ def get_kits():
         # array_materials.push(result_material)
 
         data_array.append({
+            "id": result_kit_material[i]['id'],
             "nome_kit_material": result_kit[counter]['nome'],
             "nome_material": result_material[counter]['nome'],
             "quantidade": result_kit_material[i]['quantidade'],

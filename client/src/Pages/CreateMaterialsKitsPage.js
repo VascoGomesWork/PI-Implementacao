@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ListMaterialItem from "./ListMaterialItem";
 import httpClient from "../httpClient";
 
@@ -6,8 +7,8 @@ export default function CreateMaterialsKitsPage() {
   const [nome, setNome] = useState([]);
   const [search, setSearch] = useState([]);
   const [observacoes, setObservacoes] = useState([]);
-  const [materiaisList, setMateriaisList] = useState([]);
-  const [quantityList, setQuantityList] = useState([]);
+  //const [materiaisList, setMateriaisList] = useState([]);
+  //const [quantityList, setQuantityList] = useState([]);
 
   const [materialsKitList, setMaterialsKitList] = useState([]);
 

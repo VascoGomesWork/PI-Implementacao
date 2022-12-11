@@ -14,7 +14,6 @@ const ShowProjectsPage = () => {
       }
     })();
   }, []);
-  console.log(projects);
 
   const exit = async () => {
     window.location.href = "/";
@@ -26,20 +25,22 @@ const ShowProjectsPage = () => {
         <h1>Listar Projetos </h1>
         <div>
           <table border="1">
-            <tr>
-              <th>Projeto</th>
-              <th>Observações</th>
-              <th>Data de Inicio</th>
-              <th>Data de Fim</th>
-            </tr>
-            {projects.map((item) => (
-              <tr key={item.id}>
-                <th>{item.nome}</th>
-                <th>{item.observacoes}</th>
-                <th>{item.data_inicio}</th>
-                <th>{item.data_fim}</th>
+            <tbody>
+              <tr>
+                <th>Projeto</th>
+                <th>Observações</th>
+                <th>Data de Inicio</th>
+                <th>Data de Fim</th>
               </tr>
-            ))}
+              {projects.map((item) => (
+                <tr key={item.id}>
+                  <th>{item.nome}</th>
+                  <th>{item.observacoes}</th>
+                  <th>{item.data_inicio}</th>
+                  <th>{item.data_fim}</th>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>

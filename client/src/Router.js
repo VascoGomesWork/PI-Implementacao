@@ -11,7 +11,7 @@ import AddmaterialtypePage from "./Pages/AddmaterialtypePage"
 import ShowProjectsPage from "./Pages/ShowProjectsPage"
 import RealizarRequisicoesPage from "./Pages/RealizarRequisicoesPage";
 import ReturnMaterialsPage from "./Pages/ReturnsMaterialsPage";
-import CreateMaterialsKitsPage from "./Pages/CreateMaterialsKitsPage";
+//import CreateMaterialsKitsPage from "./Pages/CreateMaterialsKitsPage";
 import ShowKitsPage from "./Pages/ShowKitsPage";
 //teste criar kits
 import CreateKitPage from "./Pages/CreateKitPage";
