@@ -90,23 +90,24 @@ def show_types_materials():
 
 @app.route("/showmaterialsbynamebytype", methods=["GET", "POST"])
 def show_materials_types_materials():
-    #types = Tipo_Material.query.all()
-    #materials_type_schema = Tipo_MaterialSchema(many=True)
-    #result = materials_type_schema.dump(types)
-
     #If type is Kit calls the function bellow
     if request.args.get("search_type") == "Kit":
         return jsonify({"types": search_by_kit()})
 
     # How to get Parameters out of URL -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
+    print("NAO E KIT ")
     print("REQUEST SEARCH= ", request.args.get("search"))
     print("REQUEST TYPE= ", request.args.get("search_type"))
-    # How to check if a column contains substring -> https://stackoverflow.com/questions/4926757/sqlalchemy-query-where-a-column-contains-a-substring
-    materials_list = Material.query.filter(
-         Material.nome.contains(request.args.get("search"))).all()
+
+    #How to get data from multiple tables -> https://stackoverflow.com/questions/65642421/how-to-get-data-from-multiple-tables-using-flask-sqlalchemy
+    materials_list = Material.query.filter((
+        Material.nome.contains(request.args.get("search")) & (Material.id_kit_material==int(request.args.get("search_type")))
+        )).all()
+
     material_schema = MaterialSchema(many=True)
     result = material_schema.dump(materials_list)
 
+    print("QUERY RESULT = ", result)
     return jsonify({"types": result})
 
 def search_by_kit():

@@ -43,17 +43,20 @@ export default function RealizarRequisicoesPage(){
 
     const searchMaterials = async () => {
 
-        console.log("TYPE MATERIAL = " + JSON.stringify(typeSearch) + " | " + comboboxMaterialRequisicao[0].tipo)
+
+        console.log("TYPE MATERIAL = " + JSON.stringify(typeSearch) + " | " + comboboxMaterialRequisicao[0].id)
 
         if(typeSearch.length === 0){
-            setTypeSearch(comboboxMaterialRequisicao[0].tipo)
+            setTypeSearch(comboboxMaterialRequisicao[0].id)
         }
+
         console.log("TYPE MATERIAL = " + typeSearch)
 
         if (searchInput.length > 0) {
             fetch(`//localhost:5000/showmaterialsbynamebytype?search=` + searchInput + "&search_type=" + typeSearch)
                 .then((res) => res.json())
                 .then((data) => {
+                    console.log("JSON Stringify = " + JSON.stringify(data))
                     setSearchResultList(data.materials_list);
                 });
             console.log(searchResultList);
@@ -175,7 +178,7 @@ export default function RealizarRequisicoesPage(){
                         }}
                         id="">
                         {comboboxMaterialRequisicao?.map((item) => (
-                            <option value={item.tipo}>{item.tipo}</option>
+                            <option value={item.id}>{item.tipo}</option>
                         ))}
                     </select>
                 </div>
