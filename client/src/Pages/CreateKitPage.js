@@ -68,6 +68,8 @@ const CreateKitPage = () => {
     });
     console.log("CHANGING KIT LIST => ", kitMaterialsList);
     setKitMaterialsList(kitMaterialsList)
+    //Temporary Fix
+    setSearchInput("");
 
   };
 
