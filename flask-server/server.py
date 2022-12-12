@@ -92,7 +92,7 @@ def show_materials_types_materials():
     result = material_schema.dump(materials_list)
 
     #print("QUERY RESULT = ", result)
-    return jsonify({"types": result})
+    return jsonify({"list_kit_mateirals": result})
 
 def search_by_kit(search):
     # gets all kits by search string
@@ -117,6 +117,7 @@ def search_by_kit(search):
             list_of_mats.append(
                 {
                     "mat_id" : material.get("id"),
+                    "mat_quantidade_kit": material.get("quantidade"),
                     "mat_info" : material_info
                 }
             )

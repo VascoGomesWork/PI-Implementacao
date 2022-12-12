@@ -66,7 +66,6 @@ export default function RealizarRequisicoesPage() {
         });
       //console.log("SEARCH RESULT => ", searchResultList);
       console.log("SEARCH RESULT => ", JSON.stringify(searchResultList));
-      //console.log("MAT-> ", searchResultList[0].mat_list[x]);
     }
   };
 
@@ -79,6 +78,10 @@ export default function RealizarRequisicoesPage() {
         quantidade: quantidade,
       },
     ]);
+  };
+
+  const addkitToRequisicao = async (id) => {
+    console.log("REQUISIÇAO DE KIT FEITA");
   };
 
   const changeQuantity = async (id, quantity) => {
@@ -218,16 +221,41 @@ export default function RealizarRequisicoesPage() {
           <label>Lista de Materiais </label>
           <table border="1">
             <tbody>
-              <tr>
-                <th>Material/Kit</th>
-                <th>Quantidade Total</th>
-                <th>Adicionar</th>
-              </tr>
+              {typeSearch === "Kit" ? (
+                <tr>
+                  <th>Kit</th>
+                  <th>Material</th>
+                  <th>Quantidade Total</th>
+                  <th>Adicionar</th>
+                </tr>
+              ) : (
+                <tr>
+                  <th>Material</th>
+                  <th>Quantidade Total</th>
+                  <th>Adicionar</th>
+                </tr>
+              )}
               {typeSearch === "Kit"
-                ? searchResultList?.map((item) => (
-                    //item.mat_list.mat_id
-                    console.log("RENDERING => ",item.mat_list)
-                  ))
+                ? searchResultList?.map((kit) =>
+                    kit.mat_list?.map((material) => (
+                      <tr>
+                        <th>{kit.kit_name}</th>
+                        <th>{material.mat_info[0].nome}</th>
+
+                        <th>{material.mat_quantidade_kit}</th>
+                        <th>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              addkitToRequisicao(kit.kit_id);
+                            }}
+                          >
+                            Adicionar
+                          </button>
+                        </th>
+                      </tr>
+                    ))
+                  )
                 : searchResultList?.map((item) => (
                     <tr key={item.id}>
                       <th>{item.nome}</th>
@@ -257,7 +285,7 @@ export default function RealizarRequisicoesPage() {
           <table border="1">
             <tbody>
               <tr>
-                <th>Material</th>
+                <th>Material/Kit</th>
                 <th>Quantidade no Kit</th>
                 <th>Adicionar</th>
               </tr>
