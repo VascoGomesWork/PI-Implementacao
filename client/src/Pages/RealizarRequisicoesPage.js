@@ -5,8 +5,8 @@ import httpClient from "../httpClient";
 export default function RealizarRequisicoesPage(){
 
     const [nome, setNome] = useState([]);
-    const [projeto, setProjeto] = useState([]);
-    const [nome_projeto, setNomeProjeto] = useState([]);
+    const [projeto, setProjeto] = useState("true");
+    const [nome_projeto, setNomeProjeto] = useState("");
     const [data_entrega_prevista, setDataEntregaPrevista] = useState([]);
     const [comboboxMaterialRequisicao, setComboboxMaterialRequisicao] = useState([]);
 
@@ -57,7 +57,7 @@ export default function RealizarRequisicoesPage(){
                 .then((res) => res.json())
                 .then((data) => {
                     console.log("JSON Stringify = " + JSON.stringify(data))
-                    setSearchResultList(data.materials_list);
+                    setSearchResultList(data.types);
                 });
             console.log(searchResultList);
         }
@@ -85,6 +85,11 @@ export default function RealizarRequisicoesPage(){
         console.log("CHANGING AMOUNTS => ", requisicaoMaterialsList);
     };
 
+    const changeProject = async (e) => {
+        setProjeto(e.target.value)
+        console.log("EVENT = " + projeto)
+    }
+
     const removeMaterial = async (id, nome, quantidade) => {
 
         requisicaoMaterialsList.forEach((element) => {
@@ -102,15 +107,20 @@ export default function RealizarRequisicoesPage(){
 
     };
 
-    const fazerRequisicao = async (e) => {
+    const makeRequisition = async (e) => {
 
-        /*try {
 
-            const response = await httpClient.post("//localhost:5000/realizarrequisicao", {
+        console.log("NOME = " + nome)
+        console.log("PROJETO = " + projeto)
+        console.log("NOME PROJETO = " + nome_projeto)
+        console.log("Requisicao Material List = " + JSON.stringify(requisicaoMaterialsList))
+        console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista)
+        try {
+
+            const response = await httpClient.post("//localhost:5000/makerequest", {
                 nome,
-                projeto,
                 nome_projeto,
-                lista_materiais,
+                requisicaoMaterialsList,
                 data_entrega_prevista,
             });
             window.location.href = "/";
@@ -118,7 +128,7 @@ export default function RealizarRequisicoesPage(){
             if (e.response.status == 401) {
                 alert("Invalid Type Info");
             }
-        }*/
+        }
     };
 
 
@@ -135,24 +145,26 @@ export default function RealizarRequisicoesPage(){
                         id=""
                     />
                 </div>
-                <div>
+                <div onChange={changeProject}>
                     <label>Projeto </label>
                     <input
                         type="radio"
-                        value={projeto}
-                        onChange={(e) => setProjeto("Usar em Projeto")}
+                        name="project"
+                        value="false"
+                        checked={projeto === "false"}
                         id=""
                     /><label>Usar em Projeto</label>
 
                     <input
                         type="radio"
-                        value={projeto}
-                        onChange={(e) => setProjeto("Não Usar em Projeto")}
+                        name="project"
+                        value="true"
+                        checked={projeto === "true"}
                         id=""
                     /><label>Não Usar em Projeto</label>
 
                 </div>
-                <div>
+                {projeto === "false" ? <div>
                     <label>Nome Projeto </label>
                     <input
                         type="text"
@@ -160,7 +172,7 @@ export default function RealizarRequisicoesPage(){
                         onChange={(e) => setNomeProjeto(e.target.value)}
                         id=""
                     />
-                </div>
+                </div> : ""}
                 <div>
                     <label>Pesquisa: </label>
                     <input
@@ -244,13 +256,15 @@ export default function RealizarRequisicoesPage(){
                 <div>
                     <label>Data Entrega Prevista </label>
                     <input
-                        type="text"
+                        type="date"
+                        id="start"
                         value={data_entrega_prevista}
+                        min="2009-01-01"
+                        max="2999-12-31"
                         onChange={(e) => setDataEntregaPrevista(e.target.value)}
-                        id=""
                     />
                 </div>
-                <button type="button" onClick={fazerRequisicao}>
+                <button type="button" onClick={makeRequisition}>
                     Fazer Requisição
                 </button>
             </form>
