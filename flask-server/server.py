@@ -123,13 +123,19 @@ def search_by_kit():
     print("Search By Kit ")
     # How to get Parameters out of URL -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
     print("REQUEST SEARCH= ", request.args.get("search"))
-    print("REQUEST TYPE= ", request.args.get("search_type"))
-    # How to check if a column contains substring -> https://stackoverflow.com/questions/4926757/sqlalchemy-query-where-a-column-contains-a-substring
-    materials_list = Material.query.filter(
-          Material.nome.contains(request.args.get("search"))).all()
-    material_schema = MaterialSchema(many=True)
-    result = material_schema.dump(materials_list)
 
+    # How to check if a column contains substring -> https://stackoverflow.com/questions/4926757/sqlalchemy-query-where-a-column-contains-a-substring
+    kits_list = (db.session.query(Kit, Kit_Material, Material).filter(
+            Kit.nome.contains(request.args.get("search")), Kit.id == Kit_Material.id_kit, Kit_Material.id_material == Material.id
+        ).all())
+
+    #, Material.id_tipo_material==int(request.args.get("search_type")))
+    print("KIT LIST = ", kits_list)
+    print("KIT LIST 0 = ", kits_list[0][0].nome)
+    kit_schema = KitSchema(many=True)
+    print("KIT SCHEMA = ", kit_schema)
+    result = kit_schema.dump(kits_list)
+    print("RESULT = ", result)
     return result
 
 # Add new materials kit

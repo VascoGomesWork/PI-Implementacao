@@ -70,7 +70,7 @@ const LandingPage = () => {
           <h3>Email: {user.email}</h3>
           <h3>ID: {user.id}</h3>
 
-          <button onClick={realizarRequisicoes}>Realizar Requisições - X</button>
+          <button onClick={realizarRequisicoes}>Realizar Requisições</button>
           <br />
           <button onClick={realizarDevolucoes}>Realizar Devoluções - X</button>
           <br />
@@ -80,13 +80,13 @@ const LandingPage = () => {
           <br />
           <button onClick={adicionarMaterial}>Adicionar Material</button>
           <br />
-          <button onClick={criarKits}>Criar Kit de Material - X</button>
+          <button onClick={criarKits}>Criar Kit de Material</button>
           <br />
           <button onClick={verKits}>Lista de Kits</button>
           <br />
           <button onClick={adicionarProjeto}>Adicionar Projeto</button>
           <br />
-          <button onClick={adicionarTipoMaterial}>Adicionar Tipo Material - Remover Depois</button>
+          <button onClick={adicionarTipoMaterial}>Adicionar Tipo Material</button>
           <br />
           <button onClick={adicionarProjeto}>Criar Projeto</button>
           <br />
