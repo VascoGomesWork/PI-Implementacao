@@ -21,7 +21,7 @@ export default function RealizarDevolucoesPage() {
       )
         .then((res) => res.json())
         .then((data) => {
-          setSearchResultList(data);
+          setSearchResultList(data.returns_list);
         });
       console.log("SEARCH RESULT => ", JSON.stringify(searchResultList));
     }
@@ -80,6 +80,17 @@ export default function RealizarDevolucoesPage() {
                 <th>Docente</th>
                 <th>Kit</th>
               </tr>
+              {searchResultList?.map((item) => (
+                  <tr>
+                    <th>{item.nome_projeto}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+              ))}
+
             </tbody>
           </table>
         </div>

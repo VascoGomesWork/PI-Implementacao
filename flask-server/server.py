@@ -100,6 +100,9 @@ def get_requests():
     requisitar_schema = Requisitar_DevolverSchema(many=True)
     result = requisitar_schema.dump(returns_list)
 
+    #for item in range(len(returns_list)):
+     #   print("RETURNS LIST = ", item)
+
     return jsonify({
         "returns_list": result
     })
