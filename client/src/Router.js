@@ -10,11 +10,12 @@ import AddProjectPage from "./Pages/AddProjectPage";
 import AddmaterialtypePage from "./Pages/AddmaterialtypePage"
 import ShowProjectsPage from "./Pages/ShowProjectsPage"
 import RealizarRequisicoesPage from "./Pages/RealizarRequisicoesPage";
-import ReturnMaterialsPage from "./Pages/ReturnsMaterialsPage";
+import RealizarDevolucoesPage from "./Pages/RealizarDevolucoesPage";
 //import CreateMaterialsKitsPage from "./Pages/CreateMaterialsKitsPage";
 import ShowKitsPage from "./Pages/ShowKitsPage";
 //teste criar kits
 import CreateKitPage from "./Pages/CreateKitPage";
+
 
 const Router = () => {
   return (
@@ -27,8 +28,8 @@ const Router = () => {
         <Route path="/stock" element={<StockPage />} />
         <Route path="/addmaterial" element={<AddmaterialPage />} />
         <Route path="/realizarrequisicoes" element={<RealizarRequisicoesPage />} />
+        <Route path="/realizardevolucoes" element={<RealizarDevolucoesPage />} />
         <Route path="/createkits" element={<CreateKitPage />} />
-        <Route path="/returnmaterials" element={<ReturnMaterialsPage />} />
         <Route path="/addproject" element={<AddProjectPage />} />
         <Route path="/updatematerial" element={<UpdatematerialPage />} />
         <Route path="/addmaterialtype" element={<AddmaterialtypePage />} />

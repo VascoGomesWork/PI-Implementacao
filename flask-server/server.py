@@ -311,6 +311,21 @@ def make_kits_request():
         "":""
     })
 
+# Get all requests to return
+@app.route("/showrequeststoreturn", methods=["GET"])
+def get_requests_to_return():
+
+    print("TESTE")
+
+    print("REQUEST SEARCH = ", request.json)
+    #print("REQUEST TYPE = ", request.json["search_type"])
+
+    #materials_kits_list = Kit_Material.query.filter_by().all()
+    #material_schema = MaterialSchema(many=True)
+    #result = material_schema.dump(kits_list)
+
+    return ""
+
 # Update Stocks
 @app.route("/updatestock", methods=["POST"])
 def update_stock():

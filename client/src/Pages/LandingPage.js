@@ -19,7 +19,7 @@ const LandingPage = () => {
   };
 
   const realizarDevolucoes = async () => {
-    window.location.href = "/returnmaterials";
+    window.location.href = "/realizardevolucoes";
   };
 
   const criarKits = async () => {
@@ -83,8 +83,6 @@ const LandingPage = () => {
           <button onClick={criarKits}>Criar Kit de Material</button>
           <br />
           <button onClick={verKits}>Lista de Kits</button>
-          <br />
-          <button onClick={adicionarProjeto}>Adicionar Projeto</button>
           <br />
           <button onClick={adicionarTipoMaterial}>Adicionar Tipo Material</button>
           <br />
