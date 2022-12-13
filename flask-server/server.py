@@ -100,6 +100,7 @@ def get_requests():
     requisitar_schema = Requisitar_DevolverSchema(many=True)
     result = requisitar_schema.dump(returns_list)
 
+    #Searches by specific material
     material_result = []
     for item in result:
             if item["id_material"] != None:
@@ -110,7 +111,29 @@ def get_requests():
 
     for item in material_result:
         print("Material = ", item)
-        result.append(item)
+
+    #Searches by user / docente
+    user_result = []
+    for docente in result:
+        print("DOCENTE = ", docente["id_user"], "\n")
+        user_list = User.query.filter_by(id=docente["id_user"]).all()
+        user_schema = UsersSchema(many=True)
+        user_result.append(user_schema.dump(user_list))
+
+    for docente in user_result:
+        print("DOCENTE = ", docente, "\n")
+
+
+    #Searches by kit
+    kit_result = []
+    for kit in result:
+        #print("KIT = ", kit)
+        kits_list = Kit.query.filter_by(id=kit["id_kit"]).all()
+        kit_schema = KitSchema(many=True)
+        kit_result.append(kit_schema.dump(kits_list))
+
+    for kit in kit_result:
+        print("KIT = ", kit, "\n")
 
     return jsonify({
         "returns_list": result
