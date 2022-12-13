@@ -136,7 +136,7 @@ def get_requests():
         print("KIT = ", kit, "\n")
 
     return jsonify({
-        "returns_list": result
+        "returns_list": [material_result, user_result, kit_result]
     })
 
 # Get All Materials By Their types of materials

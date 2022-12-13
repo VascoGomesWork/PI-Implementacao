@@ -21,6 +21,7 @@ export default function RealizarDevolucoesPage() {
       )
         .then((res) => res.json())
         .then((data) => {
+          console.log("DATA => ", JSON.stringify(data));
           setSearchResultList(data.returns_list);
         });
       console.log("SEARCH RESULT => ", JSON.stringify(searchResultList));
