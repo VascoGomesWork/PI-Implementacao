@@ -22,6 +22,8 @@ with app.app_context():
     db.create_all()
 
 # Get current user
+
+
 @app.route("/@me")
 def get_curretn_user():
     user_id = session.get("user_id")
@@ -36,6 +38,8 @@ def get_curretn_user():
     })
 
 # Get Materials By Name
+
+
 @app.route("/showmaterialsbyname", methods=["GET", "POST"])
 def materials_list():
     # How to get Parameters out of URL -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
@@ -48,7 +52,11 @@ def materials_list():
 
     return jsonify({"materials_list": result})
 
+
+
 # Get All Materials
+
+
 @app.route("/stock", methods=["GET", "POST"])
 def view_stock():
     stock = Material.query.all()
@@ -58,6 +66,8 @@ def view_stock():
     return jsonify({"stock": result})
 
 # Get All Projects
+
+
 @app.route("/showprojects", methods=["GET", "POST"])
 def show_projects():
     projects = Projeto.query.all()
@@ -67,6 +77,8 @@ def show_projects():
     return jsonify({"projects": result})
 
 # Get All types of materials
+
+
 @app.route("/showtypesmaterials", methods=["GET", "POST"])
 def show_types_materials():
     types = Tipo_Material.query.all()
@@ -75,17 +87,33 @@ def show_types_materials():
 
     return jsonify({"types": result})
 
+# Get all in progress requests to return
+@app.route("/showmaterialstoreturn", methods=["GET"])
+def get_requests():
+
+    print(request.args["search"])
+    print(request.args["search_type"])
+
+    # verificar o search type com ifs para procurar na coluna certa
+    # 
+    returns_list = Requisitar_Devolver.query.filter_by(esta_requisitado=True).all()
+    requisitar_schema = Requisitar_DevolverSchema(many=True)
+    result = requisitar_schema.dump(returns_list)
+
+    return jsonify({
+        "returns_list": result
+    })
 
 # Get All Materials By Their types of materials
 @app.route("/showmaterialsbynamebytype", methods=["GET", "POST"])
 def show_materials_types_materials():
-    #If type is Kit calls the function bellow
+    # If type is Kit calls the function bellow
     if request.args.get("search_type") == "Kit":
         return jsonify({"list_kit_mateirals": search_by_kit(request.args.get("search"))})
 
     materials_list = (db.session.query(Material).filter(
         Material.nome.contains(request.args.get("search")),
-        Material.id_tipo_material==int(request.args.get("search_type")))
+        Material.id_tipo_material == int(request.args.get("search_type")))
     ).all()
 
     material_schema = MaterialSchema(many=True)
@@ -94,44 +122,50 @@ def show_materials_types_materials():
     #print("QUERY RESULT = ", result)
     return jsonify({"list_kit_mateirals": result})
 
+
 def search_by_kit(search):
     # gets all kits by search string
     #kit_search_list = Kit.query.filter(Material.nome.contains(request.args.get("search"))).all()
-    kit_search_list = Kit.query.filter(Kit.nome.contains(request.args.get("search"))).all()
+    kit_search_list = Kit.query.filter(
+        Kit.nome.contains(request.args.get("search"))).all()
     kit_schema = KitSchema(many=True)
     kit_list = kit_schema.dump(kit_search_list)
 
     # get all information about the kits in the search result
-    list_mats_in_kits = [] #contais each materials in each kit
+    list_mats_in_kits = []  # contais each materials in each kit
     for kit in kit_list:
-        kit_material_search = Kit_Material.query.filter_by(id_kit=kit.get("id")).all()
+        kit_material_search = Kit_Material.query.filter_by(
+            id_kit=kit.get("id")).all()
         kit_material_schema = Kit_MaterialSchema(many=True)
         kit_material_info = kit_material_schema.dump(kit_material_search)
 
         list_of_mats = []
         for material in kit_material_info:
-            material_in_kit = Material.query.filter_by(id=material.get("id_material")).all()
+            material_in_kit = Material.query.filter_by(
+                id=material.get("id_material")).all()
             material_schema = MaterialSchema(many=True)
             material_info = material_schema.dump(material_in_kit)
-        
+
             list_of_mats.append(
                 {
-                    "mat_id" : material.get("id"),
+                    "mat_id": material.get("id"),
                     "mat_quantidade_kit": material.get("quantidade"),
-                    "mat_info" : material_info
+                    "mat_info": material_info
                 }
             )
         list_mats_in_kits.append(
             {
-                "kit_id" : kit.get("id"),
-                "kit_name" : kit.get("nome"),
-                "mat_list" : list_of_mats
+                "kit_id": kit.get("id"),
+                "kit_name": kit.get("nome"),
+                "mat_list": list_of_mats
             }
         )
 
     return list_mats_in_kits
 
 # Add new materials kit
+
+
 @app.route("/addmaterialskit", methods=["GET", "POST"])
 def add_kits_material():
     nome = request.json["nome"]
@@ -235,6 +269,8 @@ def add_material():
     })
 
 # Add new material type
+
+
 @app.route("/addmaterialtype", methods=["POST"])
 def add_material_type():
     tipo = request.json["tipo"]
@@ -255,78 +291,69 @@ def make_request():
     #request_variables = request.json["tipo"]
 
     print("REQUEST = ", request.json)
-    #Ternary if python -> https://book.pythontips.com/en/latest/ternary_operators.html
+    # Ternary if python -> https://book.pythontips.com/en/latest/ternary_operators.html
 
     for item in request.json["requisicaoMaterialsList"]:
 
         new_request = Requisitar_Devolver(
             nome_pessoa_requisitar=request.json["nome"],
-            boolean_projeto = False if request.json["nome_projeto"] == "" else True,
-            nome_projeto = request.json["nome_projeto"],
-            esta_requisitado = True,
-            esta_devolvido = False,
-            quantidade_requisitada = item["quantidade"],
-            data_requisicao = datetime.now(),
-            data_devolucao_prevista = datetime.strptime(request.json["data_entrega_prevista"], '%Y-%m-%d'),
-            data_devolucao_real = None,
-            id_user = session.get("user_id"),
-            id_material = item["id"],
-            id_kit = None
-            )
+            boolean_projeto=False if request.json["nome_projeto"] == "" else True,
+            nome_projeto=request.json["nome_projeto"],
+            esta_requisitado=True,
+            esta_devolvido=False,
+            quantidade_requisitada=item["quantidade"],
+            data_requisicao=datetime.now(),
+            data_devolucao_prevista=datetime.strptime(
+                request.json["data_entrega_prevista"], '%Y-%m-%d'),
+            data_devolucao_real=None,
+            id_user=session.get("user_id"),
+            id_material=item["id"],
+            id_kit=None
+        )
         db.session.add(new_request)
         db.session.commit()
 
     return jsonify({
-        "":""
+        "": ""
     })
 
 # Add new material type
+
+
 @app.route("/makekitsrequest", methods=["POST"])
 def make_kits_request():
     #request_variables = request.json["tipo"]
 
     print("REQUEST = ", request.json)
-    #Ternary if python -> https://book.pythontips.com/en/latest/ternary_operators.html
+    # Ternary if python -> https://book.pythontips.com/en/latest/ternary_operators.html
 
     for item in request.json["requisicaoKitsList"]:
 
         new_request = Requisitar_Devolver(
             nome_pessoa_requisitar=request.json["nome"],
-            boolean_projeto = False if request.json["nome_projeto"] == "" else True,
-            nome_projeto = request.json["nome_projeto"],
-            esta_requisitado = True,
-            esta_devolvido = False,
-            quantidade_requisitada = item["quantidade"],
-            data_requisicao = datetime.now(),
-            data_devolucao_prevista = datetime.strptime(request.json["data_entrega_prevista"], '%Y-%m-%d'),
-            data_devolucao_real = None,
-            id_user = session.get("user_id"),
-            id_material = None,
-            id_kit = item["id"]
-            )
+            boolean_projeto=False if request.json["nome_projeto"] == "" else True,
+            nome_projeto=request.json["nome_projeto"],
+            esta_requisitado=True,
+            esta_devolvido=False,
+            quantidade_requisitada=item["quantidade"],
+            data_requisicao=datetime.now(),
+            data_devolucao_prevista=datetime.strptime(
+                request.json["data_entrega_prevista"], '%Y-%m-%d'),
+            data_devolucao_real=None,
+            id_user=session.get("user_id"),
+            id_material=None,
+            id_kit=item["id"]
+        )
         db.session.add(new_request)
         db.session.commit()
 
     return jsonify({
-        "":""
+        "": ""
     })
 
-# Get all requests to return
-@app.route("/showrequeststoreturn", methods=["GET"])
-def get_requests_to_return():
-
-    print("TESTE")
-
-    print("REQUEST SEARCH = ", request.json)
-    #print("REQUEST TYPE = ", request.json["search_type"])
-
-    #materials_kits_list = Kit_Material.query.filter_by().all()
-    #material_schema = MaterialSchema(many=True)
-    #result = material_schema.dump(kits_list)
-
-    return ""
-
 # Update Stocks
+
+
 @app.route("/updatestock", methods=["POST"])
 def update_stock():
     id = request.json["id"]
@@ -369,6 +396,8 @@ def add_project():
     })
 
 # Get all kits names
+
+
 @app.route("/getkitsnames", methods=["GET", "POST"])
 def get_kits_names():
     kits_list = Kit_Material.query.filter_by().all()
@@ -378,6 +407,8 @@ def get_kits_names():
     return jsonify({"kits_names": result})
 
 # Get all kits
+
+
 @app.route("/getkits", methods=["GET", "POST"])
 def get_kits():
 
@@ -429,6 +460,8 @@ def get_kits():
     })
 
 # Register route
+
+
 @app.route("/register", methods=["POST"])
 def register_user():
     email = request.json["email"]
@@ -460,6 +493,8 @@ def register_user():
     })
 
 # Login route
+
+
 @app.route("/login", methods=["POST"])
 def login_user():
     email = request.json["email"]
@@ -482,6 +517,8 @@ def login_user():
     })
 
 # Logout
+
+
 @app.route("/logout", methods=["POST"])
 def logout_user():
     session.pop("user_id")
