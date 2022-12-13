@@ -73,7 +73,7 @@ export default function RealizarRequisicoesPage() {
 
   const addMaterialToRequisicao = async (id, nome, quantidade) => {
     setRequisicaoMaterialsList([
-      ...requisicaoKitsList,
+      ...requisicaoMaterialsList,
       {
         id: id,
         nome: nome,
@@ -362,7 +362,7 @@ export default function RealizarRequisicoesPage() {
                                 <button
                                     type="button"
                                     onClick={(e) => {
-                                        removeKitsList(kit.kit_id);
+                                        removeKitsList(kit.id);
                                     }}
                                 >
                                     Remover
