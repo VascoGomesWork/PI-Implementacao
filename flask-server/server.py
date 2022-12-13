@@ -280,6 +280,37 @@ def make_request():
         "":""
     })
 
+    # Add new material type
+    @app.route("/makekitsrequest", methods=["POST"])
+    def make_kits_request():
+        #request_variables = request.json["tipo"]
+
+        print("REQUEST = ")
+        #Ternary if python -> https://book.pythontips.com/en/latest/ternary_operators.html
+
+        #for item in request.json["requisicaoKitsList"]:
+
+        #    new_request = Requisitar_Devolver(
+        #        nome_pessoa_requisitar=request.json["nome"],
+        #        boolean_projeto = False if request.json["nome_projeto"] == "" else True,
+        #        nome_projeto = request.json["nome_projeto"],
+        #        esta_requisitado = True,
+        #        esta_devolvido = False,
+        #        quantidade_requisitada = item["quantidade"],
+        #        data_requisicao = datetime.now(),
+        #        data_devolucao_prevista = datetime.strptime(request.json["data_entrega_prevista"], '%Y-%m-%d'),
+        #        data_devolucao_real = None,
+        #        id_user = session.get("user_id"),
+        #        id_material = item["id"],
+        #        id_kit = None
+        #        )
+        #    db.session.add(new_request)
+        #    db.session.commit()
+
+        return jsonify({
+            "":""
+        })
+
 # Update Stocks
 @app.route("/updatestock", methods=["POST"])
 def update_stock():

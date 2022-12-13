@@ -13,8 +13,10 @@ export default function RealizarRequisicoesPage() {
 
   const [searchInput, setSearchInput] = useState([]);
   const [searchResultList, setSearchResultList] = useState([]);
+  const [requisicaoKitsList, setRequisicaoKitsList] = useState([]);
   const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
   const [typeSearch, setTypeSearch] = useState([]);
+  const [quantidadeKitRequisicao, setQuantidadeKitRequisicao] = useState([]);
 
   //Sets Default Value
   useEffect(() => {
@@ -71,7 +73,7 @@ export default function RealizarRequisicoesPage() {
 
   const addMaterialToRequisicao = async (id, nome, quantidade) => {
     setRequisicaoMaterialsList([
-      ...requisicaoMaterialsList,
+      ...requisicaoKitsList,
       {
         id: id,
         nome: nome,
@@ -80,19 +82,31 @@ export default function RealizarRequisicoesPage() {
     ]);
   };
 
-  const addkitToRequisicao = async (id) => {
-    console.log("REQUISIÇAO DE KIT FEITA");
+  const addkitToRequisicao = async (id, nome) => {
+
+      console.log("ID = ", id);
+      console.log("NOME = ", nome);
+    setRequisicaoKitsList([
+        ...requisicaoKitsList,
+        {
+            id:id,
+            nome:nome
+        }
+    ])
+    console.log("REQUISIÇAO DE KIT FEITA", JSON.stringify(requisicaoKitsList));
+    console.log()
+
   };
 
   const changeQuantity = async (id, quantity) => {
     console.log("ID => ", id, "QUANITY =>", quantity);
 
-    requisicaoMaterialsList.forEach((element) => {
+    requisicaoKitsList.forEach((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
       }
     });
-    console.log("CHANGING AMOUNTS => ", requisicaoMaterialsList);
+    console.log("CHANGING AMOUNTS => ", requisicaoKitsList);
   };
 
   const changeProject = async (e) => {
@@ -101,7 +115,7 @@ export default function RealizarRequisicoesPage() {
   };
 
   const removeMaterial = async (id, nome, quantidade) => {
-    requisicaoMaterialsList.forEach((element) => {
+    requisicaoKitsList.forEach((element) => {
       if (element.id === id) {
         console.log("ELEMENT ID = " + element.id);
         console.log(
@@ -113,34 +127,57 @@ export default function RealizarRequisicoesPage() {
             quantidade
         );
         //How to remove elements from array in javascript -> https://sentry.io/answers/remove-specific-item-from-array/
-        requisicaoMaterialsList.splice(
-          requisicaoMaterialsList.indexOf(element),
+        requisicaoKitsList.splice(
+          requisicaoKitsList.indexOf(element),
           1
         );
       }
     });
-    console.log("CHANGING KIT LIST => ", requisicaoMaterialsList);
-    setRequisicaoMaterialsList(requisicaoMaterialsList);
+    console.log("CHANGING KIT LIST => ", requisicaoKitsList);
+    setRequisicaoKitsList(requisicaoKitsList);
     //Temporary Fix
     setSearchInput("");
   };
 
-  const makeRequisition = async (e) => {
+  const makeMaterialsRequisition = async (e) => {
     console.log("NOME = " + nome);
     console.log("PROJETO = " + projeto);
     console.log("NOME PROJETO = " + nome_projeto);
-    console.log(
-      "Requisicao Material List = " + JSON.stringify(requisicaoMaterialsList)
-    );
+        console.log(
+            "Requisicao Material List = " + JSON.stringify(requisicaoMaterialsList)
+        );
     console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
     try {
       await httpClient.post("//localhost:5000/makerequest", {
         nome,
         nome_projeto,
-        requisicaoMaterialsList,
+        requisicaoMaterialsList: requisicaoMaterialsList,
         data_entrega_prevista,
       });
-      window.location.href = "/";
+      //window.location.href = "/";
+    } catch (e) {
+      if (e.response.status === 401) {
+        alert("Invalid Type Info");
+      }
+    }
+  };
+
+  const makeKitsRequisition = async (e) => {
+    console.log("NOME = " + nome);
+    console.log("PROJETO = " + projeto);
+    console.log("NOME PROJETO = " + nome_projeto);
+    console.log(
+        "Requisicao Kits List = " + JSON.stringify(requisicaoKitsList)
+    );
+    console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
+    try {
+      await httpClient.post("//localhost:5000/makekitsrequest", {
+        nome,
+        nome_projeto,
+        requisicaoKitsList,
+        data_entrega_prevista,
+      });
+      //window.location.href = "/";
     } catch (e) {
       if (e.response.status === 401) {
         alert("Invalid Type Info");
@@ -247,7 +284,7 @@ export default function RealizarRequisicoesPage() {
                           <button
                             type="button"
                             onClick={(e) => {
-                              addkitToRequisicao(kit.kit_id);
+                              addkitToRequisicao(kit.kit_id, kit.kit_name);
                             }}
                           >
                             Adicionar
@@ -284,33 +321,66 @@ export default function RealizarRequisicoesPage() {
           <label>Materiais/Kits para Requisitar </label>
           <table border="1">
             <tbody>
-              <tr>
-                <th>Material/Kit</th>
-                <th>Quantidade no Kit</th>
-                <th>Adicionar</th>
-              </tr>
-              {requisicaoMaterialsList?.map((item) => (
-                <tr key={item.id}>
-                  <th>{item.nome}</th>
-                  <th>
-                    <input
-                      type="number"
-                      onChange={(e) => changeQuantity(item.id, e.target.value)}
-                      id=""
-                    />
-                  </th>
-                  <th>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        removeMaterial(item.id, item.nome, item.quantidade);
-                      }}
-                    >
-                      Remover
-                    </button>
-                  </th>
+            {typeSearch === "Kit" ? (
+                <tr>
+                    <th>Kit</th>
+                    <th>Quantidade Total</th>
+                    <th>Adicionar</th>
                 </tr>
-              ))}
+            ) : (
+                <tr>
+                    <th>Material</th>
+                    <th>Quantidade Total</th>
+                    <th>Adicionar</th>
+                </tr>
+            )}
+            {typeSearch === "Kit"
+                ? requisicaoKitsList?.map((kit) => (
+                        <tr>
+                            <th>{kit.nome}</th>
+                            <th>
+                                <input
+                                    type="number"
+
+                                    onChange={(e) => changeQuantity(kit.id, e.target.value)}
+                                />
+                            </th>
+
+                            <th>
+                                <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        removeMaterial(kit.kit_id, kit.kit_name);
+                                    }}
+                                >
+                                    Remover
+                                </button>
+                            </th>
+                        </tr>
+                    )
+                )
+                : requisicaoMaterialsList?.map((item) => (
+                    <tr key={item.id}>
+                        <th>{item.nome}</th>
+                        <th>
+                            <input
+                                type="number"
+                                onChange={(e) => changeQuantity(item.id, e.target.value)}
+                                id=""
+                            />
+                        </th>
+                        <th>
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    removeMaterial(item.id, item.nome, item.quantidade);
+                                }}
+                            >
+                                Remover
+                            </button>
+                        </th>
+                    </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -327,7 +397,7 @@ export default function RealizarRequisicoesPage() {
           />
         </div>
         <br />
-        <button type="button" onClick={makeRequisition}>
+        <button type="button" onClick={typeSearch === "Kit" ? makeKitsRequisition :makeMaterialsRequisition}>
           Fazer Requisição
         </button>
       </form>
