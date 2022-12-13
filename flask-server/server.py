@@ -95,13 +95,22 @@ def get_requests():
     print(request.args["search_type"])
 
     # verificar o search type com ifs para procurar na coluna certa
-    # 
+    #
     returns_list = Requisitar_Devolver.query.filter_by(esta_requisitado=True).all()
     requisitar_schema = Requisitar_DevolverSchema(many=True)
     result = requisitar_schema.dump(returns_list)
 
-    #for item in range(len(returns_list)):
-     #   print("RETURNS LIST = ", item)
+    material_result = []
+    for item in result:
+            if item["id_material"] != None:
+                print("RETURNS LIST = ", item["id_material"], "\n")
+                material_list = Material.query.filter_by(id=item["id_material"]).all()
+                material_schema = MaterialSchema(many=True)
+                material_result.append(material_schema.dump(material_list))
+
+    for item in material_result:
+        print("Material = ", item)
+        result.append(item)
 
     return jsonify({
         "returns_list": result
