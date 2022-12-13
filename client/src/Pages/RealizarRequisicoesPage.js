@@ -114,7 +114,7 @@ export default function RealizarRequisicoesPage() {
     console.log("EVENT = " + projeto);
   };
 
-  const removeMaterial = async (id, nome, quantidade) => {
+  /*const removeMaterial = async (id, nome, quantidade) => {
     requisicaoKitsList.forEach((element) => {
       if (element.id === id) {
         console.log("ELEMENT ID = " + element.id);
@@ -137,6 +137,18 @@ export default function RealizarRequisicoesPage() {
     setRequisicaoKitsList(requisicaoKitsList);
     //Temporary Fix
     setSearchInput("");
+  };*/
+
+  const removeKitsList = async (id) => {
+    setRequisicaoKitsList((requisicaoKitList) =>
+        requisicaoKitList.filter((element) => element.id !== id)
+    );
+  };
+
+  const removeMaterialsList = async (id) => {
+    setRequisicaoMaterialsList((requisicaoMaterialsList) =>
+        requisicaoMaterialsList.filter((element) => element.id !== id)
+    );
   };
 
   const makeMaterialsRequisition = async (e) => {
@@ -154,7 +166,7 @@ export default function RealizarRequisicoesPage() {
         requisicaoMaterialsList: requisicaoMaterialsList,
         data_entrega_prevista,
       });
-      //window.location.href = "/";
+      window.location.href = "/";
     } catch (e) {
       if (e.response.status === 401) {
         alert("Invalid Type Info");
@@ -177,7 +189,7 @@ export default function RealizarRequisicoesPage() {
         requisicaoKitsList,
         data_entrega_prevista,
       });
-      //window.location.href = "/";
+      window.location.href = "/";
     } catch (e) {
       if (e.response.status === 401) {
         alert("Invalid Type Info");
@@ -350,7 +362,7 @@ export default function RealizarRequisicoesPage() {
                                 <button
                                     type="button"
                                     onClick={(e) => {
-                                        removeMaterial(kit.kit_id, kit.kit_name);
+                                        removeKitsList(kit.kit_id);
                                     }}
                                 >
                                     Remover
@@ -373,7 +385,7 @@ export default function RealizarRequisicoesPage() {
                             <button
                                 type="button"
                                 onClick={(e) => {
-                                    removeMaterial(item.id, item.nome, item.quantidade);
+                                    removeMaterialsList(item.id);
                                 }}
                             >
                                 Remover
