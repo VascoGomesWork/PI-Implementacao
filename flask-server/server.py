@@ -91,8 +91,8 @@ def show_types_materials():
 @app.route("/showmaterialstoreturn", methods=["GET"])
 def get_requests():
 
-    print("SEARCH = ", request.args["search"])
-    print("SEARCH_TYPE = ", request.args["search_type"])
+    #print("SEARCH = ", request.args["search"])
+    #print("SEARCH_TYPE = ", request.args["search_type"])
 
     # verificar o search type com ifs para procurar na coluna certa
     #
@@ -113,9 +113,9 @@ def get_requests():
     for item in result:
             #Get Materials
             if item["id_material"] != None:
-                print("RETURNS LIST = ", item["id_material"], "\n")
+                #print("RETURNS LIST = ", item["id_material"], "\n")
                 if request.args["search_type"] == "material":
-                    print("MATERIAL = ", request.args["search"])
+                    #print("MATERIAL = ", request.args["search"])
                     material_list = Material.query.filter(Material.id==item["id_material"], Material.nome.contains(request.args["search"])).all()
                 else:
                     material_list = Material.query.filter_by(id=item["id_material"]).all()
@@ -132,7 +132,6 @@ def get_requests():
 
             #Get Users
             if request.args["search_type"] == "docente":
-                print("DOCENTE = ", request.args["search"])
                 user_list = User.query.filter(User.id==item["id_user"], User.nome.contains(request.args["search"])).all()
             else:
                 user_list = User.query.filter_by(id=item["id_user"]).all()
@@ -151,7 +150,7 @@ def get_requests():
             kit_result = []
             if item["id_kit"] != None:
                 if request.args["search_type"] == "kit":
-                    print("KIT = ", request.args["search"])
+                    #print("KIT = ", request.args["search"])
                     kits_list = Kit.query.filter(Kit.id==item["id_kit"], Kit.nome.contains(request.args["search"])).all()
                 else:
                     kits_list = Kit.query.filter_by(id=item["id_kit"]).all()
@@ -174,9 +173,35 @@ def get_requests():
                 }
                 )
 
-            #Fazer append para dentro de -> list_request_material_result
-            print("LIST KIT TEST = ", list_kit)
-            list_request_material_result.append(
+            print("SEARCH_TYPE = ", request.args["search_type"])
+
+            if request.args["search_type"] == "material":
+                #If materials were choosen as searchtype execute the code above
+                list_request_material_result = type_search_material(item, list_materials, list_user, list_kit, list_request_material_result, material_result, request.args["search"])
+
+            elif request.args["search_type"] == "docente":
+                list_request_material_result = type_search_docente(item, list_materials, list_user, list_kit, list_request_material_result, user_result, request.args["search"])
+
+            elif request.args["search_type"] == "kit":
+                list_request_material_result = type_search_kit(item, list_materials, list_user, list_kit, list_request_material_result, kit_result, request.args["search"])
+
+    print("\n\nFINAL = ", list_request_material_result)
+
+    return jsonify({
+        "returns_list": [list_request_material_result]
+    })
+
+def type_search_material(item, list_materials, list_user, list_kit, list_request_material_result, material_result, search):
+
+    list_materials_updated = list_request_material_result
+    #Fazer append para dentro de -> list_request_material_result
+    for material in material_result:
+        print("MATERIAL = ", material)
+        if material != []:
+            print("MATERIAL NOME = ", material.get("nome"), "\n\n")
+            #if material.get("nome") != None:
+
+            list_materials_updated.append(
             {
                 "id" : item["id"],
                 "quantidade" : item["quantidade_requisitada"],
@@ -184,14 +209,51 @@ def get_requests():
                 "material" : list_materials,
                 "user" : list_user,
                 "kit" : list_kit
-            }
-            )
+            })
 
-    print("\n\nFINAL = ", list_request_material_result)
+    return list_materials_updated
 
-    return jsonify({
-        "returns_list": [list_request_material_result]
-    })
+
+def type_search_docente(item, list_materials, list_user, list_kit, list_request_material_result, user_result, search):
+
+    list_materials_updated = list_request_material_result
+    #Fazer append para dentro de -> list_request_material_result
+    for docente in user_result:
+        print("DOCENTE = ", docente)
+        if docente != []:
+
+            list_materials_updated.append(
+            {
+                "id" : item["id"],
+                "quantidade" : item["quantidade_requisitada"],
+                "data_requisicao" : item["data_requisicao"],
+                "material" : list_materials,
+                "user" : list_user,
+                "kit" : list_kit
+            })
+
+    return list_materials_updated
+
+
+def type_search_kit(item, list_materials, list_user, list_kit, list_request_material_result, kit_result, search):
+
+    list_materials_updated = list_request_material_result
+    #Fazer append para dentro de -> list_request_material_result
+    for kit in kit_result:
+        print("DOCENTE = ", kit)
+        if kit != []:
+
+            list_materials_updated.append(
+            {
+                "id" : item["id"],
+                "quantidade" : item["quantidade_requisitada"],
+                "data_requisicao" : item["data_requisicao"],
+                "material" : list_materials,
+                "user" : list_user,
+                "kit" : list_kit
+            })
+
+    return list_materials_updated
 
 # Get All Materials By Their types of materials
 @app.route("/showmaterialsbynamebytype", methods=["GET", "POST"])
