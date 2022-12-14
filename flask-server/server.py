@@ -97,7 +97,11 @@ def get_requests():
     # verificar o search type com ifs para procurar na coluna certa
     #
 
-    returns_list = Requisitar_Devolver.query.filter_by(esta_requisitado=True).all()
+    if request.args["search_type"] == "nome_projeto":
+        print("NOME PROJETO = ", request.args["search"])
+        returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.nome_projeto.contains(request.args["search"])).all()
+    else:
+        returns_list = Requisitar_Devolver.query.filter_by(esta_requisitado=True).all()
     requisitar_schema = Requisitar_DevolverSchema(many=True)
     result = requisitar_schema.dump(returns_list)
 
