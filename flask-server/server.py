@@ -100,6 +100,9 @@ def get_requests():
     if request.args["search_type"] == "nome_projeto":
         print("NOME PROJETO = ", request.args["search"])
         returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.nome_projeto.contains(request.args["search"])).all()
+    elif request.args["search_type"] == "data_requisicao":
+            print("DATA REQUISICAO = ", request.args["search"])
+            returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.data_requisicao==request.args["search"]).all()
     else:
         returns_list = Requisitar_Devolver.query.filter_by(esta_requisitado=True).all()
     requisitar_schema = Requisitar_DevolverSchema(many=True)
@@ -111,7 +114,11 @@ def get_requests():
             #Get Materials
             if item["id_material"] != None:
                 print("RETURNS LIST = ", item["id_material"], "\n")
-                material_list = Material.query.filter_by(id=item["id_material"]).all()
+                if request.args["search_type"] == "material":
+                    print("MATERIAL = ", request.args["search"])
+                    material_list = Material.query.filter(Material.id==item["id_material"], Material.nome.contains(request.args["search"])).all()
+                else:
+                    material_list = Material.query.filter_by(id=item["id_material"]).all()
                 material_schema = MaterialSchema(many=True)
                 material_result = material_schema.dump(material_list)
 
@@ -123,7 +130,11 @@ def get_requests():
                 })
 
             #Get Users
-            user_list = User.query.filter_by(id=item["id_user"]).all()
+            if request.args["search_type"] == "docente":
+                print("DOCENTE = ", request.args["search"])
+                user_list = User.query.filter(User.id==item["id_user"], User.nome.contains(request.args["search"])).all()
+            else:
+                user_list = User.query.filter_by(id=item["id_user"]).all()
             user_schema = UsersSchema(many=True)
             user_result = user_schema.dump(user_list)
 
@@ -137,7 +148,11 @@ def get_requests():
             #Get Kits
             kit_result = []
             if item["id_kit"] != None:
-                kits_list = Kit.query.filter_by(id=item["id_kit"]).all()
+                if request.args["search_type"] == "kit":
+                    print("KIT = ", request.args["search"])
+                    kits_list = Kit.query.filter(Kit.id==item["id_kit"], Kit.nome.contains(request.args["search"])).all()
+                else:
+                    kits_list = Kit.query.filter_by(id=item["id_kit"]).all()
                 kit_schema = KitSchema(many=True)
                 kit_result = kit_schema.dump(kits_list)
                 #print("KIT RESULT = ", kit_result)
