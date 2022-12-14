@@ -91,7 +91,18 @@ export default function RealizarDevolucoesPage() {
                     <th></th>
                   </tr>
               ))}
-
+              <tr>
+              {
+                searchResultList?.map((item) => {
+                  console.log("JSON Stringify = " + JSON.stringify(item))
+                  item?.map((object) => {
+                    object?.map((object_atributes) => (
+                        console.log("Atributos = " + object_atributes.nome),
+                        <th>{object_atributes.nome}</th>
+                    ))
+                  })
+                })}
+              </tr>
             </tbody>
           </table>
         </div>

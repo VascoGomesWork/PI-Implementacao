@@ -91,52 +91,83 @@ def show_types_materials():
 @app.route("/showmaterialstoreturn", methods=["GET"])
 def get_requests():
 
-    print(request.args["search"])
-    print(request.args["search_type"])
+    print("SEARCH = ", request.args["search"])
+    print("SEARCH_TYPE = ", request.args["search_type"])
 
     # verificar o search type com ifs para procurar na coluna certa
     #
+
     returns_list = Requisitar_Devolver.query.filter_by(esta_requisitado=True).all()
     requisitar_schema = Requisitar_DevolverSchema(many=True)
     result = requisitar_schema.dump(returns_list)
 
     #Searches by specific material
-    material_result = []
+    list_request_material_result = []
     for item in result:
+            #Get Materials
             if item["id_material"] != None:
                 print("RETURNS LIST = ", item["id_material"], "\n")
                 material_list = Material.query.filter_by(id=item["id_material"]).all()
                 material_schema = MaterialSchema(many=True)
-                material_result.append(material_schema.dump(material_list))
+                material_result = material_schema.dump(material_list)
 
-    for item in material_result:
-        print("Material = ", item)
+            list_materials = []
+            for material in material_result:
+                list_materials.append(
+                {
+                    "nome" : material.get("nome")
+                })
 
-    #Searches by user / docente
-    user_result = []
-    for docente in result:
-        print("DOCENTE = ", docente["id_user"], "\n")
-        user_list = User.query.filter_by(id=docente["id_user"]).all()
-        user_schema = UsersSchema(many=True)
-        user_result.append(user_schema.dump(user_list))
+            #Get Users
+            user_list = User.query.filter_by(id=item["id_user"]).all()
+            user_schema = UsersSchema(many=True)
+            user_result = user_schema.dump(user_list)
 
-    for docente in user_result:
-        print("DOCENTE = ", docente, "\n")
+            list_user = []
+            for user in user_result:
+                list_user.append(
+                {
+                    "nome" : user.get("nome")
+                })
 
+            #Get Kits
+            kit_result = []
+            if item["id_kit"] != None:
+                kits_list = Kit.query.filter_by(id=item["id_kit"]).all()
+                kit_schema = KitSchema(many=True)
+                kit_result = kit_schema.dump(kits_list)
+                #print("KIT RESULT = ", kit_result)
 
-    #Searches by kit
-    kit_result = []
-    for kit in result:
-        #print("KIT = ", kit)
-        kits_list = Kit.query.filter_by(id=kit["id_kit"]).all()
-        kit_schema = KitSchema(many=True)
-        kit_result.append(kit_schema.dump(kits_list))
+            list_kit = []
+            if kit_result != None:
+                for kit in kit_result:
+                    list_kit.append(
+                        {
+                            "nome" : kit.get("nome")
+                        })
+            else:
+                list_kit.append(
+                {
+                    "nome" : None
+                }
+                )
 
-    for kit in kit_result:
-        print("KIT = ", kit, "\n")
+            #Fazer append para dentro de -> list_request_material_result
+            print("LIST KIT TEST = ", list_kit)
+            list_request_material_result.append(
+            {
+                "quantidade" : item["quantidade_requisitada"],
+                "data_requisicao" : item["data_requisicao"],
+                "material" : list_materials,
+                "user" : list_user,
+                "kit" : list_kit
+            }
+            )
+
+    print("\n\nFINAL = ", list_request_material_result)
 
     return jsonify({
-        "returns_list": [material_result, user_result, kit_result]
+        "returns_list": [list_request_material_result]
     })
 
 # Get All Materials By Their types of materials
