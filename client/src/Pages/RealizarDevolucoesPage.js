@@ -93,7 +93,7 @@ export default function RealizarDevolucoesPage() {
               ))}
               <tr>
               {
-                searchResultList?.map((item) => {
+                /*searchResultList?.map((item) => {
                   console.log("JSON Stringify = " + JSON.stringify(item))
                   item?.map((object) => {
                     object?.map((object_atributes) => (
@@ -101,7 +101,7 @@ export default function RealizarDevolucoesPage() {
                         <th>{object_atributes.nome}</th>
                     ))
                   })
-                })}
+                })*/}
               </tr>
             </tbody>
           </table>

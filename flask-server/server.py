@@ -102,7 +102,7 @@ def get_requests():
         returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.nome_projeto.contains(request.args["search"])).all()
     elif request.args["search_type"] == "data_requisicao":
             print("DATA REQUISICAO = ", request.args["search"])
-            returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.data_requisicao==request.args["search"]).all()
+            returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.data_requisicao.contains(request.args["search"])).all()
     else:
         returns_list = Requisitar_Devolver.query.filter_by(esta_requisitado=True).all()
     requisitar_schema = Requisitar_DevolverSchema(many=True)
@@ -126,6 +126,7 @@ def get_requests():
             for material in material_result:
                 list_materials.append(
                 {
+                    "id" : material.get("id"),
                     "nome" : material.get("nome")
                 })
 
@@ -142,6 +143,7 @@ def get_requests():
             for user in user_result:
                 list_user.append(
                 {
+                    "id" : user.get("id"),
                     "nome" : user.get("nome")
                 })
 
@@ -162,6 +164,7 @@ def get_requests():
                 for kit in kit_result:
                     list_kit.append(
                         {
+                            "id" : kit.get("id"),
                             "nome" : kit.get("nome")
                         })
             else:
@@ -175,6 +178,7 @@ def get_requests():
             print("LIST KIT TEST = ", list_kit)
             list_request_material_result.append(
             {
+                "id" : item["id"],
                 "quantidade" : item["quantidade_requisitada"],
                 "data_requisicao" : item["data_requisicao"],
                 "material" : list_materials,
