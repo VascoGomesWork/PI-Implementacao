@@ -66,7 +66,7 @@ export default function RealizarRequisicoesPage() {
         .then((data) => {
           setSearchResultList(data.list_kit_mateirals);
         });
-      //console.log("SEARCH RESULT => ", searchResultList);
+      console.log("SEARCH RESULT => ", searchResultList);
       console.log("SEARCH RESULT => ", JSON.stringify(searchResultList));
     }
   };
@@ -98,46 +98,28 @@ export default function RealizarRequisicoesPage() {
 
   };
 
-  const changeQuantity = async (id, quantity) => {
-    console.log("ID => ", id, "QUANITY =>", quantity);
-
+  const changeKitsQuantity = async (id, quantity) => {
     requisicaoKitsList.forEach((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
+        console.log("element quantiaty => ", element)
       }
     });
-    console.log("CHANGING AMOUNTS => ", requisicaoKitsList);
+  };
+
+  const changeQuantity = async (id, quantity) => {
+    requisicaoMaterialsList.forEach((element) => {
+      if (element.id === id) {
+        element.quantidade = quantity;
+        console.log("element quantiaty => ", element)
+      }
+    });
   };
 
   const changeProject = async (e) => {
     setProjeto(e.target.value);
     console.log("EVENT = " + projeto);
   };
-
-  /*const removeMaterial = async (id, nome, quantidade) => {
-    requisicaoKitsList.forEach((element) => {
-      if (element.id === id) {
-        console.log("ELEMENT ID = " + element.id);
-        console.log(
-          "REMOVE ID = " +
-            id +
-            " NOME = " +
-            nome +
-            " QUANTIDADE = " +
-            quantidade
-        );
-        //How to remove elements from array in javascript -> https://sentry.io/answers/remove-specific-item-from-array/
-        requisicaoKitsList.splice(
-          requisicaoKitsList.indexOf(element),
-          1
-        );
-      }
-    });
-    console.log("CHANGING KIT LIST => ", requisicaoKitsList);
-    setRequisicaoKitsList(requisicaoKitsList);
-    //Temporary Fix
-    setSearchInput("");
-  };*/
 
   const removeKitsList = async (id) => {
     setRequisicaoKitsList((requisicaoKitList) =>
@@ -155,9 +137,7 @@ export default function RealizarRequisicoesPage() {
     console.log("NOME = " + nome);
     console.log("PROJETO = " + projeto);
     console.log("NOME PROJETO = " + nome_projeto);
-        console.log(
-            "Requisicao Material List = " + JSON.stringify(requisicaoMaterialsList)
-        );
+    console.log("Requisicao Material List = " + JSON.stringify(requisicaoMaterialsList));
     console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
     try {
       await httpClient.post("//localhost:5000/makerequest", {
@@ -166,7 +146,7 @@ export default function RealizarRequisicoesPage() {
         requisicaoMaterialsList: requisicaoMaterialsList,
         data_entrega_prevista,
       });
-      window.location.href = "/";
+      //window.location.href = "/";
     } catch (e) {
       if (e.response.status === 401) {
         alert("Invalid Type Info");
@@ -354,7 +334,7 @@ export default function RealizarRequisicoesPage() {
                                 <input
                                     type="number"
 
-                                    onChange={(e) => changeQuantity(kit.id, e.target.value)}
+                                    onChange={(e) => changeKitsQuantity(kit.id, e.target.value)}
                                 />
                             </th>
 
