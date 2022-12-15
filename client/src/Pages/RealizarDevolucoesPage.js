@@ -8,6 +8,7 @@ export default function RealizarDevolucoesPage() {
   const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
   const [typeSearch, setTypeSearch] = useState("nome_projeto");
   const [counter, setCounter] = useState(0);
+  const [counter2, setCounter2] = useState(0);
 
   const searchMaterials = async () => {
     console.log("SEARCH INPUT = " + searchInput);
@@ -42,7 +43,6 @@ export default function RealizarDevolucoesPage() {
   };
 
   function increaseCounter(){
-    console.log("TESTE")
     setCounter(count => count + 1)
   }
 
@@ -88,32 +88,34 @@ export default function RealizarDevolucoesPage() {
                 <th>Kit</th>
               </tr>
                 {
+                  // How to use If Statement inside map function in React -> https://stackoverflow.com/questions/44969877/if-condition-inside-of-map-react
                   typeSearch === "kit" ? searchResultList?.map((object) => (
-                      console.log("JSON Stringify = " + JSON.stringify(object)),
+                    console.log("JSON Stringify = " + JSON.stringify(object)),
+                    object.map((atribute) => (
+                        //console.log("ATRIBUTE = " + " QUANTIDADE " + atribute["quantidade"] + atribute["kit"][0].nome),
                       <tr>
-                          <th>{object[counter]["kit"][0].nome}</th>
-                          <th>{object[counter]["material"][0].nome}</th>
-                          <th>{object[counter]["quantidade"]}</th>
-                          <th>{object[counter]["data_requisicao"]}</th>
-                          <th>{object[counter]["user"][0].nome}</th>
-                          <th>{object[counter]["kit"][0].nome}</th>
-                          {increaseCounter}
+                        <th>{atribute["kit"][0].nome}</th>
+                        <th>{atribute["material"][0].nome}</th>
+                        <th>{atribute["quantidade"]}</th>
+                        <th>{atribute["data_requisicao"]}</th>
+                        <th>{atribute["user"][0].nome}</th>
+                        <th>{atribute["kit"][0].nome}</th>
                       </tr>
-
-                      //setCounter(count => count + 1)
+                    ))
                   )) : searchResultList?.map((object) => (
-                      console.log("JSON Stringify = " + JSON.stringify(object)),
-                      <tr>
-                          <th>{object[0]["nome_projeto"]}</th>
-                          <th>{object[0]["material"][0].nome}</th>
-                          <th>{object[0]["quantidade"]}</th>
-                          <th>{object[0]["data_requisicao"]}</th>
-                          <th>{object[0]["user"][0].nome}</th>
-                          <th>kit</th>
-                      </tr>
-
-                      //setCounter(count => count + 1)
-                  ))
+                    console.log("JSON Stringify = " + JSON.stringify(object)),
+                    object.map((atribute) => (
+                        console.log("KIT = " + atribute["kit"]),
+                        <tr>
+                          <th>{atribute["nome_projeto"]}</th>
+                          <th>{atribute["material"][0].nome}</th>
+                          <th>{atribute["quantidade"]}</th>
+                          <th>{atribute["data_requisicao"]}</th>
+                          <th>{atribute["user"][0].nome}</th>
+                          <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit"}</th>
+                        </tr>
+                    )
+                  )))
                 }
 
             </tbody>

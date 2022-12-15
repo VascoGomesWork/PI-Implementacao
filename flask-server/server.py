@@ -101,8 +101,11 @@ def get_requests():
         print("NOME PROJETO = ", request.args["search"])
         returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.nome_projeto.contains(request.args["search"])).all()
     elif request.args["search_type"] == "data_requisicao":
-            print("DATA REQUISICAO = ", request.args["search"])
-            returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.data_requisicao.contains(request.args["search"])).all()
+        print("DATA REQUISICAO = ", request.args["search"])
+        returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.data_requisicao.contains(request.args["search"])).all()
+    elif request.args["search_type"] == "docente":
+        print("DOCENTE = ", request.args["search"])
+        returns_list = Requisitar_Devolver.query.filter(Requisitar_Devolver.esta_requisitado==True, Requisitar_Devolver.nome_pessoa_requisitar.contains(request.args["search"])).all()
     else:
         returns_list = Requisitar_Devolver.query.filter_by(esta_requisitado=True).all()
     requisitar_schema = Requisitar_DevolverSchema(many=True)
@@ -131,7 +134,7 @@ def get_requests():
                 })
 
             #Get Users
-            if request.args["search_type"] == "docente":
+            if request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] == "":
                 user_list = User.query.filter(User.id==item["id_user"], User.nome.contains(request.args["search"])).all()
             else:
                 user_list = User.query.filter_by(id=item["id_user"]).all()
@@ -174,7 +177,7 @@ def get_requests():
                 )
 
             print("SEARCH_TYPE = ", request.args["search_type"])
-            if request.args["search_type"] == "nome_projeto" or request.args["search_type"] == "data_requisicao":
+            if request.args["search_type"] == "nome_projeto" or request.args["search_type"] == "data_requisicao" or request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] != None:
                 #If materials were choosen as searchtype execute the code above
                 list_request_material_result = type_search_nome_projeto_data_requisicao(item, list_materials, list_user, list_kit, list_request_material_result, request.args["search"])
 
@@ -182,7 +185,7 @@ def get_requests():
                 #If materials were choosen as searchtype execute the code above
                 list_request_material_result = type_search_material(item, list_materials, list_user, list_kit, list_request_material_result, material_result, request.args["search"])
 
-            elif request.args["search_type"] == "docente":
+            elif request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] == None:
                 list_request_material_result = type_search_docente(item, list_materials, list_user, list_kit, list_request_material_result, user_result, request.args["search"])
 
             elif request.args["search_type"] == "kit":
@@ -198,6 +201,8 @@ def type_search_nome_projeto_data_requisicao(item, list_materials, list_user, li
 
     list_materials_updated = list_request_material_result
     #Fazer append para dentro de -> list_request_material_result
+    print("PESSOA A REQUISITAR = " , item["nome_pessoa_requisitar"],"\n\n")
+    list_user = [{"nome" : item["nome_pessoa_requisitar"]}]
     list_materials_updated.append(
         {
             "id" : item["id"],
