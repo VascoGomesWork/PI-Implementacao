@@ -82,36 +82,34 @@ export default function RealizarDevolucoesPage() {
                 <th>Docente</th>
                 <th>Kit</th>
               </tr>
-              {/*searchResultList?.map((item) => (
-                  <tr>
-                    <th>{item.nome_projeto}</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-              ))*/}
-              <tr>
-                {/*object[0].data_requisicao*/}
-                {/*
+                {
                   typeSearch === "kit" ? searchResultList?.map((object) => (
                       console.log("JSON Stringify = " + JSON.stringify(object)),
-                          <th>{object[0]["kit"][0].nome}</th>,
-                          <th>{object[0]["material"][0].nome}</th>
+                      <tr>
+                          <th>{object[counter]["kit"][0].nome}</th>
+                          <th>{object[counter]["material"][0].nome}</th>
+                          <th>{object[counter]["quantidade"]}</th>
+                          <th>{object[counter]["data_requisicao"]}</th>
+                          <th>{object[counter]["user"][0].nome}</th>
+                          <th>{object[counter]["kit"][0].nome}</th>
+                      </tr>
 
                       //setCounter(prevState => prevState + 1)
                   )) : searchResultList?.map((object) => (
                       console.log("JSON Stringify = " + JSON.stringify(object)),
-                          <th>TEste</th>,
-                          <th>{object[0]["material"][0].nome}</th>,
-                          <th>{object[0].quantidade}</th>
+                      <tr>
+                          <th>{object[0]["nome_projeto"]}</th>
+                          <th>{object[0]["material"][0].nome}</th>
+                          <th>{object[0]["quantidade"]}</th>
+                          <th>{object[0]["data_requisicao"]}</th>
+                          <th>{object[0]["user"][0].nome}</th>
+                          <th>kit</th>
+                      </tr>
 
-
-                      //setCounter(prevState => prevState + 1)
-                  ))*/
+                      //setCounter(count => count + 1)
+                  ))
                 }
-              </tr>
+
             </tbody>
           </table>
         </div>
