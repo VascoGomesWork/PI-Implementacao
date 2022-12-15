@@ -41,6 +41,11 @@ export default function RealizarDevolucoesPage() {
     ]);
   };
 
+  function increaseCounter(){
+    console.log("TESTE")
+    setCounter(count => count + 1)
+  }
+
   return (
     <div>
       <h1>Realizar Requisição de Material</h1>
@@ -92,9 +97,10 @@ export default function RealizarDevolucoesPage() {
                           <th>{object[counter]["data_requisicao"]}</th>
                           <th>{object[counter]["user"][0].nome}</th>
                           <th>{object[counter]["kit"][0].nome}</th>
+                          {increaseCounter}
                       </tr>
 
-                      //setCounter(prevState => prevState + 1)
+                      //setCounter(count => count + 1)
                   )) : searchResultList?.map((object) => (
                       console.log("JSON Stringify = " + JSON.stringify(object)),
                       <tr>
