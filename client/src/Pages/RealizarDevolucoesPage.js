@@ -7,6 +7,7 @@ export default function RealizarDevolucoesPage() {
   //const [requisicaoKitsList, setRequisicaoKitsList] = useState([]);
   const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
   const [typeSearch, setTypeSearch] = useState("nome_projeto");
+  const [counter, setCounter] = useState(0);
 
   const searchMaterials = async () => {
     console.log("SEARCH INPUT = " + searchInput);
@@ -81,7 +82,7 @@ export default function RealizarDevolucoesPage() {
                 <th>Docente</th>
                 <th>Kit</th>
               </tr>
-              {searchResultList?.map((item) => (
+              {/*searchResultList?.map((item) => (
                   <tr>
                     <th>{item.nome_projeto}</th>
                     <th></th>
@@ -90,18 +91,15 @@ export default function RealizarDevolucoesPage() {
                     <th></th>
                     <th></th>
                   </tr>
-              ))}
+              ))*/}
               <tr>
+                {/*object[0].data_requisicao*/}
               {
-                /*searchResultList?.map((item) => {
-                  console.log("JSON Stringify = " + JSON.stringify(item))
-                  item?.map((object) => {
-                    object?.map((object_atributes) => (
-                        console.log("Atributos = " + object_atributes.nome),
-                        <th>{object_atributes.nome}</th>
-                    ))
-                  })
-                })*/}
+                searchResultList?.map((object) => (
+                  console.log("JSON Stringify = " + JSON.stringify(object)),
+                  <th>{object[0].kit.nome}</th>
+                  //setCounter(prevState => prevState + 1)
+                ))}
               </tr>
             </tbody>
           </table>
