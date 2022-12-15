@@ -97,7 +97,9 @@ export default function RealizarDevolucoesPage() {
               {
                 searchResultList?.map((object) => (
                   console.log("JSON Stringify = " + JSON.stringify(object)),
-                  <th>{object[0].kit.nome}</th>
+                  <th>{object[0]["kit"][0].nome}</th>,
+                  <th>{object[0]["material"][0].nome}</th>
+
                   //setCounter(prevState => prevState + 1)
                 ))}
               </tr>
