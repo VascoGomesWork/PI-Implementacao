@@ -94,14 +94,23 @@ export default function RealizarDevolucoesPage() {
               ))*/}
               <tr>
                 {/*object[0].data_requisicao*/}
-              {
-                searchResultList?.map((object) => (
-                  console.log("JSON Stringify = " + JSON.stringify(object)),
-                  <th>{object[0]["kit"][0].nome}</th>,
-                  <th>{object[0]["material"][0].nome}</th>
+                {/*
+                  typeSearch === "kit" ? searchResultList?.map((object) => (
+                      console.log("JSON Stringify = " + JSON.stringify(object)),
+                          <th>{object[0]["kit"][0].nome}</th>,
+                          <th>{object[0]["material"][0].nome}</th>
 
-                  //setCounter(prevState => prevState + 1)
-                ))}
+                      //setCounter(prevState => prevState + 1)
+                  )) : searchResultList?.map((object) => (
+                      console.log("JSON Stringify = " + JSON.stringify(object)),
+                          <th>TEste</th>,
+                          <th>{object[0]["material"][0].nome}</th>,
+                          <th>{object[0].quantidade}</th>
+
+
+                      //setCounter(prevState => prevState + 1)
+                  ))*/
+                }
               </tr>
             </tbody>
           </table>

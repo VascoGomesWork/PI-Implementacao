@@ -174,8 +174,11 @@ def get_requests():
                 )
 
             print("SEARCH_TYPE = ", request.args["search_type"])
+            if request.args["search_type"] == "nome_projeto" or request.args["search_type"] == "data_requisicao":
+                #If materials were choosen as searchtype execute the code above
+                list_request_material_result = type_search_nome_projeto_data_requisicao(item, list_materials, list_user, list_kit, list_request_material_result, request.args["search"])
 
-            if request.args["search_type"] == "material":
+            elif request.args["search_type"] == "material":
                 #If materials were choosen as searchtype execute the code above
                 list_request_material_result = type_search_material(item, list_materials, list_user, list_kit, list_request_material_result, material_result, request.args["search"])
 
@@ -190,6 +193,23 @@ def get_requests():
     return jsonify({
         "returns_list": [list_request_material_result]
     })
+
+def type_search_nome_projeto_data_requisicao(item, list_materials, list_user, list_kit, list_request_material_result, search):
+
+    list_materials_updated = list_request_material_result
+    #Fazer append para dentro de -> list_request_material_result
+    list_materials_updated.append(
+        {
+            "id" : item["id"],
+            "nome_projeto" : item["nome_projeto"],
+            "quantidade" : item["quantidade_requisitada"],
+            "data_requisicao" : item["data_requisicao"],
+            "material" : list_materials,
+            "user" : list_user,
+            "kit" : list_kit
+        })
+
+    return list_materials_updated
 
 def type_search_material(item, list_materials, list_user, list_kit, list_request_material_result, material_result, search):
 
