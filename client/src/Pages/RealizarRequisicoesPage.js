@@ -19,6 +19,7 @@ export default function RealizarRequisicoesPage() {
   //Sets Default Value
   useEffect(() => {
     (async () => {
+      console.log("render use effect...")
       try {
         //Vai buscar tipos de materiais e preenche a dropdown
         const types = await httpClient.get(
@@ -32,7 +33,7 @@ export default function RealizarRequisicoesPage() {
           { tipo: "Kit" },
         ]);
         //console.log("dropdown 2 => ", comboboxMaterialRequisicao)
-        setTypeSearch(comboboxMaterialRequisicao[0].id);
+        //setTypeSearch(comboboxMaterialRequisicao[0].id);
       } catch (e) {
         console.log("Error getting types of materials");
       }
@@ -56,7 +57,7 @@ export default function RealizarRequisicoesPage() {
       //console.log("serach sem valores =>", searchInput);
       setSearchResultList([]);
     }
-  }, [searchInput]);
+  }, [searchInput, typeSearch]);
 
   const addMaterialToRequisicao = async (id, nome, quantidade) => {
     setRequisicaoMaterialsList([
@@ -96,7 +97,6 @@ export default function RealizarRequisicoesPage() {
     requisicaoMaterialsList.forEach((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
-        //console.log("element quantiaty => ", element);
       }
     });
   };
@@ -119,13 +119,6 @@ export default function RealizarRequisicoesPage() {
   };
 
   const makeMaterialsRequisition = async (e) => {
-    //console.log("NOME = " + nome);
-    //console.log("PROJETO = " + projeto);
-    //console.log("NOME PROJETO = " + nome_projeto);
-    /*console.log(
-      "Requisicao Material List = " + JSON.stringify(requisicaoMaterialsList)
-    );*/
-    //console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
     try {
       await httpClient.post("//localhost:5000/makerequest", {
         nome,
