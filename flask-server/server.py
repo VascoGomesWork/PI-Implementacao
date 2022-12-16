@@ -297,8 +297,6 @@ def type_search_kit(item, list_materials, list_user, list_kit, list_request_mate
     return list_materials_updated
 
 # Get All Materials By Their types of materials
-
-
 @app.route("/showmaterialsbynamebytype", methods=["GET", "POST"])
 def show_materials_types_materials():
     # If type is Kit calls the function bellow
@@ -319,7 +317,6 @@ def show_materials_types_materials():
 
 def search_by_kit(search):
     # gets all kits by search string
-    #kit_search_list = Kit.query.filter(Material.nome.contains(request.args.get("search"))).all()
     kit_search_list = Kit.query.filter(
         Kit.nome.contains(request.args.get("search"))).all()
     kit_schema = KitSchema(many=True)
