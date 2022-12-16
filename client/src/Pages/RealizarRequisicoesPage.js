@@ -35,6 +35,7 @@ export default function RealizarRequisicoesPage() {
     })();
   }, []);
 
+  // search bar
   useEffect(() => {
     if (searchInput.length > 0) {
       fetch(
@@ -46,6 +47,7 @@ export default function RealizarRequisicoesPage() {
         .then((res) => res.json())
         .then((data) => {
           setSearchResultList(data.list_kit_mateirals);
+          console.log("Search Result =>>> ", data.list_kit_mateirals);
         });
     } else if (searchInput.length <= 0) {
       setSearchResultList([]);
@@ -237,24 +239,34 @@ export default function RealizarRequisicoesPage() {
                 </tr>
               )}
               {typeSearch === "Kit"
-                ? searchResultList?.map((kit) =>
-                    kit.mat_list?.map((material) => (
-                      <tr key={material.mat_info[0].nome}>
-                        <th>{kit.kit_name}</th>
-                        <th>{material.mat_info[0].nome}</th>
-                        <th>{material.mat_quantidade_kit}</th>
-                        <th>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              addkitToRequisicao(kit.kit_id, kit.kit_name);
-                            }}
-                          >
-                            Adicionar Kit
-                          </button>
-                        </th>
-                      </tr>
-                    ))
+                ? searchResultList?.map(
+                    (kit) => (
+                      (
+                        <tr key={kit.id}>
+                          <th>{kit.kit_name}</th>
+                          <th>
+                            {kit.mat_list?.map((material) => (
+                              <p key={material.mat_info[0].id}>{material.mat_info[0].nome}</p>
+                            ))}
+                          </th>
+                          <th>
+                            {kit.mat_list?.map((material) => (
+                              <p key={material.mat_info[0].nome}>{material.mat_quantidade_kit}</p>
+                            ))}
+                          </th>
+                          <th>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                addkitToRequisicao(kit.kit_id, kit.kit_name);
+                              }}
+                            >
+                              Adicionar Kit
+                            </button>
+                          </th>
+                        </tr>
+                      )
+                    )
                   )
                 : searchResultList?.map((item) => (
                     <tr key={item.id}>
