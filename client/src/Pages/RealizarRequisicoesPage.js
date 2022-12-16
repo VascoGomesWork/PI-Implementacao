@@ -13,27 +13,22 @@ export default function RealizarRequisicoesPage() {
   const [searchResultList, setSearchResultList] = useState([]);
   const [requisicaoKitsList, setRequisicaoKitsList] = useState([]);
   const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
-  const [typeSearch, setTypeSearch] = useState("0");
-  //const [quantidadeKitRequisicao, setQuantidadeKitRequisicao] = useState([]);
+  const [typeSearch, setTypeSearch] = useState(1);
 
   //Sets Default Value
   useEffect(() => {
     (async () => {
-      console.log("render use effect...")
       try {
         //Vai buscar tipos de materiais e preenche a dropdown
         const types = await httpClient.get(
           `//localhost:5000/showtypesmaterials`
         );
         setComboboxMaterialRequisicao(types.data.types);
-        //console.log("dropdown 1 => ", comboboxMaterialRequisicao)
         //Adds Kit to Combobox
         setComboboxMaterialRequisicao((prevData) => [
           ...prevData,
           { tipo: "Kit" },
         ]);
-        //console.log("dropdown 2 => ", comboboxMaterialRequisicao)
-        //setTypeSearch(comboboxMaterialRequisicao[0].id);
       } catch (e) {
         console.log("Error getting types of materials");
       }
@@ -52,9 +47,7 @@ export default function RealizarRequisicoesPage() {
         .then((data) => {
           setSearchResultList(data.list_kit_mateirals);
         });
-      //console.log("search com valores =>", searchInput);
     } else if (searchInput.length <= 0) {
-      //console.log("serach sem valores =>", searchInput);
       setSearchResultList([]);
     }
   }, [searchInput, typeSearch]);
@@ -135,12 +128,6 @@ export default function RealizarRequisicoesPage() {
   };
 
   const makeKitsRequisition = async (e) => {
-    //console.log("NOME = " + nome);
-    //console.log("PROJETO = " + projeto);
-    //console.log("NOME PROJETO = " + nome_projeto);
-    console.log("Requisicao Kits List = " + JSON.stringify(requisicaoKitsList));
-    //console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
-
     try {
       await httpClient.post("//localhost:5000/makekitsrequest", {
         nome,
@@ -177,6 +164,8 @@ export default function RealizarRequisicoesPage() {
             value="false"
             checked={projeto === "false"}
             id=""
+            key="radio false"
+            onChange={changeProject}
           />
           <label>Usar em Projeto</label>
           <input
@@ -185,6 +174,8 @@ export default function RealizarRequisicoesPage() {
             value="true"
             checked={projeto === "true"}
             id=""
+            key="radio true"
+            onChange={changeProject}
           />
           <label>Não Usar em Projeto</label>
         </div>
@@ -208,19 +199,21 @@ export default function RealizarRequisicoesPage() {
             value={searchInput}
             onChange={(e) => {
               setSearchInput(e.target.value);
-              //searchMaterials();
             }}
             id=""
           />
 
           <select
             onChange={(e) => {
+              console.log(e.target.value);
               setTypeSearch(e.target.value);
             }}
             id=""
           >
             {comboboxMaterialRequisicao?.map((item) => (
-              <option value={item.id}>{item.tipo}</option>
+              <option key={item.tipo} value={item.id}>
+                {item.tipo}
+              </option>
             ))}
           </select>
         </div>
@@ -230,14 +223,14 @@ export default function RealizarRequisicoesPage() {
           <table border="1">
             <tbody>
               {typeSearch === "Kit" ? (
-                <tr>
+                <tr key="table head kit">
                   <th>Kit</th>
                   <th>Material</th>
                   <th>Quantidade Total</th>
                   <th>Adicionar</th>
                 </tr>
               ) : (
-                <tr>
+                <tr key="table head material">
                   <th>Material</th>
                   <th>Quantidade Total</th>
                   <th>Adicionar</th>
@@ -246,10 +239,9 @@ export default function RealizarRequisicoesPage() {
               {typeSearch === "Kit"
                 ? searchResultList?.map((kit) =>
                     kit.mat_list?.map((material) => (
-                      <tr>
+                      <tr key={material.mat_info[0].nome}>
                         <th>{kit.kit_name}</th>
                         <th>{material.mat_info[0].nome}</th>
-
                         <th>{material.mat_quantidade_kit}</th>
                         <th>
                           <button
@@ -258,7 +250,7 @@ export default function RealizarRequisicoesPage() {
                               addkitToRequisicao(kit.kit_id, kit.kit_name);
                             }}
                           >
-                            Adicionar
+                            Adicionar Kit
                           </button>
                         </th>
                       </tr>
@@ -293,13 +285,13 @@ export default function RealizarRequisicoesPage() {
           <table border="1">
             <tbody>
               {typeSearch === "Kit" ? (
-                <tr>
+                <tr key="table head kit add">
                   <th>Kit</th>
                   <th>Quantidade Total</th>
                   <th>Adicionar</th>
                 </tr>
               ) : (
-                <tr>
+                <tr key="table head material add">
                   <th>Material</th>
                   <th>Quantidade Total</th>
                   <th>Adicionar</th>
@@ -307,7 +299,7 @@ export default function RealizarRequisicoesPage() {
               )}
               {typeSearch === "Kit"
                 ? requisicaoKitsList?.map((kit) => (
-                    <tr>
+                    <tr key={kit.id}>
                       <th>{kit.nome}</th>
                       <th>
                         <input
