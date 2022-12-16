@@ -504,7 +504,6 @@ def make_kits_request():
     # Ternary if python -> https://book.pythontips.com/en/latest/ternary_operators.html
 
     for item in request.json["requisicaoKitsList"]:
-
         new_request = Requisitar_Devolver(
             nome_pessoa_requisitar=request.json["nome"],
             boolean_projeto=False if request.json["nome_projeto"] == "" else True,
@@ -520,8 +519,8 @@ def make_kits_request():
             id_material=None,
             id_kit=item["id"]
         )
-        db.session.add(new_request)
-        db.session.commit()
+        #db.session.add(new_request)
+        #db.session.commit()
 
     return jsonify({
         "": ""

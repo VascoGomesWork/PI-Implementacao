@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
 
 const CreateKitPage = () => {
@@ -23,7 +23,24 @@ const CreateKitPage = () => {
     }
   };
 
-  const searchMaterials = async () => {
+  useEffect(() => {
+    if (searchInput.length > 0) {
+      fetch(`//localhost:5000/showmaterialsbyname?search=` + searchInput)
+        .then((res) => res.json())
+        .then((data) => {
+          setSearchResultList(data.materials_list);
+        });
+      console.log("search com valores =>",searchInput);
+    } else if(searchInput.length <= 1){
+      console.log("serach sem valores =>", searchInput);
+      setSearchResultList([]);
+    }
+  }, [searchInput]);
+
+  /*const searchMaterials = async () => {
+    console.log("seach input...=> ", searchInput)
+    //let s = searchInput
+    
     if (searchInput.length > 0) {
       fetch(`//localhost:5000/showmaterialsbyname?search=` + searchInput)
         .then((res) => res.json())
@@ -32,7 +49,7 @@ const CreateKitPage = () => {
         });
       console.log(searchResultList);
     }
-  };
+  };*/
 
   const addMaterialToKit = async (id, nome, quantidade) => {
     setKitMaterialsList([
@@ -83,7 +100,7 @@ const CreateKitPage = () => {
             value={searchInput}
             onChange={(e) => {
               setSearchInput(e.target.value);
-              searchMaterials();
+              //searchMaterials();
             }}
             id=""
           />

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import httpClient from "../httpClient";
-//import httpClient from "../httpClient";
 
 export default function RealizarRequisicoesPage() {
   const [nome, setNome] = useState([]);
@@ -10,13 +9,12 @@ export default function RealizarRequisicoesPage() {
   const [comboboxMaterialRequisicao, setComboboxMaterialRequisicao] = useState(
     []
   );
-
   const [searchInput, setSearchInput] = useState([]);
   const [searchResultList, setSearchResultList] = useState([]);
   const [requisicaoKitsList, setRequisicaoKitsList] = useState([]);
   const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
-  const [typeSearch, setTypeSearch] = useState([]);
-  const [quantidadeKitRequisicao, setQuantidadeKitRequisicao] = useState([]);
+  const [typeSearch, setTypeSearch] = useState("0");
+  //const [quantidadeKitRequisicao, setQuantidadeKitRequisicao] = useState([]);
 
   //Sets Default Value
   useEffect(() => {
@@ -26,35 +24,22 @@ export default function RealizarRequisicoesPage() {
         const types = await httpClient.get(
           `//localhost:5000/showtypesmaterials`
         );
-        //console.log("TIPOS MATERIAIS = " + JSON.stringify(types.data))
-        /*
-         * 1º types -> nome da variavel
-         * data -> todos os json vem com data
-         * 2º types -> nome do json que vem do servidor
-         * */
         setComboboxMaterialRequisicao(types.data.types);
+        //console.log("dropdown 1 => ", comboboxMaterialRequisicao)
         //Adds Kit to Combobox
-        //console.log(JSON.stringify(comboboxMaterialRequisicao))
         setComboboxMaterialRequisicao((prevData) => [
           ...prevData,
           { tipo: "Kit" },
         ]);
+        //console.log("dropdown 2 => ", comboboxMaterialRequisicao)
+        setTypeSearch(comboboxMaterialRequisicao[0].id);
       } catch (e) {
         console.log("Error getting types of materials");
       }
     })();
-    //console.log("COMBOBOX = " + JSON.stringify(comboboxMaterialRequisicao))
   }, []);
 
-  const searchMaterials = async () => {
-    //console.log("TYPE MATERIAL = " + JSON.stringify(typeSearch) + " | " + comboboxMaterialRequisicao[0].id)
-
-    if (typeSearch.length === 0) {
-      setTypeSearch(comboboxMaterialRequisicao[0].id);
-    }
-    console.log("TYPE MATERIAL = " + typeSearch);
-
-    // if the search is by kit
+  useEffect(() => {
     if (searchInput.length > 0) {
       fetch(
         `//localhost:5000/showmaterialsbynamebytype?search=` +
@@ -66,10 +51,12 @@ export default function RealizarRequisicoesPage() {
         .then((data) => {
           setSearchResultList(data.list_kit_mateirals);
         });
-      console.log("SEARCH RESULT => ", searchResultList);
-      console.log("SEARCH RESULT => ", JSON.stringify(searchResultList));
+      //console.log("search com valores =>", searchInput);
+    } else if (searchInput.length <= 0) {
+      //console.log("serach sem valores =>", searchInput);
+      setSearchResultList([]);
     }
-  };
+  }, [searchInput]);
 
   const addMaterialToRequisicao = async (id, nome, quantidade) => {
     setRequisicaoMaterialsList([
@@ -83,26 +70,24 @@ export default function RealizarRequisicoesPage() {
   };
 
   const addkitToRequisicao = async (id, nome) => {
-
-      console.log("ID = ", id);
-      console.log("NOME = ", nome);
+    console.log("ID = ", id);
+    console.log("NOME = ", nome);
     setRequisicaoKitsList([
-        ...requisicaoKitsList,
-        {
-            id:id,
-            nome:nome
-        }
-    ])
+      ...requisicaoKitsList,
+      {
+        id: id,
+        nome: nome,
+      },
+    ]);
     console.log("REQUISIÇAO DE KIT FEITA", JSON.stringify(requisicaoKitsList));
-    console.log()
-
+    console.log();
   };
 
   const changeKitsQuantity = async (id, quantity) => {
     requisicaoKitsList.forEach((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
-        console.log("element quantiaty => ", element)
+        console.log("element quantiaty => ", element);
       }
     });
   };
@@ -111,7 +96,7 @@ export default function RealizarRequisicoesPage() {
     requisicaoMaterialsList.forEach((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
-        console.log("element quantiaty => ", element)
+        //console.log("element quantiaty => ", element);
       }
     });
   };
@@ -123,22 +108,24 @@ export default function RealizarRequisicoesPage() {
 
   const removeKitsList = async (id) => {
     setRequisicaoKitsList((requisicaoKitList) =>
-        requisicaoKitList.filter((element) => element.id !== id)
+      requisicaoKitList.filter((element) => element.id !== id)
     );
   };
 
   const removeMaterialsList = async (id) => {
     setRequisicaoMaterialsList((requisicaoMaterialsList) =>
-        requisicaoMaterialsList.filter((element) => element.id !== id)
+      requisicaoMaterialsList.filter((element) => element.id !== id)
     );
   };
 
   const makeMaterialsRequisition = async (e) => {
-    console.log("NOME = " + nome);
-    console.log("PROJETO = " + projeto);
-    console.log("NOME PROJETO = " + nome_projeto);
-    console.log("Requisicao Material List = " + JSON.stringify(requisicaoMaterialsList));
-    console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
+    //console.log("NOME = " + nome);
+    //console.log("PROJETO = " + projeto);
+    //console.log("NOME PROJETO = " + nome_projeto);
+    /*console.log(
+      "Requisicao Material List = " + JSON.stringify(requisicaoMaterialsList)
+    );*/
+    //console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
     try {
       await httpClient.post("//localhost:5000/makerequest", {
         nome,
@@ -146,7 +133,7 @@ export default function RealizarRequisicoesPage() {
         requisicaoMaterialsList: requisicaoMaterialsList,
         data_entrega_prevista,
       });
-      //window.location.href = "/";
+      window.location.href = "/";
     } catch (e) {
       if (e.response.status === 401) {
         alert("Invalid Type Info");
@@ -155,13 +142,12 @@ export default function RealizarRequisicoesPage() {
   };
 
   const makeKitsRequisition = async (e) => {
-    console.log("NOME = " + nome);
-    console.log("PROJETO = " + projeto);
-    console.log("NOME PROJETO = " + nome_projeto);
-    console.log(
-        "Requisicao Kits List = " + JSON.stringify(requisicaoKitsList)
-    );
-    console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
+    //console.log("NOME = " + nome);
+    //console.log("PROJETO = " + projeto);
+    //console.log("NOME PROJETO = " + nome_projeto);
+    console.log("Requisicao Kits List = " + JSON.stringify(requisicaoKitsList));
+    //console.log("DATA ENTREGA PREVISTA = " + data_entrega_prevista);
+
     try {
       await httpClient.post("//localhost:5000/makekitsrequest", {
         nome,
@@ -229,7 +215,7 @@ export default function RealizarRequisicoesPage() {
             value={searchInput}
             onChange={(e) => {
               setSearchInput(e.target.value);
-              searchMaterials();
+              //searchMaterials();
             }}
             id=""
           />
@@ -313,66 +299,68 @@ export default function RealizarRequisicoesPage() {
           <label>Materiais/Kits para Requisitar </label>
           <table border="1">
             <tbody>
-            {typeSearch === "Kit" ? (
+              {typeSearch === "Kit" ? (
                 <tr>
-                    <th>Kit</th>
-                    <th>Quantidade Total</th>
-                    <th>Adicionar</th>
+                  <th>Kit</th>
+                  <th>Quantidade Total</th>
+                  <th>Adicionar</th>
                 </tr>
-            ) : (
+              ) : (
                 <tr>
-                    <th>Material</th>
-                    <th>Quantidade Total</th>
-                    <th>Adicionar</th>
+                  <th>Material</th>
+                  <th>Quantidade Total</th>
+                  <th>Adicionar</th>
                 </tr>
-            )}
-            {typeSearch === "Kit"
+              )}
+              {typeSearch === "Kit"
                 ? requisicaoKitsList?.map((kit) => (
-                        <tr>
-                            <th>{kit.nome}</th>
-                            <th>
-                                <input
-                                    type="number"
+                    <tr>
+                      <th>{kit.nome}</th>
+                      <th>
+                        <input
+                          type="number"
+                          onChange={(e) =>
+                            changeKitsQuantity(kit.id, e.target.value)
+                          }
+                        />
+                      </th>
 
-                                    onChange={(e) => changeKitsQuantity(kit.id, e.target.value)}
-                                />
-                            </th>
-
-                            <th>
-                                <button
-                                    type="button"
-                                    onClick={(e) => {
-                                        removeKitsList(kit.id);
-                                    }}
-                                >
-                                    Remover
-                                </button>
-                            </th>
-                        </tr>
-                    )
-                )
+                      <th>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            removeKitsList(kit.id);
+                          }}
+                        >
+                          Remover
+                        </button>
+                      </th>
+                    </tr>
+                  ))
                 : requisicaoMaterialsList?.map((item) => (
                     <tr key={item.id}>
-                        <th>{item.nome}</th>
-                        <th>
-                            <input
-                                type="number"
-                                onChange={(e) => changeQuantity(item.id, e.target.value)}
-                                id=""
-                            />
-                        </th>
-                        <th>
-                            <button
-                                type="button"
-                                onClick={(e) => {
-                                    removeMaterialsList(item.id);
-                                }}
-                            >
-                                Remover
-                            </button>
-                        </th>
+                      <th>{item.nome}</th>
+                      <th>
+                        <input
+                          type="number"
+                          onChange={(e) =>
+                            changeQuantity(item.id, e.target.value)
+                          }
+                          id=""
+                        />
+                      </th>
+                      <th>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            removeMaterialsList(item.id);
+                          }}
+                        >
+                          Remover
+                        </button>
+                      </th>
                     </tr>
-                ))}
+                  ))}
             </tbody>
           </table>
         </div>
@@ -389,7 +377,14 @@ export default function RealizarRequisicoesPage() {
           />
         </div>
         <br />
-        <button type="button" onClick={typeSearch === "Kit" ? makeKitsRequisition :makeMaterialsRequisition}>
+        <button
+          type="button"
+          onClick={
+            typeSearch === "Kit"
+              ? makeKitsRequisition
+              : makeMaterialsRequisition
+          }
+        >
           Fazer Requisição
         </button>
       </form>
