@@ -118,15 +118,15 @@ def get_requests():
     list_request_material_result = []
     for item in result:
         # Get Materials
-        if item["id_material"] != None:
-            #print("RETURNS LIST = ", item["id_material"], "\n")
-            if request.args["search_type"] == "material":
-                #print("MATERIAL = ", request.args["search"])
-                material_list = Material.query.filter(
-                    Material.id == item["id_material"], Material.nome.contains(request.args["search"])).all()
-            else:
-                material_list = Material.query.filter_by(
-                    id=item["id_material"]).all()
+        #if item["id_material"] != None:
+        #print("RETURNS LIST = ", item["id_material"], "\n")
+        if request.args["search_type"] == "material":
+            #print("MATERIAL = ", request.args["search"])
+            material_list = Material.query.filter(
+                Material.id == item["id_material"], Material.nome.contains(request.args["search"])).all()
+        else:
+            material_list = Material.query.filter_by(
+                id=item["id_material"]).all()
             material_schema = MaterialSchema(many=True)
             material_result = material_schema.dump(material_list)
 
@@ -184,12 +184,10 @@ def get_requests():
             )
 
         print("SEARCH_TYPE = ", request.args["search_type"])
-        if request.args["search_type"] == "nome_projeto" or request.args["search_type"] == "data_requisicao" or request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] != None:
-            # If materials were choosen as searchtype execute the code above
-            list_request_material_result = type_search_nome_projeto_data_requisicao(
-                item, list_materials, list_user, list_kit, list_request_material_result, request.args["search"])
+        #if request.args["search_type"] == "nome_projeto" or request.args["search_type"] == "data_requisicao" or request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] != None:
 
-        elif request.args["search_type"] == "material":
+
+        if request.args["search_type"] == "material":
             # If materials were choosen as searchtype execute the code above
             list_request_material_result = type_search_material(
                 item, list_materials, list_user, list_kit, list_request_material_result, material_result, request.args["search"])
@@ -201,6 +199,11 @@ def get_requests():
         elif request.args["search_type"] == "kit":
             list_request_material_result = type_search_kit(
                 item, list_materials, list_user, list_kit, list_request_material_result, kit_result, request.args["search"])
+
+        else:
+              # If materials were choosen as searchtype execute the code above
+              list_request_material_result = type_search_nome_projeto_data_requisicao(
+                    item, list_materials, list_user, list_kit, list_request_material_result, request.args["search"])
 
     print("\n\nFINAL = ", list_request_material_result)
 
