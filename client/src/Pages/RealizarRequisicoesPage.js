@@ -55,28 +55,30 @@ export default function RealizarRequisicoesPage() {
   }, [searchInput, typeSearch]);
 
   const addMaterialToRequisicao = async (id, nome, quantidade) => {
-    setRequisicaoMaterialsList([
-      ...requisicaoMaterialsList,
-      {
-        id: id,
-        nome: nome,
-        quantidade: quantidade,
-      },
-    ]);
+    const found = requisicaoMaterialsList.some((material) => material.id === id);
+    if (!found) {
+      setRequisicaoMaterialsList([
+        ...requisicaoMaterialsList,
+        {
+          id: id,
+          nome: nome,
+          quantidade: quantidade,
+        },
+      ]);
+    }
   };
 
   const addkitToRequisicao = async (id, nome) => {
-    console.log("ID = ", id);
-    console.log("NOME = ", nome);
-    setRequisicaoKitsList([
-      ...requisicaoKitsList,
-      {
-        id: id,
+    const found = requisicaoKitsList.some((kit) => kit.id === id);
+    if (!found) {
+      setRequisicaoKitsList([
+        ...requisicaoKitsList,
+        {
+          id: id,
         nome: nome,
-      },
-    ]);
-    console.log("REQUISIÇAO DE KIT FEITA", JSON.stringify(requisicaoKitsList));
-    console.log();
+        },
+      ]);
+    }
   };
 
   const changeKitsQuantity = async (id, quantity) => {
