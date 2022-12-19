@@ -121,15 +121,15 @@ def get_requests():
         #if item["id_material"] != None:
         #print("RETURNS LIST = ", item["id_material"], "\n")
         if request.args["search_type"] == "material":
-            #print("MATERIAL = ", request.args["search"])
+            print("MATERIAL = ", request.args["search"])
             material_list = Material.query.filter(
                 Material.id == item["id_material"], Material.nome.contains(request.args["search"])).all()
         else:
             material_list = Material.query.filter_by(
                 id=item["id_material"]).all()
-            material_schema = MaterialSchema(many=True)
-            material_result = material_schema.dump(material_list)
-
+        material_schema = MaterialSchema(many=True)
+        material_result = material_schema.dump(material_list)
+        #TODO - Dar Fix no Pesquisar por material
         list_materials = []
         for material in material_result:
             list_materials.append(

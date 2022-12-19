@@ -31,16 +31,16 @@ export default function RealizarDevolucoesPage() {
     }
   }, [searchInput]);
 
-  const returnMaterialRequest = async (id, nome, quantidade) => {
+  const returnMaterialRequest = async (id) => {
     //Fazer Devolução Parcial ou total perguntando ao utilizador se deseja devolver tudo ou apenas o selecionado
-    setRequisicaoMaterialsList([
+
+    //Verificar se o que foi selecionado foi um kit
+    /*setRequisicaoMaterialsList([
       ...requisicaoMaterialsList,
       {
-        id: id,
-        nome: nome,
-        quantidade: quantidade,
+        id: id
       },
-    ]);
+    ]);*/
   };
 
   return (
@@ -83,6 +83,7 @@ export default function RealizarDevolucoesPage() {
                 <th>Data de Requisicao</th>
                 <th>Docente</th>
                 <th>Kit</th>
+                <th>Devolver</th>
               </tr>
               {
                 // How to use If Statement inside map function in React -> https://stackoverflow.com/questions/44969877/if-condition-inside-of-map-react
@@ -92,11 +93,12 @@ export default function RealizarDevolucoesPage() {
                             //console.log("ATRIBUTE = " + " QUANTIDADE " + atribute["quantidade"] + atribute["kit"][0].nome),
                             <tr>
                               <th>{atribute["kit"][0].nome}</th>
-                              <th>{atribute["material"][0].nome}</th>
+                              <th>{atribute["material"][0] !== undefined ? atribute["material"][0].nome : ""}</th>
                               <th>{atribute["quantidade"]}</th>
                               <th>{atribute["data_requisicao"]}</th>
                               <th>{atribute["user"][0].nome}</th>
                               <th>{atribute["kit"][0].nome}</th>
+                              <th><button>{atribute["kit"][0].id}</button></th>
                             </tr>
                         ))
                 )) : searchResultList?.map((object) => (
@@ -110,6 +112,7 @@ export default function RealizarDevolucoesPage() {
                                       <th>{atribute["data_requisicao"]}</th>
                                       <th>{atribute["user"][0].nome}</th>
                                       <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit"}</th>
+                                      <th><button onClick={ returnMaterialRequest(atribute["id"], atribute["material"][0].id)}>Realizar Devolução</button></th>
                                     </tr>
                             )
                         )))
