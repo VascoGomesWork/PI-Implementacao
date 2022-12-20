@@ -27,7 +27,7 @@ export default function RealizarDevolucoesPage() {
       //console.log("serach sem valores =>", searchInput);
       setSearchResultList([]);
     }
-  }, [searchInput]);
+  }, [searchInput, typeSearch]);
 
   const changeKitsQuantity = async (id, quantity) => {
     requisicaoKitsList.forEach((element) => {
@@ -84,7 +84,14 @@ export default function RealizarDevolucoesPage() {
     }
   };
 
-  const addkitToReturn = async (id, nome) => {
+  const addkitToReturn = async (id, nome, quantidade, data_requisicao, docente, kit) => {
+
+    console.log("ID = " + id)
+    console.log("NOME = " + nome)
+    console.log("QUANTIDADE = " + quantidade)
+    console.log("DATA REQUISIÇÃO = " + data_requisicao)
+    console.log("DOCENTE = " + docente)
+    console.log("KIT = " + kit)
     const found = requisicaoKitsList.some((kit) => kit.id === id);
     if (!found) {
       setRequisicaoKitsList([
@@ -92,21 +99,14 @@ export default function RealizarDevolucoesPage() {
         {
           id: id,
           nome: nome,
+          quantidade: quantidade,
+          data_requisicao: data_requisicao,
+          docente: docente,
+          kit: kit
         },
       ]);
     }
-  };
-
-  const returnMaterialRequest = async (/*id, materialId*/) => {
-    //Fazer Devolução Parcial ou total perguntando ao utilizador se deseja devolver tudo ou apenas o selecionado
-
-    //Verificar se o que foi selecionado foi um kit
-    /*setRequisicaoMaterialsList([
-      ...requisicaoMaterialsList,
-      {
-        id: id
-      },
-    ]);*/
+    console.log("REQUISICAO KIT KIT = " + JSON.stringify(requisicaoKitsList))
   };
 
   const makeMaterialsReturn = async (e) => {
@@ -123,20 +123,19 @@ export default function RealizarDevolucoesPage() {
     }
   };
 
-  const makeKitsRequisition = async (e) => {
-    /*try {
-      await httpClient.post("//localhost:5000/makekitsrequest", {
-        nome,
-        nome_projeto,
-        requisicaoKitsList,
-        data_entrega_prevista,
+  const makeKitsReturn = async (e) => {
+    //Fazer UPDATE NA TABELA
+    console.log()
+    try {
+      await httpClient.post("//localhost:5000/makereturn", {
+        requisicaoMaterialsList: requisicaoKitsList,
       });
       window.location.href = "/";
     } catch (e) {
       if (e.response.status === 401) {
         alert("Invalid Type Info");
       }
-    }*/
+    }
   };
 
   return (
@@ -157,6 +156,10 @@ export default function RealizarDevolucoesPage() {
             <select
                 onChange={(e) => {
                   setTypeSearch(e.target.value);
+                  /*if(e.target.value === "kit"){
+                    setRequisicaoMaterialsList([])
+                    setRequisicaoKitsList([])
+                  }*/
                 }}
                 id=""
             >
@@ -172,35 +175,45 @@ export default function RealizarDevolucoesPage() {
             <label>Lista de Materiais </label>
             <table border="1">
               <tbody>
-              <tr>
-                <th>Nome de Projeto</th>
-                <th>Material</th>
-                <th>Quantidade</th>
-                <th>Data de Requisicao</th>
-                <th>Docente</th>
-                <th>Kit</th>
-                <th>Devolver</th>
-              </tr>
+              {typeSearch !== "kit" ?
+                  <tr>
+                    <th>Nome de Projeto</th>
+                    <th>Material</th>
+                    <th>Quantidade</th>
+                    <th>Data de Requisicao</th>
+                    <th>Docente</th>
+                    <th>Kit</th>
+                    <th>Devolver</th>
+                  </tr>
+                  :
+                  <tr>
+                    <th>Kit</th>
+                    <th>Material</th>
+                    <th>Quantidade</th>
+                    <th>Data de Requisicao</th>
+                    <th>Docente</th>
+                    <th>Devolver</th>
+                  </tr>
+              }
               {
                 // How to use If Statement inside map function in React -> https://stackoverflow.com/questions/44969877/if-condition-inside-of-map-react
                 typeSearch === "kit" ? searchResultList?.map((object) => (
-                    console.log("JSON Stringify = " + JSON.stringify(object)),
+                    //console.log("JSON Stringify = " + JSON.stringify(object)),
                         object.map((atribute) => (
                             //console.log("ATRIBUTE = " + " QUANTIDADE " + atribute["quantidade"] + atribute["kit"][0].nome),
                             <tr>
-                              <th>{atribute["kit"][0].nome}</th>
+                              <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : ""}</th>
                               <th>{atribute["material"][0] !== undefined ? atribute["material"][0].nome : ""}</th>
                               <th>{atribute["quantidade"]}</th>
                               <th>{atribute["data_requisicao"]}</th>
                               <th>{atribute["user"][0].nome}</th>
-                              <th>{atribute["kit"][0].nome}</th>
-                              <th><button>{atribute["kit"][0].id + " " + atribute["material"][0].id}</button></th>
+                              <th><button type="button" onClick={(e) => {addkitToReturn(atribute["id"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0].nome)}}>Realizar Devolução</button></th>
                             </tr>
                         ))
                 )) : searchResultList?.map((object) => (
-                    console.log("JSON Stringify = " + JSON.stringify(object)),
+                    //console.log("JSON Stringify = " + JSON.stringify(object)),
                         object.map((atribute) => (
-                                console.log("KIT = " + atribute["kit"]),
+                                //console.log("KIT = " + atribute["kit"]),
                                     <tr>
                                       <th>{atribute["nome_projeto"]}</th>
                                       <th>{atribute["material"][0] !== undefined ? atribute["material"][0].nome : ""}</th>
@@ -208,7 +221,7 @@ export default function RealizarDevolucoesPage() {
                                       <th>{atribute["data_requisicao"]}</th>
                                       <th>{atribute["user"][0].nome}</th>
                                       <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit"}</th>
-                                      <th><button type="button" onClick={(e) => {addMaterialToReturn(atribute["id"], atribute["nome_projeto"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0].nome)}}>Realizar Devolução</button></th>
+                                      <th><button type="button" onClick={(e) => {addMaterialToReturn(atribute["id"], atribute["nome_projeto"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit")}}>Realizar Devolução</button></th>
                                     </tr>
                             )
                         )))
@@ -222,11 +235,14 @@ export default function RealizarDevolucoesPage() {
             <label>Materiais/Kits para Devolver </label>
             <table border="1">
               <tbody>
-              {typeSearch === "Kit" ? (
+              {typeSearch === "kit" ? (
                   <tr key="table head kit add">
                     <th>Kit</th>
-                    <th>Quantidade Total</th>
-                    <th>Adicionar</th>
+                    <th>Material</th>
+                    <th>Quantidade a Devolver</th>
+                    <th>Data de Requisição</th>
+                    <th>Docente</th>
+                    <th>Remover</th>
                   </tr>
               ) : (
                   <tr key="table head material add">
@@ -239,9 +255,10 @@ export default function RealizarDevolucoesPage() {
                     <th>Remover</th>
                   </tr>
               )}
-              {typeSearch === "Kit"
+              {typeSearch === "kit"
                   ? requisicaoKitsList?.map((kit) => (
                       <tr key={kit.id}>
+                        <th>{kit.kit}</th>
                         <th>{kit.nome}</th>
                         <th>
                           <input
@@ -249,9 +266,11 @@ export default function RealizarDevolucoesPage() {
                               onChange={(e) =>
                                   changeKitsQuantity(kit.id, e.target.value)
                               }
+                              id=""
                           />
                         </th>
-
+                        <th>{kit.data_requisicao}</th>
+                        <th>{kit.docente}</th>
                         <th>
                           <button
                               type="button"
@@ -298,8 +317,8 @@ export default function RealizarDevolucoesPage() {
           <button
               type="button"
               onClick={
-                typeSearch === "Kit"
-                    ? makeKitsRequisition
+                typeSearch === "kit"
+                    ? makeKitsReturn
                     : makeMaterialsReturn
               }
           >
