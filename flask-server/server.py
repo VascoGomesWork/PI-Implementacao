@@ -512,6 +512,37 @@ def make_request():
         "": ""
     })
 
+
+# makes a material return
+@app.route("/makereturn", methods=["POST"])
+def make_return():
+    #request_variables = request.json["tipo"]
+    print("REQUEST = ", request.json)
+    for item in request.json["requisicaoMaterialsList"]:
+        #print("ITEM = ", item,"\n\n\n\n\n")
+
+        return_update = Requisitar_Devolver.query.filter_by(id=item["id"]).first()
+        print("QUANTIDADE REQUISITADA = ", return_update.quantidade_requisitada,"\n\n\n\n\n")
+        #Checks if Quantity is between baudaries
+        if int(item["quantidade"]) > int(return_update.quantidade_requisitada):
+            return jsonify({
+                    "error": "Quantidade Excede o Máximo"
+                })
+        elif int(item["quantidade"]) < int(return_update.quantidade_requisitada) and int(item["quantidade"]) >= 0:
+            print("CARAI")
+            return_update.quantidade_requisitada = int(return_update.quantidade_requisitada) - int(item["quantidade"])
+        else:
+            return_update.esta_requisitado = False
+            return_update.esta_devolvido = True
+            return_update.quantidade_requisitada = 0
+            return_update.data_devolucao_real = datetime.now()
+
+        db.session.commit()
+
+    return jsonify({
+        "": ""
+    })
+
 # makes a kit request
 @app.route("/makekitsrequest", methods=["POST"])
 def make_kits_request():

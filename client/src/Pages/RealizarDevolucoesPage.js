@@ -39,6 +39,7 @@ export default function RealizarDevolucoesPage() {
   };
 
   const changeQuantity = async (id, quantity) => {
+    console.log("QTY = " + quantity)
     requisicaoMaterialsList.forEach((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
@@ -58,15 +59,26 @@ export default function RealizarDevolucoesPage() {
     );
   };
 
-  const addMaterialToReturn = async (id, nome, quantidade) => {
+  function addMaterialToReturn(id, projeto, nome, quantidade, data_requisicao, docente, kit){
+    //console.log("TESTE INSIDE FUNCTION")
+    console.log("ID = " + id)
+    console.log("NOME = " + nome)
+    console.log("QUANTIDADE = " + quantidade)
+    console.log("DATA REQUISIÇÃO = " + data_requisicao)
+    console.log("DOCENTE = " + docente)
+    console.log("KIT = " + kit)
     const found = requisicaoMaterialsList.some((material) => material.id === id);
     if (!found) {
       setRequisicaoMaterialsList([
         ...requisicaoMaterialsList,
         {
           id: id,
+          projeto: projeto,
           nome: nome,
           quantidade: quantidade,
+          data_requisicao: data_requisicao,
+          docente: docente,
+          kit: kit,
         },
       ]);
     }
@@ -95,6 +107,36 @@ export default function RealizarDevolucoesPage() {
         id: id
       },
     ]);*/
+  };
+
+  const makeMaterialsReturn = async (e) => {
+    //Fazer UPDATE NA TABELA
+    try {
+      await httpClient.post("//localhost:5000/makereturn", {
+        requisicaoMaterialsList: requisicaoMaterialsList,
+      });
+      window.location.href = "/";
+    } catch (e) {
+      if (e.response.status === 401) {
+        alert("Invalid Type Info");
+      }
+    }
+  };
+
+  const makeKitsRequisition = async (e) => {
+    /*try {
+      await httpClient.post("//localhost:5000/makekitsrequest", {
+        nome,
+        nome_projeto,
+        requisicaoKitsList,
+        data_entrega_prevista,
+      });
+      window.location.href = "/";
+    } catch (e) {
+      if (e.response.status === 401) {
+        alert("Invalid Type Info");
+      }
+    }*/
   };
 
   return (
@@ -166,7 +208,7 @@ export default function RealizarDevolucoesPage() {
                                       <th>{atribute["data_requisicao"]}</th>
                                       <th>{atribute["user"][0].nome}</th>
                                       <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit"}</th>
-                                      <th><button onClick={ addMaterialToReturn(atribute["id"], atribute["nome"], atribute["quantidade"])}>Realizar Devolução</button></th>
+                                      <th><button type="button" onClick={(e) => {addMaterialToReturn(atribute["id"], atribute["nome_projeto"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0].nome)}}>Realizar Devolução</button></th>
                                     </tr>
                             )
                         )))
@@ -188,9 +230,13 @@ export default function RealizarDevolucoesPage() {
                   </tr>
               ) : (
                   <tr key="table head material add">
+                    <th>Nome de Projeto</th>
                     <th>Material</th>
-                    <th>Quantidade Total</th>
-                    <th>Adicionar</th>
+                    <th>Quantidade a Devolver</th>
+                    <th>Data de Requisição</th>
+                    <th>Docente</th>
+                    <th>Kit</th>
+                    <th>Remover</th>
                   </tr>
               )}
               {typeSearch === "Kit"
@@ -220,6 +266,7 @@ export default function RealizarDevolucoesPage() {
                   ))
                   : requisicaoMaterialsList?.map((item) => (
                       <tr key={item.id}>
+                        <th>{item.projeto}</th>
                         <th>{item.nome}</th>
                         <th>
                           <input
@@ -230,6 +277,9 @@ export default function RealizarDevolucoesPage() {
                               id=""
                           />
                         </th>
+                        <th>{item.data_requisicao}</th>
+                        <th>{item.docente}</th>
+                        <th>{item.kit}</th>
                         <th>
                           <button
                               type="button"
@@ -245,7 +295,16 @@ export default function RealizarDevolucoesPage() {
               </tbody>
             </table>
           </div>
-
+          <button
+              type="button"
+              onClick={
+                typeSearch === "Kit"
+                    ? makeKitsRequisition
+                    : makeMaterialsReturn
+              }
+          >
+            Fazer Devolucao
+          </button>
         </form>
       </div>
   );
