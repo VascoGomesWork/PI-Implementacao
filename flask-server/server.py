@@ -129,7 +129,7 @@ def get_requests():
                 id=item["id_material"]).all()
         material_schema = MaterialSchema(many=True)
         material_result = material_schema.dump(material_list)
-        #TODO - Dar Fix no Pesquisar por material
+
         list_materials = []
         for material in material_result:
             list_materials.append(
@@ -139,11 +139,11 @@ def get_requests():
                 })
 
         # Get Users
-        if request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] == "":
-            user_list = User.query.filter(
-                User.id == item["id_user"], User.nome.contains(request.args["search"])).all()
-        else:
-            user_list = User.query.filter_by(id=item["id_user"]).all()
+        #if request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] == "":
+        #    user_list = User.query.filter(
+        #        User.id == item["id_user"], User.nome.contains(request.args["search"])).all()
+        #else:
+        user_list = User.query.filter_by(id=item["id_user"]).all()
         user_schema = UsersSchema(many=True)
         user_result = user_schema.dump(user_list)
 
@@ -192,9 +192,9 @@ def get_requests():
             list_request_material_result = type_search_material(
                 item, list_materials, list_user, list_kit, list_request_material_result, material_result, request.args["search"])
 
-        elif request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] == None:
-            list_request_material_result = type_search_docente(
-                item, list_materials, list_user, list_kit, list_request_material_result, user_result, request.args["search"])
+        #elif request.args["search_type"] == "docente" and item["nome_pessoa_requisitar"] == None:
+            #list_request_material_result = type_search_docente(
+                #item, list_materials, list_user, list_kit, list_request_material_result, user_result, request.args["search"])
 
         elif request.args["search_type"] == "kit":
             list_request_material_result = type_search_kit(
@@ -217,7 +217,9 @@ def type_search_nome_projeto_data_requisicao(item, list_materials, list_user, li
     list_materials_updated = list_request_material_result
     # Fazer append para dentro de -> list_request_material_result
     print("PESSOA A REQUISITAR = ", item["nome_pessoa_requisitar"], "\n\n")
-    list_user = [{"nome": item["nome_pessoa_requisitar"]}]
+    #Gets Name From Requesition, If there is None Uses the User Name
+    if item["nome_pessoa_requisitar"] != "":
+        list_user = [{"nome": item["nome_pessoa_requisitar"]}]
     list_materials_updated.append(
         {
             "id": item["id"],
@@ -241,10 +243,13 @@ def type_search_material(item, list_materials, list_user, list_kit, list_request
         if material != []:
             print("MATERIAL NOME = ", material.get("nome"), "\n\n")
             # if material.get("nome") != None:
-
+            #Gets Name From Requesition, If there is None Uses the User Name
+            if item["nome_pessoa_requisitar"] != "":
+                list_user = [{"nome": item["nome_pessoa_requisitar"]}]
             list_materials_updated.append(
                 {
                     "id": item["id"],
+                    "nome_projeto": item["nome_projeto"],
                     "quantidade": item["quantidade_requisitada"],
                     "data_requisicao": item["data_requisicao"],
                     "material": list_materials,
@@ -255,14 +260,16 @@ def type_search_material(item, list_materials, list_user, list_kit, list_request
     return list_materials_updated
 
 
-def type_search_docente(item, list_materials, list_user, list_kit, list_request_material_result, user_result, search):
+'''def type_search_docente(item, list_materials, list_user, list_kit, list_request_material_result, user_result, search):
 
     list_materials_updated = list_request_material_result
     # Fazer append para dentro de -> list_request_material_result
     for docente in user_result:
         print("DOCENTE = ", docente)
         if docente != []:
-
+            #Gets Name From Requesition, If there is None Uses the User Name
+            if item["nome_pessoa_requisitar"] != "":
+                list_user = [{"nome": item["nome_pessoa_requisitar"]}]
             list_materials_updated.append(
                 {
                     "id": item["id"],
@@ -273,7 +280,7 @@ def type_search_docente(item, list_materials, list_user, list_kit, list_request_
                     "kit": list_kit
                 })
 
-    return list_materials_updated
+    return list_materials_updated'''
 
 
 def type_search_kit(item, list_materials, list_user, list_kit, list_request_material_result, kit_result, search):
@@ -283,7 +290,9 @@ def type_search_kit(item, list_materials, list_user, list_kit, list_request_mate
     for kit in kit_result:
         print("DOCENTE = ", kit)
         if kit != []:
-
+            #Gets Name From Requesition, If there is None Uses the User Name
+            if item["nome_pessoa_requisitar"] != "":
+                list_user = [{"nome": item["nome_pessoa_requisitar"]}]
             list_materials_updated.append(
                 {
                     "id": item["id"],

@@ -4,11 +4,9 @@ import httpClient from "../httpClient";
 export default function RealizarDevolucoesPage() {
   const [searchInput, setSearchInput] = useState([]);
   const [searchResultList, setSearchResultList] = useState([]);
-  //const [requisicaoKitsList, setRequisicaoKitsList] = useState([]);
+  const [requisicaoKitsList, setRequisicaoKitsList] = useState([]);
   const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
   const [typeSearch, setTypeSearch] = useState("nome_projeto");
-  const [counter, setCounter] = useState(0);
-  const [counter2, setCounter2] = useState(0);
 
   useEffect(() => {
     if (searchInput.length > 0) {
@@ -31,7 +29,63 @@ export default function RealizarDevolucoesPage() {
     }
   }, [searchInput]);
 
-  const returnMaterialRequest = async (id) => {
+  const changeKitsQuantity = async (id, quantity) => {
+    requisicaoKitsList.forEach((element) => {
+      if (element.id === id) {
+        element.quantidade = quantity;
+        console.log("element quantiaty => ", element);
+      }
+    });
+  };
+
+  const changeQuantity = async (id, quantity) => {
+    requisicaoMaterialsList.forEach((element) => {
+      if (element.id === id) {
+        element.quantidade = quantity;
+      }
+    });
+  };
+
+  const removeKitsList = async (id) => {
+    setRequisicaoKitsList((requisicaoKitList) =>
+        requisicaoKitList.filter((element) => element.id !== id)
+    );
+  };
+
+  const removeMaterialsList = async (id) => {
+    setRequisicaoMaterialsList((requisicaoMaterialsList) =>
+        requisicaoMaterialsList.filter((element) => element.id !== id)
+    );
+  };
+
+  const addMaterialToReturn = async (id, nome, quantidade) => {
+    const found = requisicaoMaterialsList.some((material) => material.id === id);
+    if (!found) {
+      setRequisicaoMaterialsList([
+        ...requisicaoMaterialsList,
+        {
+          id: id,
+          nome: nome,
+          quantidade: quantidade,
+        },
+      ]);
+    }
+  };
+
+  const addkitToReturn = async (id, nome) => {
+    const found = requisicaoKitsList.some((kit) => kit.id === id);
+    if (!found) {
+      setRequisicaoKitsList([
+        ...requisicaoKitsList,
+        {
+          id: id,
+          nome: nome,
+        },
+      ]);
+    }
+  };
+
+  const returnMaterialRequest = async (/*id, materialId*/) => {
     //Fazer Devolução Parcial ou total perguntando ao utilizador se deseja devolver tudo ou apenas o selecionado
 
     //Verificar se o que foi selecionado foi um kit
@@ -45,7 +99,7 @@ export default function RealizarDevolucoesPage() {
 
   return (
       <div>
-        <h1>Realizar Requisição de Material</h1>
+        <h1>Realizar Devoluções de Material</h1>
         <form>
           <div>
             <label>Pesquisa: </label>
@@ -98,7 +152,7 @@ export default function RealizarDevolucoesPage() {
                               <th>{atribute["data_requisicao"]}</th>
                               <th>{atribute["user"][0].nome}</th>
                               <th>{atribute["kit"][0].nome}</th>
-                              <th><button>{atribute["kit"][0].id}</button></th>
+                              <th><button>{atribute["kit"][0].id + " " + atribute["material"][0].id}</button></th>
                             </tr>
                         ))
                 )) : searchResultList?.map((object) => (
@@ -112,7 +166,7 @@ export default function RealizarDevolucoesPage() {
                                       <th>{atribute["data_requisicao"]}</th>
                                       <th>{atribute["user"][0].nome}</th>
                                       <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit"}</th>
-                                      <th><button onClick={ returnMaterialRequest(atribute["id"], atribute["material"][0].id)}>Realizar Devolução</button></th>
+                                      <th><button onClick={ addMaterialToReturn(atribute["id"], atribute["nome"], atribute["quantidade"])}>Realizar Devolução</button></th>
                                     </tr>
                             )
                         )))
@@ -121,6 +175,77 @@ export default function RealizarDevolucoesPage() {
               </tbody>
             </table>
           </div>
+
+          <div>
+            <label>Materiais/Kits para Devolver </label>
+            <table border="1">
+              <tbody>
+              {typeSearch === "Kit" ? (
+                  <tr key="table head kit add">
+                    <th>Kit</th>
+                    <th>Quantidade Total</th>
+                    <th>Adicionar</th>
+                  </tr>
+              ) : (
+                  <tr key="table head material add">
+                    <th>Material</th>
+                    <th>Quantidade Total</th>
+                    <th>Adicionar</th>
+                  </tr>
+              )}
+              {typeSearch === "Kit"
+                  ? requisicaoKitsList?.map((kit) => (
+                      <tr key={kit.id}>
+                        <th>{kit.nome}</th>
+                        <th>
+                          <input
+                              type="number"
+                              onChange={(e) =>
+                                  changeKitsQuantity(kit.id, e.target.value)
+                              }
+                          />
+                        </th>
+
+                        <th>
+                          <button
+                              type="button"
+                              onClick={(e) => {
+                                removeKitsList(kit.id);
+                              }}
+                          >
+                            Remover
+                          </button>
+                        </th>
+                      </tr>
+                  ))
+                  : requisicaoMaterialsList?.map((item) => (
+                      <tr key={item.id}>
+                        <th>{item.nome}</th>
+                        <th>
+                          <input
+                              type="number"
+                              onChange={(e) =>
+                                  changeQuantity(item.id, e.target.value)
+                              }
+                              id=""
+                          />
+                        </th>
+                        <th>
+                          <button
+                              type="button"
+                              onClick={(e) => {
+                                removeMaterialsList(item.id);
+                              }}
+                          >
+                            Remover
+                          </button>
+                        </th>
+                      </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+
         </form>
       </div>
   );
