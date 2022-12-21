@@ -24,20 +24,35 @@ class UsersSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
 
+# Kit_Material Table
+class Kit_Material(db.Model):
+    __tablename__ = "kit_material"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    quantidade = db.Column(db.Integer, nullable=False)
+    # FK
+    id_kit = db.Column(db.Integer, db.ForeignKey('kit.id'))
+    id_material = db.Column(db.Integer, db.ForeignKey('material.id'))
+
+class Kit_MaterialSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Kit_Material
+        include_fk = True
+
 # Material Table
 class Material(db.Model):
     __tablename__ = "material"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     nome = db.Column(db.String(345), nullable=False)
     quantidade = db.Column(db.Integer, nullable=False)
+    quantidade_disponivel = db.Column(db.Integer, nullable=False)
     observacao = db.Column(db.String(345), nullable=False)
     data = db.Column(db.DateTime, nullable=False)
     # FK Tipo Material
     id_tipo_material = db.Column(db.Integer, db.ForeignKey('tipo_material.id'))
     #tipo_material = db.relationship('Tipo_Material', backref='material')
     # FK Kit Material
-    id_kit_material = db.Column(db.Integer, db.ForeignKey('kit_material.id'))
-    #kit_material = db.relationship('Kit_Material', backref='material')
+    #id_kit_material = db.Column(db.Integer, db.ForeignKey('kit_material.id'))
+    kit_materials = db.relationship('Kit_Material', backref='material')
     # FK Projeto
     id_projeto = db.Column(db.Integer, db.ForeignKey('projeto.id'))
     #projeto = db.relationship('Projeto', backref='material')
@@ -71,20 +86,6 @@ class Tipo_Material(db.Model):
 class Tipo_MaterialSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Tipo_Material
-
-# Kit_Material Table
-class Kit_Material(db.Model):
-    __tablename__ = "kit_material"
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    quantidade = db.Column(db.Integer, nullable=False)
-    # FK
-    id_kit = db.Column(db.Integer, db.ForeignKey('kit.id'))
-    id_material = db.Column(db.Integer, db.ForeignKey('material.id'))
-
-class Kit_MaterialSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Kit_Material
-        include_fk = True
 
 # Requisitar_Devolver Table
 class Requisitar_Devolver(db.Model):
@@ -126,4 +127,5 @@ class Kit(db.Model):
 class KitSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Kit
+        include_fk = True
 

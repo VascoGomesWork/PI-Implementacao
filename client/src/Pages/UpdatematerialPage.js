@@ -5,8 +5,10 @@ const UpdatematerialPage = () => {
   const [stocks, setStocks] = useState([]);
   const [id, setId] = useState([]);
   const [quantidade, setQuantidade] = useState([]);
+  const [searchInput, setSearchInput] = useState([]);
+  const [typeSearch, setTypeSearch] = useState("nome_material");
 
-  useEffect(() => {
+  /*useEffect(() => {
     (async () => {
       try {
         const stock = await httpClient.get("//localhost:5000/stock");
@@ -15,7 +17,20 @@ const UpdatematerialPage = () => {
         console.log("Error getting stocks");
       }
     })();
-  }, []);
+  }, []);*/
+  // search bar
+  useEffect(() => {
+    fetch(
+      `//localhost:5000/showstockbyname?search=` +
+        searchInput +
+        "&search_type=" +
+        typeSearch
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setStocks(data.materials_list);
+      });
+  }, [searchInput, typeSearch]);
 
   const updateStock = async (e) => {
     console.log("id: ", id);
@@ -40,6 +55,30 @@ const UpdatematerialPage = () => {
   return (
     <div>
       <h1>Atualizar Stocks</h1>
+      <div>
+          <label>Pesquisa: </label>
+          <input
+            type="search"
+            value={searchInput}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+            }}
+            id=""
+          />
+
+          <select
+            onChange={(e) => {
+              console.log(e.target.value);
+              setTypeSearch(e.target.value);
+            }}
+            id=""
+          >
+            <option value="nome_material">Nome Material</option>
+            <option value="quantidade">Quantidade</option>
+            <option value="data_requisicao">Data de Requisicao</option>
+          </select>
+        </div>
+        <br />
       <div>
         <table border="1">
           <tbody>

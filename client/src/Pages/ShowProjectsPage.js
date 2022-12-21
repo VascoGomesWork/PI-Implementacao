@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
-import httpClient from "../httpClient";
 
 const ShowProjectsPage = () => {
   const [projects, setProjects] = useState([]);
+  const [searchInput, setSearchInput] = useState([]);
+  const [typeSearch, setTypeSearch] = useState("nome_projeto");
 
+  // search bar
   useEffect(() => {
-    (async () => {
-      try {
-        const projects = await httpClient.get("//localhost:5000/showprojects");
-        setProjects(projects.data.projects);
-      } catch (error) {
-        console.log("Error getting projects");
-      }
-    })();
-  }, []);
+    fetch(
+      `//localhost:5000/showprojectbyname?search=` +
+        searchInput +
+        "&search_type=" +
+        typeSearch
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setProjects(data.projects);
+      });
+  }, [searchInput, typeSearch]);
 
   const exit = async () => {
     window.location.href = "/";
@@ -24,6 +28,29 @@ const ShowProjectsPage = () => {
       <div>
         <h1>Listar Projetos </h1>
         <div>
+          <label>Pesquisa: </label>
+          <input
+            type="search"
+            value={searchInput}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+            }}
+            id=""
+          />
+
+          <select
+            onChange={(e) => {
+              console.log(e.target.value);
+              setTypeSearch(e.target.value);
+            }}
+            id=""
+          >
+            <option value="nome_projeto">Nome Projeto</option>
+            <option value="data_inicio">Data de Incio</option>
+            <option value="data_fim">Data de Fim</option>
+          </select>
+        </div>
+        <div>
           <table border="1">
             <tbody>
               <tr>
@@ -32,7 +59,7 @@ const ShowProjectsPage = () => {
                 <th>Data de Inicio</th>
                 <th>Data de Fim</th>
               </tr>
-              {projects.map((item) => (
+              {projects?.map((item) => (
                 <tr key={item.id}>
                   <th>{item.nome}</th>
                   <th>{item.observacoes}</th>
