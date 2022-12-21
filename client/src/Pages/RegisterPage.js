@@ -5,6 +5,7 @@ import httpClient from "../httpClient";
 const RegisterPage = () => {
   const [email, setEmail] = useState([]);
   const [password, setPassword] = useState([]);
+  const [repeatPassword, setRepeatPassword] = useState([]);
   const [nome, setNome] = useState([]);
   const [telefone, setTelefone] = useState([]);
 
@@ -25,50 +26,78 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <h1>Register new User</h1>
-      <form>
-        <div>
-          <label>Email </label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            id=""
-          />
+
+      <body className="bg-primary">
+      <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+          <main>
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-lg-10">
+                  <div className="card shadow-lg border-0 rounded-lg mt-5">
+                    <div className="card-header"><h3 className="text-center font-weight-light my-4">Registar Novo Utilizador</h3></div>
+                    <div className="card-body">
+                      <form>
+                        <div className="form-floating mb-3">
+                          <input
+                              className="form-control"
+                              type="text"
+                              value={email}
+                              onChange={(e) => setNome(e.target.value)}
+                              id="inputNome"
+                          />
+                          <label htmlFor="inputNome">Nome</label>
+                        </div>
+
+                        <div className="form-floating mb-3">
+                          <input
+                              className="form-control"
+                              type="email"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              id="inputEmail"
+                          />
+                          <label htmlFor="inputEmail">Email</label>
+                        </div>
+
+                        <div className="form-floating mb-3">
+                          <input
+                              className="form-control"
+                              type="password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              id="inputPassword"
+                          />
+                          <label htmlFor="inputPassword">Password</label>
+                        </div>
+
+                        <div className="form-floating mb-3">
+                          <input
+                              className="form-control"
+                              type="password"
+                              value={repeatPassword}
+                              onChange={(e) => setRepeatPassword(e.target.value)}
+                              id="inputRepeatPassword"
+                          />
+                          <label htmlFor="inputRepeatPassword">Repetir Password</label>
+                        </div>
+
+                        <div className="d-flex align-items-center justify-content-between mt-4 mb-0">
+                          <a className="btn btn-primary" onClick={registerUser}>Registar Utilizador</a>
+                        </div>
+                      </form>
+                    </div>
+                    <div className="card-footer text-center py-3">
+                      <div className="small"><a href="register.html">Need an account? Sign up!</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
         </div>
-        <div>
-          <label>Nome </label>
-          <input
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            id=""
-          />
-        </div>
-        <div>
-          <label>Telefone </label>
-          <input
-            type="text"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            id=""
-          />
-        </div>
-        <div>
-          <label>Password </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            id=""
-          />
-        </div>
-        <button type="button" onClick={registerUser}>
-          Register
-        </button>
-      </form>
-    </div>
+      </div>
+      </body>
   );
 };
 
