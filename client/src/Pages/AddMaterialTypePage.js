@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+//import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import httpClient from "../httpClient";
 import Head from "./Head";
 import TopBar from "./TopBar";
 import Nav from "./Nav";
 import MainTest from "./MainTest";
 import Scripts from "./Scripts";
-import AddMaterialForm from "./AddMaterialForm";
+import AddMaterialTypeForm from "./AddMaterialTypeForm";
 
-const AddmaterialPage = () => {
+const AddMaterialTypePage = () => {
   return (
       <div>
 
@@ -17,7 +18,7 @@ const AddmaterialPage = () => {
         <div id="layoutSidenav">
           <Nav />
 
-          <AddMaterialForm />
+          <AddMaterialTypeForm />
         </div>
 
         <Scripts />
@@ -26,4 +27,4 @@ const AddmaterialPage = () => {
   );
 };
 
-export default AddmaterialPage;
+export default AddMaterialTypePage;

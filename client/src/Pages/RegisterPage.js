@@ -42,7 +42,7 @@ const RegisterPage = () => {
                           <input
                               className="form-control"
                               type="text"
-                              value={email}
+                              value={nome}
                               onChange={(e) => setNome(e.target.value)}
                               id="inputNome"
                           />
@@ -58,6 +58,17 @@ const RegisterPage = () => {
                               id="inputEmail"
                           />
                           <label htmlFor="inputEmail">Email</label>
+                        </div>
+
+                        <div className="form-floating mb-3">
+                          <input
+                              className="form-control"
+                              type="number"
+                              value={telefone}
+                              onChange={(e) => setTelefone(e.target.value)}
+                              id="inputTelefone"
+                          />
+                          <label htmlFor="inputTelefone">Telefone</label>
                         </div>
 
                         <div className="form-floating mb-3">

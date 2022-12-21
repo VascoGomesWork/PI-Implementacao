@@ -10,8 +10,6 @@ const LandingPage = () => {
   const [user, setUser] = useState([]);
   //console.log(user)
 
-
-
   useEffect(() => {
     (async () => {
       try {

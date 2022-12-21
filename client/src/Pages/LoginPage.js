@@ -14,7 +14,7 @@ const LoginPage = () => {
         email,
         password,
       });
-      window.location.href ="/"
+      window.location.href ="/dashboard"
     } catch (e) {
       if (e.response.status === 401) {
         alert("Invalid Credentials");

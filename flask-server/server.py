@@ -664,6 +664,24 @@ def add_project():
         "data_fim": new_project.data_fim,
     })
 
+# Get all data from requisicoes
+'''@app.route("/getrequisicaodata", methods=["GET", "POST"])
+def get_kits_names():
+    requisicoes_list = Requisitar_Devolver.query.all()
+    requisicoes_schema = Requisitar_DevolverSchema(many=True)
+    result = requisicoes_schema.dump(requisicoes_list)
+
+    for item in result:
+
+        #Gets Material
+        material_list = Material.query.filter_by(id==item["id_material"])
+        material_schema = MaterialSchema(many=True)
+        material_result = material_schema.dump(material_list)
+
+        #Gets Kit
+
+    return jsonify({"requisicoes_data": result})'''
+
 # Get all kits names
 @app.route("/getkitsnames", methods=["GET", "POST"])
 def get_kits_names():
