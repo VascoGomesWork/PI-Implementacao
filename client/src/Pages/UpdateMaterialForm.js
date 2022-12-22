@@ -53,74 +53,80 @@ export default function UpdateMaterialForm(){
     };
 
     return (
-        <div>
-            <h1>Atualizar Stocks</h1>
-            <div>
-                <label>Pesquisa: </label>
-                <input
-                    type="search"
-                    value={searchInput}
-                    onChange={(e) => {
-                        setSearchInput(e.target.value);
-                    }}
-                    id=""
-                />
+        <div id="layoutSidenav_content">
+            <main>
+                <div className="container-fluid px-4">
+                    <h1 className="mt-4">Atualizar Stocks</h1>
+                    <div>
+                        <div>
+                            <label>Pesquisa: </label>
+                            <input
+                                type="search"
+                                value={searchInput}
+                                onChange={(e) => {
+                                    setSearchInput(e.target.value);
+                                }}
+                                id=""
+                            />
 
-                <select
-                    onChange={(e) => {
-                        console.log(e.target.value);
-                        setTypeSearch(e.target.value);
-                    }}
-                    id=""
-                >
-                    <option value="nome_material">Nome Material</option>
-                    <option value="quantidade">Quantidade</option>
-                    <option value="data_requisicao">Data de Requisicao</option>
-                </select>
-            </div>
-            <br />
-            <div>
-                <table border="1">
-                    <tbody>
-                    <tr>
-                        <th>Material</th>
-                        <th>Observação</th>
-                        <th>Data de Aquisição</th>
-                        <th>Quantidade</th>
-                        <th>Nova Quantidade</th>
-                        <th>Atualizar</th>
-                    </tr>
-                    {stocks.map((item) => (
-                        <tr key={item.id}>
-                            <th>{item.nome}</th>
-                            <th>{item.observacao}</th>
-                            <th>{item.data}</th>
-                            <th>{item.quantidade}</th>
-                            <th>
-                                <input
-                                    type="number"
-                                    //value={quantidade}
-                                    onChange={(e) => {
-                                        setQuantidade(e.target.value);
-                                        setId(item.id);
-                                    }}
-                                    id=""
-                                />
-                            </th>
-                            <th>
-                                <button type="button" onClick={updateStock}>
-                                    Atualizar
-                                </button>
-                            </th>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
-            <br />
-            <button type="button" key="exitBtn" onClick={exit}>
-                Sair
-            </button>
+                            <select
+                                onChange={(e) => {
+                                    console.log(e.target.value);
+                                    setTypeSearch(e.target.value);
+                                }}
+                                id=""
+                            >
+                                <option value="nome_material">Nome Material</option>
+                                <option value="quantidade">Quantidade</option>
+                                <option value="data_requisicao">Data de Requisicao</option>
+                            </select>
+                        </div>
+                        <br />
+                        <div>
+                            <table border="1">
+                                <tbody>
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Observação</th>
+                                    <th>Data de Aquisição</th>
+                                    <th>Quantidade</th>
+                                    <th>Nova Quantidade</th>
+                                    <th>Atualizar</th>
+                                </tr>
+                                {stocks.map((item) => (
+                                    <tr key={item.id}>
+                                        <th>{item.nome}</th>
+                                        <th>{item.observacao}</th>
+                                        <th>{item.data}</th>
+                                        <th>{item.quantidade}</th>
+                                        <th>
+                                            <input
+                                                type="number"
+                                                //value={quantidade}
+                                                onChange={(e) => {
+                                                    setQuantidade(e.target.value);
+                                                    setId(item.id);
+                                                }}
+                                                id=""
+                                            />
+                                        </th>
+                                        <th>
+                                            <button type="button" onClick={updateStock}>
+                                                Atualizar
+                                            </button>
+                                        </th>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <br />
+                        <button type="button" key="exitBtn" onClick={exit}>
+                            Sair
+                        </button>
+                    </div>
+                </div>
+            </main>
         </div>
     );
 }

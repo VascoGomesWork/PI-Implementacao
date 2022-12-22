@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import httpClient from "../httpClient";
+import Footer from "./Footer";
 
 export default function RealizarRequisicoesForm(){
     const [nome, setNome] = useState([]);
@@ -148,245 +149,295 @@ export default function RealizarRequisicoesForm(){
     };
 
     return (
-        <div>
-            <h1>Realizar Requisição de Material</h1>
-            <form>
+        <div id="layoutSidenav_content">
+            <main>
+                <div className="container-fluid px-4">
+                    <h1 className="mt-4">Realizar Requisição de Material</h1>
                 <div>
-                    <label>Nome Docente ou Aluno </label>
-                    <input
-                        type="text"
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        id=""
-                    />
-                </div>
-                <div onChange={changeProject}>
-                    <label>Projeto </label>
-                    <input
-                        type="radio"
-                        name="project"
-                        value="false"
-                        checked={projeto === "false"}
-                        id=""
-                        key="radio false"
-                        onChange={changeProject}
-                    />
-                    <label>Usar em Projeto</label>
-                    <input
-                        type="radio"
-                        name="project"
-                        value="true"
-                        checked={projeto === "true"}
-                        id=""
-                        key="radio true"
-                        onChange={changeProject}
-                    />
-                    <label>Não Usar em Projeto</label>
-                </div>
-                {projeto === "false" ? (
-                    <div>
-                        <label>Nome Projeto </label>
-                        <input
-                            type="text"
-                            value={nome_projeto}
-                            onChange={(e) => setNomeProjeto(e.target.value)}
-                            id=""
-                        />
-                    </div>
-                ) : (
-                    ""
-                )}
-                <div>
-                    <label>Pesquisa: </label>
-                    <input
-                        type="search"
-                        value={searchInput}
-                        onChange={(e) => {
-                            setSearchInput(e.target.value);
-                        }}
-                        id=""
-                    />
-
-                    <select
-                        onChange={(e) => {
-                            console.log(e.target.value);
-                            setTypeSearch(e.target.value);
-                        }}
-                        id=""
-                    >
-                        {comboboxMaterialRequisicao?.map((item) => (
-                            <option key={item.tipo} value={item.id}>
-                                {item.tipo}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <br />
-                <div>
-                    <label>Lista de Materiais </label>
-                    <table border="1">
-                        <tbody>
-                        {typeSearch === "Kit" ? (
-                            <tr key="table head kit">
-                                <th>Kit</th>
-                                <th>Material</th>
-                                <th>Quantidade Total</th>
-                                <th>Adicionar</th>
-                            </tr>
-                        ) : (
-                            <tr key="table head material">
-                                <th>Material</th>
-                                <th>Quantidade Total</th>
-                                <th>Adicionar</th>
-                            </tr>
-                        )}
-                        {typeSearch === "Kit"
-                            ? searchResultList?.map(
-                                (kit) => (
-                                    (
-                                        <tr key={kit.id}>
-                                            <th>{kit.kit_name}</th>
-                                            <th>
-                                                {kit.mat_list?.map((material) => (
-                                                    <p key={material.mat_info[0].id}>{material.mat_info[0].nome}</p>
-                                                ))}
-                                            </th>
-                                            <th>
-                                                {kit.mat_list?.map((material) => (
-                                                    <p key={material.mat_info[0].nome}>{material.mat_quantidade_kit}</p>
-                                                ))}
-                                            </th>
-                                            <th>
-                                                <button
-                                                    type="button"
-                                                    onClick={(e) => {
-                                                        addkitToRequisicao(kit.kit_id, kit.kit_name);
-                                                    }}
-                                                >
-                                                    Adicionar Kit
-                                                </button>
-                                            </th>
-                                        </tr>
-                                    )
-                                )
-                            )
-                            : searchResultList?.map((item) => (
-                                <tr key={item.id}>
-                                    <th>{item.nome}</th>
-                                    <th>{item.quantidade}</th>
-                                    <th>
-                                        <button
-                                            type="button"
-                                            onClick={(e) => {
-                                                addMaterialToRequisicao(
-                                                    item.id,
-                                                    item.nome,
-                                                    item.quantidade
-                                                );
-                                            }}
-                                        >
-                                            Adicionar
-                                        </button>
-                                    </th>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-                <br />
-                <div>
-                    <label>Materiais/Kits para Requisitar </label>
-                    <table border="1">
-                        <tbody>
-                        {typeSearch === "Kit" ? (
-                            <tr key="table head kit add">
-                                <th>Kit</th>
-                                <th>Quantidade Total</th>
-                                <th>Adicionar</th>
-                            </tr>
-                        ) : (
-                            <tr key="table head material add">
-                                <th>Material</th>
-                                <th>Quantidade Total</th>
-                                <th>Adicionar</th>
-                            </tr>
-                        )}
-                        {typeSearch === "Kit"
-                            ? requisicaoKitsList?.map((kit) => (
-                                <tr key={kit.id}>
-                                    <th>{kit.nome}</th>
-                                    <th>
+                    <form>
+                        <div>
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Nome Docente ou Aluno </label>
+                                    </div>
+                                    <div className="col-md-7">
                                         <input
-                                            type="number"
-                                            onChange={(e) =>
-                                                changeKitsQuantity(kit.id, e.target.value)
-                                            }
+                                            className="form-control"
+                                            type="text"
+                                            value={nome}
+                                            onChange={(e) => setNome(e.target.value)}
+                                            id="teste"
                                         />
-                                    </th>
-
-                                    <th>
-                                        <button
-                                            type="button"
-                                            onClick={(e) => {
-                                                removeKitsList(kit.id);
-                                            }}
-                                        >
-                                            Remover
-                                        </button>
-                                    </th>
-                                </tr>
-                            ))
-                            : requisicaoMaterialsList?.map((item) => (
-                                <tr key={item.id}>
-                                    <th>{item.nome}</th>
-                                    <th>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div onChange={changeProject}>
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Projeto </label>
+                                    </div>
+                                    <div className="col-md-2">
                                         <input
-                                            type="number"
-                                            onChange={(e) =>
-                                                changeQuantity(item.id, e.target.value)
-                                            }
+                                            type="radio"
+                                            name="project"
+                                            value="false"
+                                            checked={projeto === "false"}
                                             id=""
+                                            key="radio false"
+                                            onChange={changeProject}
                                         />
-                                    </th>
-                                    <th>
-                                        <button
-                                            type="button"
-                                            onClick={(e) => {
-                                                removeMaterialsList(item.id);
-                                            }}
-                                        >
-                                            Remover
-                                        </button>
-                                    </th>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                        <label>Usar em Projeto</label>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <input
+                                            type="radio"
+                                            name="project"
+                                            value="true"
+                                            checked={projeto === "true"}
+                                            id=""
+                                            key="radio true"
+                                            onChange={changeProject}
+                                        />
+                                        <label>Não Usar em Projeto</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {projeto === "false" ? (
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Nome Projeto </label>
+                                    </div>
+                                    <div className="col-md-7">
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        value={nome_projeto}
+                                        onChange={(e) => setNomeProjeto(e.target.value)}
+                                        id=""
+                                    />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+                        <div className="form-floating mb-2">
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <label>Pesquisa: </label>
+                                </div>
+                                <div className="col-md-4">
+                                    <input
+                                        className="form-control"
+                                        type="search"
+                                        value={searchInput}
+                                        onChange={(e) => {
+                                            setSearchInput(e.target.value);
+                                        }}
+                                        id=""/>
+                                </div>
+                                <div className="col-md-4">
+                                    <select
+                                        onChange={(e) => {
+                                            console.log(e.target.value);
+                                            setTypeSearch(e.target.value);
+                                        }}
+                                        id=""
+                                    >
+                                        {comboboxMaterialRequisicao?.map((item) => (
+                                            <option key={item.tipo} value={item.id}>
+                                                {item.tipo}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="form-floating mb-2">
+                            <div className="row">
+                                <div className="col-md-5">
+                                    <label>Lista de Materiais </label>
+                                    <table border="1">
+                                        <tbody>
+                                        {typeSearch === "Kit" ? (
+                                            <tr key="table head kit">
+                                                <th>Kit</th>
+                                                <th>Material</th>
+                                                <th>Quantidade Total</th>
+                                                <th>Adicionar</th>
+                                            </tr>
+                                        ) : (
+                                            <tr key="table head material">
+                                                <th>Material</th>
+                                                <th>Quantidade Total</th>
+                                                <th>Adicionar</th>
+                                            </tr>
+                                        )}
+                                        {typeSearch === "Kit"
+                                            ? searchResultList?.map(
+                                                (kit) => (
+                                                    (
+                                                        <tr key={kit.id}>
+                                                            <th>{kit.kit_name}</th>
+                                                            <th>
+                                                                {kit.mat_list?.map((material) => (
+                                                                    <p key={material.mat_info[0].id}>{material.mat_info[0].nome}</p>
+                                                                ))}
+                                                            </th>
+                                                            <th>
+                                                                {kit.mat_list?.map((material) => (
+                                                                    <p key={material.mat_info[0].nome}>{material.mat_quantidade_kit}</p>
+                                                                ))}
+                                                            </th>
+                                                            <th>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={(e) => {
+                                                                        addkitToRequisicao(kit.kit_id, kit.kit_name);
+                                                                    }}
+                                                                >
+                                                                    Adicionar Kit
+                                                                </button>
+                                                            </th>
+                                                        </tr>
+                                                    )
+                                                )
+                                            )
+                                            : searchResultList?.map((item) => (
+                                                <tr key={item.id}>
+                                                    <th>{item.nome}</th>
+                                                    <th>{item.quantidade}</th>
+                                                    <th>
+                                                        <button
+                                                            className="btn btn-primary"
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                addMaterialToRequisicao(
+                                                                    item.id,
+                                                                    item.nome,
+                                                                    item.quantidade
+                                                                );
+                                                            }}
+                                                        >
+                                                            Adicionar
+                                                        </button>
+                                                    </th>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    <div className="col-md-7">
+                                        <label>Materiais/Kits para Requisitar </label>
+                                        <table border="1">
+                                            <tbody>
+                                            {typeSearch === "Kit" ? (
+                                                <tr key="table head kit add">
+                                                    <th>Kit</th>
+                                                    <th>Quantidade Total</th>
+                                                    <th>Adicionar</th>
+                                                </tr>
+                                            ) : (
+                                                <tr key="table head material add">
+                                                    <th>Material</th>
+                                                    <th>Quantidade Total</th>
+                                                    <th>Adicionar</th>
+                                                </tr>
+                                            )}
+                                            {typeSearch === "Kit"
+                                                ? requisicaoKitsList?.map((kit) => (
+                                                    <tr key={kit.id}>
+                                                        <th>{kit.nome}</th>
+                                                        <th>
+                                                            <input
+                                                                type="number"
+                                                                onChange={(e) =>
+                                                                    changeKitsQuantity(kit.id, e.target.value)
+                                                                }
+                                                            />
+                                                        </th>
+
+                                                        <th>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    removeKitsList(kit.id);
+                                                                }}
+                                                            >
+                                                                Remover
+                                                            </button>
+                                                        </th>
+                                                    </tr>
+                                                ))
+                                                : requisicaoMaterialsList?.map((item) => (
+                                                    <tr key={item.id}>
+                                                        <th>{item.nome}</th>
+                                                        <th>
+                                                            <input
+                                                                type="number"
+                                                                onChange={(e) =>
+                                                                    changeQuantity(item.id, e.target.value)
+                                                                }
+                                                                id=""
+                                                            />
+                                                        </th>
+                                                        <th>
+                                                            <button
+                                                                className="btn btn-primary"
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    removeMaterialsList(item.id);
+                                                                }}
+                                                            >
+                                                                Remover
+                                                            </button>
+                                                        </th>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div className="form-floating mb-2">
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <label>Data Entrega Prevista </label>
+                                </div>
+                                <div className="col-md-5">
+                                    <input
+                                        type="date"
+                                        id="start"
+                                        value={data_entrega_prevista}
+                                        min="2009-01-01"
+                                        max="2999-12-31"
+                                        onChange={(e) => setDataEntregaPrevista(e.target.value)}/>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <button
+                            className="btn btn-primary"
+                            type="button"
+                            onClick={
+                                typeSearch === "Kit"
+                                    ? makeKitsRequisition
+                                    : makeMaterialsRequisition
+                            }
+                        >
+                            Fazer Requisição
+                        </button>
+                    </form>
                 </div>
-                <br />
-                <div>
-                    <label>Data Entrega Prevista </label>
-                    <input
-                        type="date"
-                        id="start"
-                        value={data_entrega_prevista}
-                        min="2009-01-01"
-                        max="2999-12-31"
-                        onChange={(e) => setDataEntregaPrevista(e.target.value)}
-                    />
                 </div>
-                <br />
-                <button
-                    type="button"
-                    onClick={
-                        typeSearch === "Kit"
-                            ? makeKitsRequisition
-                            : makeMaterialsRequisition
-                    }
-                >
-                    Fazer Requisição
-                </button>
-            </form>
+            </main>
         </div>
     );
 }

@@ -58,57 +58,63 @@ export default function AddMaterialForm(){
     }, []);
 
     return (
-        <div>
-            <h1>Adiconar novo material</h1>
-            <form>
-                <div>
-                    <label>Nome do Material </label>
-                    <input
-                        type="text"
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        id=""
-                    />
+        <div id="layoutSidenav_content">
+            <main>
+                <div className="container-fluid px-4">
+                    <h1 className="mt-4">Adiconar Novo Material</h1>
+                    <div>
+                        <form>
+                            <div>
+                                <label>Nome do Material </label>
+                                <input
+                                    type="text"
+                                    value={nome}
+                                    onChange={(e) => setNome(e.target.value)}
+                                    id=""
+                                />
+                            </div>
+                            <div>
+                                <label>Quantidade </label>
+                                <input
+                                    type="number"
+                                    value={quantidade}
+                                    onChange={(e) => setQuantidade(e.target.value)}
+                                    id=""
+                                />
+                            </div>
+                            <div>
+                                <label>Observações </label>
+                                <input
+                                    type="text"
+                                    value={observacao}
+                                    onChange={(e) => setObservacao(e.target.value)}
+                                    id=""
+                                />
+                            </div>
+                            <div>
+                                <label>Tipo de Material </label>
+                                <select onChange={(choice) => setTipo_material(choice.target.value)}>
+                                    {tipos.map((item) => (
+                                        <option key={item.id} value={item.id}>{item.tipo}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label>Associar a Projeto </label>
+                                <select onChange={(choice) => setProjeto(choice.target.value)}>
+                                    <option key="0" value="0">Não associar</option>
+                                    {projetos.map((item) => (
+                                        <option key={item.id} value={item.id}>{item.nome}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <button type="button" onClick={addMaterial}>
+                                Adicionar Material
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <div>
-                    <label>Quantidade </label>
-                    <input
-                        type="number"
-                        value={quantidade}
-                        onChange={(e) => setQuantidade(e.target.value)}
-                        id=""
-                    />
-                </div>
-                <div>
-                    <label>Observações </label>
-                    <input
-                        type="text"
-                        value={observacao}
-                        onChange={(e) => setObservacao(e.target.value)}
-                        id=""
-                    />
-                </div>
-                <div>
-                    <label>Tipo de Material </label>
-                    <select onChange={(choice) => setTipo_material(choice.target.value)}>
-                        {tipos.map((item) => (
-                            <option key={item.id} value={item.id}>{item.tipo}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Associar a Projeto </label>
-                    <select onChange={(choice) => setProjeto(choice.target.value)}>
-                        <option key="0" value="0">Não associar</option>
-                        {projetos.map((item) => (
-                            <option key={item.id} value={item.id}>{item.nome}</option>
-                        ))}
-                    </select>
-                </div>
-                <button type="button" onClick={addMaterial}>
-                    Adicionar Material
-                </button>
-            </form>
+            </main>
         </div>
     );
 }

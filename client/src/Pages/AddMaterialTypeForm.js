@@ -18,22 +18,28 @@ export default function AddMaterialTypeForm(){
     };
 
     return (
-        <div>
-            <h1>Adiocionar Novo Tipo de Material</h1>
-            <form>
-                <div>
-                    <label>Nome </label>
-                    <input
-                        type="text"
-                        value={tipo}
-                        onChange={(e) => setTipo(e.target.value)}
-                        id=""
-                    />
+        <div id="layoutSidenav_content">
+            <main>
+                <div className="container-fluid px-4">
+                    <h1 className="mt-4">Adicionar Novo Tipo de Material</h1>
+                    <div>
+                        <form>
+                            <div>
+                                <label>Nome </label>
+                                <input
+                                    type="text"
+                                    value={tipo}
+                                    onChange={(e) => setTipo(e.target.value)}
+                                    id=""
+                                />
+                            </div>
+                            <button type="button" onClick={addMaterialType}>
+                                Adicionar
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <button type="button" onClick={addMaterialType}>
-                    Adicionar
-                </button>
-            </form>
+            </main>
         </div>
     );
 }

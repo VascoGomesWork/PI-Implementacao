@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "./Footer";
 
-export default function MainTest(){
+export default function Dashboard(){
     return(
         <div id="layoutSidenav_content">
             <main>

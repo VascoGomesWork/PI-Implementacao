@@ -4,7 +4,7 @@ import Head from "./Head";
 import TopBar from "./TopBar";
 import Nav from "./Nav";
 import Scripts from "./Scripts";
-import MainTest from "./MainTest";
+import Dashboard from "./Dashboard";
 
 const LandingPage = () => {
   const [user, setUser] = useState([]);
@@ -30,7 +30,7 @@ const LandingPage = () => {
         <div id="layoutSidenav">
             <Nav />
 
-            <MainTest />
+            <Dashboard />
         </div>
 
       <Scripts />

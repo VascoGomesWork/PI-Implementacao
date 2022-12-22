@@ -24,57 +24,63 @@ export default function ShowProjectsTable(){
     };
 
     return (
-        <div>
-            <div>
-                <h1>Listar Projetos </h1>
-                <div>
-                    <label>Pesquisa: </label>
-                    <input
-                        type="search"
-                        value={searchInput}
-                        onChange={(e) => {
-                            setSearchInput(e.target.value);
-                        }}
-                        id=""
-                    />
+        <div id="layoutSidenav_content">
+            <main>
+                <div className="container-fluid px-4">
+                    <h1 className="mt-4">Lista de Projetos</h1>
+                    <div>
+                        <div>
+                            <div>
+                                <label>Pesquisa: </label>
+                                <input
+                                    type="search"
+                                    value={searchInput}
+                                    onChange={(e) => {
+                                        setSearchInput(e.target.value);
+                                    }}
+                                    id=""
+                                />
 
-                    <select
-                        onChange={(e) => {
-                            console.log(e.target.value);
-                            setTypeSearch(e.target.value);
-                        }}
-                        id=""
-                    >
-                        <option value="nome_projeto">Nome Projeto</option>
-                        <option value="data_inicio">Data de Incio</option>
-                        <option value="data_fim">Data de Fim</option>
-                    </select>
+                                <select
+                                    onChange={(e) => {
+                                        console.log(e.target.value);
+                                        setTypeSearch(e.target.value);
+                                    }}
+                                    id=""
+                                >
+                                    <option value="nome_projeto">Nome Projeto</option>
+                                    <option value="data_inicio">Data de Incio</option>
+                                    <option value="data_fim">Data de Fim</option>
+                                </select>
+                            </div>
+                            <div>
+                                <table border="1">
+                                    <tbody>
+                                    <tr>
+                                        <th>Projeto</th>
+                                        <th>Observações</th>
+                                        <th>Data de Inicio</th>
+                                        <th>Data de Fim</th>
+                                    </tr>
+                                    {projects?.map((item) => (
+                                        <tr key={item.id}>
+                                            <th>{item.nome}</th>
+                                            <th>{item.observacoes}</th>
+                                            <th>{item.data_inicio}</th>
+                                            <th>{item.data_fim}</th>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <button type="button" key="exitBtn" onClick={exit}>
+                            Sair
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <table border="1">
-                        <tbody>
-                        <tr>
-                            <th>Projeto</th>
-                            <th>Observações</th>
-                            <th>Data de Inicio</th>
-                            <th>Data de Fim</th>
-                        </tr>
-                        {projects?.map((item) => (
-                            <tr key={item.id}>
-                                <th>{item.nome}</th>
-                                <th>{item.observacoes}</th>
-                                <th>{item.data_inicio}</th>
-                                <th>{item.data_fim}</th>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <br />
-            <button type="button" key="exitBtn" onClick={exit}>
-                Sair
-            </button>
+            </main>
         </div>
     );
 }
