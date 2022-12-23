@@ -64,51 +64,81 @@ export default function AddMaterialForm(){
                     <h1 className="mt-4">Adiconar Novo Material</h1>
                     <div>
                         <form>
-                            <div>
-                                <label>Nome do Material </label>
-                                <input
-                                    type="text"
-                                    value={nome}
-                                    onChange={(e) => setNome(e.target.value)}
-                                    id=""
-                                />
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Nome do Material </label>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <input
+                                            type="text"
+                                            value={nome}
+                                            onChange={(e) => setNome(e.target.value)}
+                                            id=""
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <label>Quantidade </label>
-                                <input
-                                    type="number"
-                                    value={quantidade}
-                                    onChange={(e) => setQuantidade(e.target.value)}
-                                    id=""
-                                />
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Quantidade </label>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <input
+                                            type="number"
+                                            value={quantidade}
+                                            onChange={(e) => setQuantidade(e.target.value)}
+                                            id=""
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <label>Observações </label>
-                                <input
-                                    type="text"
-                                    value={observacao}
-                                    onChange={(e) => setObservacao(e.target.value)}
-                                    id=""
-                                />
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Observações </label>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <input
+                                            type="text"
+                                            value={observacao}
+                                            onChange={(e) => setObservacao(e.target.value)}
+                                            id=""
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <label>Tipo de Material </label>
-                                <select onChange={(choice) => setTipo_material(choice.target.value)}>
-                                    {tipos.map((item) => (
-                                        <option key={item.id} value={item.id}>{item.tipo}</option>
-                                    ))}
-                                </select>
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Tipo de Material </label>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <select onChange={(choice) => setTipo_material(choice.target.value)}>
+                                            {tipos.map((item) => (
+                                                <option key={item.id} value={item.id}>{item.tipo}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <label>Associar a Projeto </label>
-                                <select onChange={(choice) => setProjeto(choice.target.value)}>
-                                    <option key="0" value="0">Não associar</option>
-                                    {projetos.map((item) => (
-                                        <option key={item.id} value={item.id}>{item.nome}</option>
-                                    ))}
-                                </select>
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Associar a Projeto </label>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <select onChange={(choice) => setProjeto(choice.target.value)}>
+                                            <option key="0" value="0">Não associar</option>
+                                            {projetos.map((item) => (
+                                                <option key={item.id} value={item.id}>{item.nome}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="button" onClick={addMaterial}>
+                            <button className="btn btn-primary" type="button" onClick={addMaterial}>
                                 Adicionar Material
                             </button>
                         </form>

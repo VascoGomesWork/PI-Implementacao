@@ -24,16 +24,22 @@ export default function AddMaterialTypeForm(){
                     <h1 className="mt-4">Adicionar Novo Tipo de Material</h1>
                     <div>
                         <form>
-                            <div>
-                                <label>Nome </label>
-                                <input
-                                    type="text"
-                                    value={tipo}
-                                    onChange={(e) => setTipo(e.target.value)}
-                                    id=""
-                                />
+                            <div className="form-floating mb-2">
+                                <div className="row">
+                                    <div className="col-md-2">
+                                        <label>Nome </label>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <input
+                                            type="text"
+                                            value={tipo}
+                                            onChange={(e) => setTipo(e.target.value)}
+                                            id=""
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <button type="button" onClick={addMaterialType}>
+                            <button className="btn btn-primary" type="button" onClick={addMaterialType}>
                                 Adicionar
                             </button>
                         </form>

@@ -27,50 +27,74 @@ export default function AddProjectForm(){
         <div>
             <h1>Adicionar novo projeto</h1>
             <form>
-                <div>
-                    <label>Nome </label>
-                    <input
-                        type="text"
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        id=""
-                    />
+                <div className="form-floating mb-2">
+                    <div className="row">
+                        <div className="col-md-3">
+                            <label>Nome </label>
+                        </div>
+                        <div className="col-md-2">
+                            <input
+                                type="text"
+                                value={nome}
+                                onChange={(e) => setNome(e.target.value)}
+                                id=""
+                            />
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label>Observações </label>
-                    <input
-                        type="text"
-                        value={observacoes}
-                        onChange={(e) => setObservacoes(e.target.value)}
-                        id=""
-                    />
+                <div className="form-floating mb-2">
+                    <div className="row">
+                        <div className="col-md-3">
+                            <label>Observações </label>
+                        </div>
+                        <div className="col-md-2">
+                            <input
+                                type="text"
+                                value={observacoes}
+                                onChange={(e) => setObservacoes(e.target.value)}
+                                id=""
+                            />
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label>Data Inicio </label>
-                    <input
-                        type="date"
-                        id="start"
-                        name="trip-start"
-                        value={data_inicio}
-                        min="2009-01-01"
-                        max="2999-12-31"
-                        onChange={(e) => setDataInicio(e.target.value)}
-                    ></input>
+                <div className="form-floating mb-2">
+                    <div className="row">
+                        <div className="col-md-3">
+                            <label>Data Inicio </label>
+                        </div>
+                        <div className="col-md-2">
+                            <input
+                                type="date"
+                                id="start"
+                                name="trip-start"
+                                value={data_inicio}
+                                min="2009-01-01"
+                                max="2999-12-31"
+                                onChange={(e) => setDataInicio(e.target.value)}
+                            ></input>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label>Data Fim </label>
-                    <input
-                        type="date"
-                        id="end"
-                        name="trip-start"
-                        value={data_fim}
-                        min="2009-01-01"
-                        max="2999-12-31"
-                        onChange={(e) => {setDataFim(e.target.value); console.log(data_fim)}}
-                    ></input>
+                <div className="form-floating mb-2">
+                    <div className="row">
+                        <div className="col-md-3">
+                            <label>Data Fim </label>
+                        </div>
+                        <div className="col-md-2">
+                            <input
+                                type="date"
+                                id="end"
+                                name="trip-start"
+                                value={data_fim}
+                                min="2009-01-01"
+                                max="2999-12-31"
+                                onChange={(e) => {setDataFim(e.target.value); console.log(data_fim)}}
+                            ></input>
+                        </div>
+                    </div>
                 </div>
                 <br />
-                <button type="button" onClick={addProject}>
+                <button className="btn btn-primary" type="button" onClick={addProject}>
                     Add Project
                 </button>
             </form>

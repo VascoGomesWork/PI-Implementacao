@@ -58,31 +58,38 @@ export default function UpdateMaterialForm(){
                 <div className="container-fluid px-4">
                     <h1 className="mt-4">Atualizar Stocks</h1>
                     <div>
-                        <div>
-                            <label>Pesquisa: </label>
-                            <input
-                                type="search"
-                                value={searchInput}
-                                onChange={(e) => {
-                                    setSearchInput(e.target.value);
-                                }}
-                                id=""
-                            />
-
-                            <select
-                                onChange={(e) => {
-                                    console.log(e.target.value);
-                                    setTypeSearch(e.target.value);
-                                }}
-                                id=""
-                            >
-                                <option value="nome_material">Nome Material</option>
-                                <option value="quantidade">Quantidade</option>
-                                <option value="data_requisicao">Data de Requisicao</option>
-                            </select>
+                        <div className="form-floating mb-2">
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <label>Pesquisa: </label>
+                                </div>
+                                <div className="col-md-2">
+                                    <input
+                                        type="search"
+                                        value={searchInput}
+                                        onChange={(e) => {
+                                            setSearchInput(e.target.value);
+                                        }}
+                                        id=""
+                                    />
+                                </div>
+                                <div className="col-md-2">
+                                    <select
+                                        onChange={(e) => {
+                                            console.log(e.target.value);
+                                            setTypeSearch(e.target.value);
+                                        }}
+                                        id=""
+                                    >
+                                        <option value="nome_material">Nome Material</option>
+                                        <option value="quantidade">Quantidade</option>
+                                        <option value="data_requisicao">Data de Requisicao</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <br />
-                        <div>
+                        <div className="form-floating mb-2">
                             <table border="1">
                                 <tbody>
                                 <tr>
@@ -121,7 +128,7 @@ export default function UpdateMaterialForm(){
                             </table>
                         </div>
                         <br />
-                        <button type="button" key="exitBtn" onClick={exit}>
+                        <button className="btn btn-primary" type="button" key="exitBtn" onClick={exit}>
                             Sair
                         </button>
                     </div>
