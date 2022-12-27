@@ -58,7 +58,7 @@ export default function HomePage(){
                                             </div>
 
                                             <div className="form-floating mb-3">
-                                                <table border="1">
+                                                <table className="table table-bordered" border="1">
                                                     <tbody>
                                                     <tr>
                                                         <th>Material</th>

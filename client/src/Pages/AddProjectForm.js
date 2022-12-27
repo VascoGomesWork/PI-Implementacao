@@ -24,7 +24,7 @@ export default function AddProjectForm(){
     };
 
     return (
-        <div>
+        <div className="container-fluid px-4">
             <h1>Adicionar novo projeto</h1>
             <form>
                 <div className="form-floating mb-2">
@@ -34,6 +34,7 @@ export default function AddProjectForm(){
                         </div>
                         <div className="col-md-2">
                             <input
+                                className="form-control"
                                 type="text"
                                 value={nome}
                                 onChange={(e) => setNome(e.target.value)}
@@ -49,6 +50,7 @@ export default function AddProjectForm(){
                         </div>
                         <div className="col-md-2">
                             <input
+                                className="form-control"
                                 type="text"
                                 value={observacoes}
                                 onChange={(e) => setObservacoes(e.target.value)}
@@ -64,6 +66,7 @@ export default function AddProjectForm(){
                         </div>
                         <div className="col-md-2">
                             <input
+                                className="form-control"
                                 type="date"
                                 id="start"
                                 name="trip-start"
@@ -82,6 +85,7 @@ export default function AddProjectForm(){
                         </div>
                         <div className="col-md-2">
                             <input
+                                className="form-control"
                                 type="date"
                                 id="end"
                                 name="trip-start"

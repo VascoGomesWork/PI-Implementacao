@@ -153,6 +153,7 @@ export default function RealizarDevolucoesForm(){
                                         </div>
                                         <div className="col-md-2">
                                             <input
+                                                className="form-control"
                                                 type="search"
                                                 value={searchInput}
                                                 onChange={(e) => {
@@ -163,7 +164,7 @@ export default function RealizarDevolucoesForm(){
                                             />
                                         </div>
                                         <div className="col-md-2">
-                                            <select
+                                            <select className="form-select"
                                                 onChange={(e) => {
                                                     setTypeSearch(e.target.value);
                                                     /*if(e.target.value === "kit"){
@@ -189,7 +190,7 @@ export default function RealizarDevolucoesForm(){
                                     <label>Lista de Materiais </label>
                                 </div>
                                 <div className="form-floating mb-2">
-                                    <table border="1">
+                                    <table className="table table-bordered" border="1">
                                         <tbody>
                                         {typeSearch !== "kit" ?
                                             <tr>
@@ -223,7 +224,7 @@ export default function RealizarDevolucoesForm(){
                                                         <th>{atribute["quantidade"]}</th>
                                                         <th>{atribute["data_requisicao"]}</th>
                                                         <th>{atribute["user"][0].nome}</th>
-                                                        <th><button type="button" onClick={(e) => {addkitToReturn(atribute["id"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0].nome)}}>Realizar Devolução</button></th>
+                                                        <th><button className="btn btn-primary" type="button" onClick={(e) => {addkitToReturn(atribute["id"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0].nome)}}>Realizar Devolução</button></th>
                                                     </tr>
                                                 ))
                                             )) : searchResultList?.map((object) => (
@@ -237,7 +238,7 @@ export default function RealizarDevolucoesForm(){
                                                             <th>{atribute["data_requisicao"]}</th>
                                                             <th>{atribute["user"][0].nome}</th>
                                                             <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit"}</th>
-                                                            <th><button type="button" onClick={(e) => {addMaterialToReturn(atribute["id"], atribute["nome_projeto"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit")}}>Realizar Devolução</button></th>
+                                                            <th><button className="btn btn-primary" type="button" onClick={(e) => {addMaterialToReturn(atribute["id"], atribute["nome_projeto"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit")}}>Realizar Devolução</button></th>
                                                         </tr>
                                                     )
                                                 )))
@@ -254,7 +255,7 @@ export default function RealizarDevolucoesForm(){
                                         <label>Materiais/Kits para Devolver </label>
                                     </div>
                                     <div className="form-floating mb-2">
-                                        <table border="1">
+                                        <table className="table table-bordered" border="1">
                                             <tbody>
                                             {typeSearch === "kit" ? (
                                                 <tr key="table head kit add">
@@ -294,6 +295,7 @@ export default function RealizarDevolucoesForm(){
                                                         <th>{kit.docente}</th>
                                                         <th>
                                                             <button
+                                                                className="btn btn-primary"
                                                                 type="button"
                                                                 onClick={(e) => {
                                                                     removeKitsList(kit.id);
@@ -322,6 +324,7 @@ export default function RealizarDevolucoesForm(){
                                                         <th>{item.kit}</th>
                                                         <th>
                                                             <button
+                                                                className="btn btn-primary"
                                                                 type="button"
                                                                 onClick={(e) => {
                                                                     removeMaterialsList(item.id);

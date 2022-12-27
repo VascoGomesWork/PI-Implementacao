@@ -48,6 +48,7 @@ export default function ShowKitsTable(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="search"
                                             value={searchInput}
                                             onChange={(e) => {
@@ -58,6 +59,7 @@ export default function ShowKitsTable(){
                                     </div>
                                     <div className="col-md-2">
                                         <select
+                                            className="form-select"
                                             onChange={(e) => {
                                                 console.log(e.target.value);
                                                 setTypeSearch(e.target.value);
@@ -74,7 +76,7 @@ export default function ShowKitsTable(){
                             <div className="form-floating mb-2">
                                 <div className="row">
                                     <div className="col-md-7">
-                                    <table border="1" key={"table"}>
+                                    <table className="table table-bordered" border="1" key={"table"}>
                                         <tbody>
                                         <tr key={"0"}>
                                             <th>Nome do Kit</th>

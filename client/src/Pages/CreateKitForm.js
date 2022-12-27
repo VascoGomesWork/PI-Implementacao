@@ -83,6 +83,7 @@ export default function CreateKitForm(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="text"
                                             value={nomeKit}
                                             onChange={(e) => setNomeKit(e.target.value)}
@@ -99,6 +100,7 @@ export default function CreateKitForm(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="search"
                                             value={searchInput}
                                             onChange={(e) => {
@@ -115,7 +117,7 @@ export default function CreateKitForm(){
                                         <label>Lista de Materiais </label>
                                     </div>
                                     <div className="col-md-10">
-                                        <table border="1">
+                                        <table className="table table-bordered" border="1">
                                             <tbody>
                                             <tr>
                                                 <th>Material</th>
@@ -151,7 +153,7 @@ export default function CreateKitForm(){
                                         <label>Materiais no Kit </label>
                                     </div>
                                     <div className="col-md-10">
-                                        <table border="1">
+                                        <table className="table table-bordered" border="1">
                                             <tbody>
                                             <tr>
                                                 <th>Material</th>
@@ -194,6 +196,7 @@ export default function CreateKitForm(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="text"
                                             value={observacao}
                                             onChange={(e) => setObservacao(e.target.value)}

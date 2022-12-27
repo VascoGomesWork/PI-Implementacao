@@ -38,6 +38,7 @@ export default function ShowMaterialsTable(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="search"
                                             value={searchInput}
                                             onChange={(e) => {
@@ -48,6 +49,7 @@ export default function ShowMaterialsTable(){
                                     </div>
                                     <div className="col-md-2">
                                         <select
+                                            className="form-select"
                                             onChange={(e) => {
                                                 console.log(e.target.value);
                                                 setTypeSearch(e.target.value);
@@ -62,7 +64,7 @@ export default function ShowMaterialsTable(){
                             </div>
                             <br />
                             <div className="form-floating mb-2">
-                                <table border="1">
+                                <table className="table table-bordered" border="1">
                                     <tbody>
                                     <tr>
                                         <th>Material</th>

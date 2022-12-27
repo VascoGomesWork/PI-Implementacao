@@ -242,7 +242,7 @@ export default function RealizarRequisicoesForm(){
                                         id=""/>
                                 </div>
                                 <div className="col-md-4">
-                                    <select
+                                    <select className="form-select"
                                         onChange={(e) => {
                                             console.log(e.target.value);
                                             setTypeSearch(e.target.value);
@@ -263,7 +263,7 @@ export default function RealizarRequisicoesForm(){
                             <div className="row">
                                 <div className="col-md-5">
                                     <label>Lista de Materiais </label>
-                                    <table border="1">
+                                    <table className="table table-bordered" border="1">
                                         <tbody>
                                         {typeSearch === "Kit" ? (
                                             <tr key="table head kit">
@@ -335,7 +335,7 @@ export default function RealizarRequisicoesForm(){
                                 </div>
                                     <div className="col-md-7">
                                         <label>Materiais/Kits para Requisitar </label>
-                                        <table border="1">
+                                        <table className="table table-bordered" border="1">
                                             <tbody>
                                             {typeSearch === "Kit" ? (
                                                 <tr key="table head kit add">
@@ -413,6 +413,7 @@ export default function RealizarRequisicoesForm(){
                                 </div>
                                 <div className="col-md-5">
                                     <input
+                                        className='form-control'
                                         type="date"
                                         id="start"
                                         value={data_entrega_prevista}

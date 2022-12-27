@@ -71,6 +71,7 @@ export default function AddMaterialForm(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="text"
                                             value={nome}
                                             onChange={(e) => setNome(e.target.value)}
@@ -86,6 +87,7 @@ export default function AddMaterialForm(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="number"
                                             value={quantidade}
                                             onChange={(e) => setQuantidade(e.target.value)}
@@ -101,6 +103,7 @@ export default function AddMaterialForm(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="text"
                                             value={observacao}
                                             onChange={(e) => setObservacao(e.target.value)}
@@ -115,7 +118,7 @@ export default function AddMaterialForm(){
                                         <label>Tipo de Material </label>
                                     </div>
                                     <div className="col-md-2">
-                                        <select onChange={(choice) => setTipo_material(choice.target.value)}>
+                                        <select className="form-select" onChange={(choice) => setTipo_material(choice.target.value)}>
                                             {tipos.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.tipo}</option>
                                             ))}
@@ -129,7 +132,7 @@ export default function AddMaterialForm(){
                                         <label>Associar a Projeto </label>
                                     </div>
                                     <div className="col-md-2">
-                                        <select onChange={(choice) => setProjeto(choice.target.value)}>
+                                        <select className="form-select" onChange={(choice) => setProjeto(choice.target.value)}>
                                             <option key="0" value="0">Não associar</option>
                                             {projetos.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.nome}</option>

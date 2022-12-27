@@ -31,6 +31,7 @@ export default function AddMaterialTypeForm(){
                                     </div>
                                     <div className="col-md-2">
                                         <input
+                                            className="form-control"
                                             type="text"
                                             value={tipo}
                                             onChange={(e) => setTipo(e.target.value)}
