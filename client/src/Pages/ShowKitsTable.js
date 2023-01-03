@@ -30,10 +30,6 @@ export default function ShowKitsTable(){
             });
     }, [searchInput, typeSearch]);
 
-    const exit = async () => {
-        window.location.href = "/";
-    };
-
     return (
         <div id="layoutSidenav_content">
             <main>
@@ -106,10 +102,6 @@ export default function ShowKitsTable(){
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <button className="btn btn-primary" type="button" key="exitBtn" onClick={exit}>
-                            Sair
-                        </button>
                     </div>
                 </div>
             </main>

@@ -21,7 +21,7 @@ export default function AddMaterialForm(){
                 tipo_material,
                 projeto
             });
-            window.location.href = "/";
+            window.location.href = "/addmaterial";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Material Info");

@@ -19,10 +19,6 @@ export default function ShowProjectsTable(){
             });
     }, [searchInput, typeSearch]);
 
-    const exit = async () => {
-        window.location.href = "/";
-    };
-
     return (
         <div id="layoutSidenav_content">
             <main>
@@ -77,8 +73,8 @@ export default function ShowProjectsTable(){
                                             <tr key={item.id}>
                                                 <th>{item.nome}</th>
                                                 <th>{item.observacoes}</th>
-                                                <th>{item.data_inicio}</th>
-                                                <th>{item.data_fim}</th>
+                                                <th>{item.data_inicio.substr(0,10)}</th>
+                                                <th>{item.data_fim.substr(0,10)}</th>
                                             </tr>
                                         ))}
                                         </tbody>
@@ -87,10 +83,6 @@ export default function ShowProjectsTable(){
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <button className="btn btn-primary" type="button" key="exitBtn" onClick={exit}>
-                            Sair
-                        </button>
                     </div>
                 </div>
             </main>

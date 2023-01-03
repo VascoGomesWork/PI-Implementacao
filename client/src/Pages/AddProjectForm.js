@@ -15,7 +15,7 @@ export default function AddProjectForm(){
                 data_inicio,
                 data_fim,
             });
-            window.location.href = "/";
+            window.location.href = "/addproject";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Project Info");
@@ -24,7 +24,8 @@ export default function AddProjectForm(){
     };
 
     return (
-        <div className="container-fluid px-4">
+        <div id="layoutSidenav_content">
+        <div  className="container-fluid px-4">
             <h1>Adicionar novo projeto</h1>
             <form>
                 <div className="form-floating mb-2">
@@ -102,6 +103,7 @@ export default function AddProjectForm(){
                     Add Project
                 </button>
             </form>
+        </div>
         </div>
     );
 }

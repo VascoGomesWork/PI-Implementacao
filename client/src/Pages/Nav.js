@@ -78,7 +78,7 @@ export default function Nav(){
                     <div className="sb-sidenav-menu">
                         <div className="nav">
 
-                            <div className="sb-sidenav-menu-heading">Core</div>
+                            <div className="sb-sidenav-menu-heading">Operações do Sistema</div>
                             <a className="nav-link" onClick={realizarRequisicoes}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Realizar Requisições
@@ -153,27 +153,10 @@ export default function Nav(){
                     </div>
                     <div className="sb-sidenav-footer">
                         <div className="small">Logged in as:</div>
-                        {user.length !== 0 ? (
                             <div>
-                                <h6>Email: {user.email}</h6>
-                                <h6>ID: {user.id}</h6>
-
-
+                                <h6>Nome: {user.nome}</h6>
+                                <button className="btn btn-danger" onClick={logoutUser}>Logout</button>
                             </div>
-                        ) : (
-                            <div>
-                                <br />
-                                <p>You're not logged in...</p>
-                                <div>
-                                    <a href="/login">
-                                        <button>Login</button>
-                                    </a>
-                                    <a href="/register">
-                                        <button>Register</button>
-                                    </a>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </nav>
             </div>

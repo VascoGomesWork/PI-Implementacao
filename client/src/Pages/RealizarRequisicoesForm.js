@@ -124,7 +124,7 @@ export default function RealizarRequisicoesForm(){
                 requisicaoMaterialsList: requisicaoMaterialsList,
                 data_entrega_prevista,
             });
-            window.location.href = "/";
+            window.location.href = "/realizarrequisicoes";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Type Info");
@@ -140,7 +140,7 @@ export default function RealizarRequisicoesForm(){
                 requisicaoKitsList,
                 data_entrega_prevista,
             });
-            window.location.href = "/";
+            window.location.href = "/realizarrequisicoes";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Type Info");
@@ -297,6 +297,7 @@ export default function RealizarRequisicoesForm(){
                                                             </th>
                                                             <th>
                                                                 <button
+                                                                    className="btn btn-primary"
                                                                     type="button"
                                                                     onClick={(e) => {
                                                                         addkitToRequisicao(kit.kit_id, kit.kit_name);
@@ -356,6 +357,7 @@ export default function RealizarRequisicoesForm(){
                                                         <th>{kit.nome}</th>
                                                         <th>
                                                             <input
+                                                                className="form-control"
                                                                 type="number"
                                                                 onChange={(e) =>
                                                                     changeKitsQuantity(kit.id, e.target.value)
@@ -365,6 +367,7 @@ export default function RealizarRequisicoesForm(){
 
                                                         <th>
                                                             <button
+                                                                className="btn btn-primary"
                                                                 type="button"
                                                                 onClick={(e) => {
                                                                     removeKitsList(kit.id);
@@ -380,6 +383,7 @@ export default function RealizarRequisicoesForm(){
                                                         <th>{item.nome}</th>
                                                         <th>
                                                             <input
+                                                                className="form-control"
                                                                 type="number"
                                                                 onChange={(e) =>
                                                                     changeQuantity(item.id, e.target.value)

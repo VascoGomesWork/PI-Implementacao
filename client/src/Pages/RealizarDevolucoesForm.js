@@ -115,7 +115,7 @@ export default function RealizarDevolucoesForm(){
             await httpClient.post("//localhost:5000/makereturn", {
                 requisicaoMaterialsList: requisicaoMaterialsList,
             });
-            window.location.href = "/";
+            window.location.href = "/realizardevolucoes";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Type Info");
@@ -130,7 +130,7 @@ export default function RealizarDevolucoesForm(){
             await httpClient.post("//localhost:5000/makereturn", {
                 requisicaoMaterialsList: requisicaoKitsList,
             });
-            window.location.href = "/";
+            window.location.href = "/realizardevolucoes";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Type Info");
@@ -167,10 +167,6 @@ export default function RealizarDevolucoesForm(){
                                             <select className="form-select"
                                                 onChange={(e) => {
                                                     setTypeSearch(e.target.value);
-                                                    /*if(e.target.value === "kit"){
-                                                      setRequisicaoMaterialsList([])
-                                                      setRequisicaoKitsList([])
-                                                    }*/
                                                 }}
                                                 id=""
                                             >
@@ -222,7 +218,7 @@ export default function RealizarDevolucoesForm(){
                                                         <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : ""}</th>
                                                         <th>{atribute["material"][0] !== undefined ? atribute["material"][0].nome : ""}</th>
                                                         <th>{atribute["quantidade"]}</th>
-                                                        <th>{atribute["data_requisicao"]}</th>
+                                                        <th>{atribute["data_requisicao"].substr(0,10)}</th>
                                                         <th>{atribute["user"][0].nome}</th>
                                                         <th><button className="btn btn-primary" type="button" onClick={(e) => {addkitToReturn(atribute["id"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0].nome)}}>Realizar Devolução</button></th>
                                                     </tr>
@@ -235,7 +231,7 @@ export default function RealizarDevolucoesForm(){
                                                             <th>{atribute["nome_projeto"]}</th>
                                                             <th>{atribute["material"][0] !== undefined ? atribute["material"][0].nome : ""}</th>
                                                             <th>{atribute["quantidade"]}</th>
-                                                            <th>{atribute["data_requisicao"]}</th>
+                                                            <th>{atribute["data_requisicao"].substr(0,10)}</th>
                                                             <th>{atribute["user"][0].nome}</th>
                                                             <th>{atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit"}</th>
                                                             <th><button className="btn btn-primary" type="button" onClick={(e) => {addMaterialToReturn(atribute["id"], atribute["nome_projeto"], atribute["material"][0].nome, atribute["quantidade"], atribute["data_requisicao"], atribute["user"][0].nome, atribute["kit"][0] !== undefined ? atribute["kit"][0].nome : "Não Existe Kit")}}>Realizar Devolução</button></th>
@@ -284,6 +280,7 @@ export default function RealizarDevolucoesForm(){
                                                         <th>{kit.nome}</th>
                                                         <th>
                                                             <input
+                                                                className="form-control"
                                                                 type="number"
                                                                 onChange={(e) =>
                                                                     changeKitsQuantity(kit.id, e.target.value)
@@ -291,7 +288,7 @@ export default function RealizarDevolucoesForm(){
                                                                 id=""
                                                             />
                                                         </th>
-                                                        <th>{kit.data_requisicao}</th>
+                                                        <th>{kit.data_requisicao.substr(0,10)}</th>
                                                         <th>{kit.docente}</th>
                                                         <th>
                                                             <button
@@ -312,6 +309,7 @@ export default function RealizarDevolucoesForm(){
                                                         <th>{item.nome}</th>
                                                         <th>
                                                             <input
+                                                                className="form-control"
                                                                 type="number"
                                                                 onChange={(e) =>
                                                                     changeQuantity(item.id, e.target.value)
@@ -319,7 +317,7 @@ export default function RealizarDevolucoesForm(){
                                                                 id=""
                                                             />
                                                         </th>
-                                                        <th>{item.data_requisicao}</th>
+                                                        <th>{item.data_requisicao.substr(0,10)}</th>
                                                         <th>{item.docente}</th>
                                                         <th>{item.kit}</th>
                                                         <th>

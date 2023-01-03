@@ -8,16 +8,6 @@ export default function UpdateMaterialForm(){
     const [searchInput, setSearchInput] = useState([]);
     const [typeSearch, setTypeSearch] = useState("nome_material");
 
-    /*useEffect(() => {
-      (async () => {
-        try {
-          const stock = await httpClient.get("//localhost:5000/stock");
-          setStocks(stock.data.stock);
-        } catch (error) {
-          console.log("Error getting stocks");
-        }
-      })();
-    }, []);*/
     // search bar
     useEffect(() => {
         fetch(
@@ -46,10 +36,6 @@ export default function UpdateMaterialForm(){
                 alert("Invalid Material Info");
             }
         }
-    };
-
-    const exit = async () => {
-        window.location.href = "/";
     };
 
     return (
@@ -106,10 +92,11 @@ export default function UpdateMaterialForm(){
                                     <tr key={item.id}>
                                         <th>{item.nome}</th>
                                         <th>{item.observacao}</th>
-                                        <th>{item.data}</th>
+                                        <th>{item.data.substr(0,10)}</th>
                                         <th>{item.quantidade}</th>
                                         <th>
                                             <input
+                                                className="form-control"
                                                 type="number"
                                                 //value={quantidade}
                                                 onChange={(e) => {
@@ -120,7 +107,7 @@ export default function UpdateMaterialForm(){
                                             />
                                         </th>
                                         <th>
-                                            <button type="button" onClick={updateStock}>
+                                            <button className="btn btn-primary" type="button" onClick={updateStock}>
                                                 Atualizar
                                             </button>
                                         </th>
@@ -129,10 +116,6 @@ export default function UpdateMaterialForm(){
                                 </tbody>
                             </table>
                         </div>
-                        <br />
-                        <button className="btn btn-primary" type="button" key="exitBtn" onClick={exit}>
-                            Sair
-                        </button>
                     </div>
                 </div>
             </main>

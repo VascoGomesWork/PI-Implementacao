@@ -19,11 +19,6 @@ export default function ShowMaterialsTable(){
             });
     }, [searchInput, typeSearch]);
 
-    //console.log(stocks);
-    const exit = async () => {
-        window.location.href = "/";
-    };
-
     return (
         <div id="layoutSidenav_content">
             <main>
@@ -77,18 +72,12 @@ export default function ShowMaterialsTable(){
                                             <th>{item.nome}</th>
                                             <th>{item.quantidade}</th>
                                             <th>{item.observacao}</th>
-                                            <th>{item.data}</th>
+                                            <th>{item.data.substr(0,10)}</th>
                                         </tr>
                                     ))}
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <br />
-                        <div className="form-floating mb-2">
-                            <button className="btn btn-primary" type="button" key="exitBtn" onClick={exit}>
-                                Sair
-                            </button>
                         </div>
                     </div>
                 </div>

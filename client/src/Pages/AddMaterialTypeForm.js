@@ -9,7 +9,7 @@ export default function AddMaterialTypeForm(){
             await httpClient.post("//localhost:5000/addmaterialtype", {
                 tipo,
             });
-            window.location.href = "/";
+            window.location.href = "/addmaterialtype";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Type Info");

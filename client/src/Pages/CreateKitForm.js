@@ -15,7 +15,7 @@ export default function CreateKitForm(){
                 observacao,
                 kitMaterialsList,
             });
-            window.location.href = "/";
+            window.location.href = "/createkits";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Kit Info");
@@ -165,6 +165,7 @@ export default function CreateKitForm(){
                                                     <th>{item.nome}</th>
                                                     <th>
                                                         <input
+                                                            className="form-control"
                                                             type="number"
                                                             onChange={(e) => changeQuantity(item.id, e.target.value)}
                                                             id=""
