@@ -539,8 +539,8 @@ def make_request():
 
         new_request = Requisitar_Devolver(
             nome_pessoa_requisitar=request.json["nome"],
-            boolean_projeto=False if request.json["nome_projeto"] == "" else True,
-            nome_projeto=request.json["nome_projeto"],
+            boolean_projeto=False if request.json["associatedProject"] == "" else True,
+            nome_projeto=request.json["associatedProject"],
             esta_requisitado=True,
             esta_devolvido=False,
             quantidade_requisitada=item["quantidade"],
@@ -607,8 +607,8 @@ def make_kits_request():
             print("material =>", mat)
             new_material_kit_request = Requisitar_Devolver(
                 nome_pessoa_requisitar=request.json["nome"],
-                boolean_projeto=False if request.json["nome_projeto"] == "" else True,
-                nome_projeto=request.json["nome_projeto"],
+                boolean_projeto=False if request.json["associatedProject"] == "" else True,
+                nome_projeto=request.json["associatedProject"],
                 esta_requisitado=True,
                 esta_devolvido=False,
                 # mateiral qty multiplied by kit qty

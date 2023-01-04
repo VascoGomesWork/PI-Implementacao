@@ -15,7 +15,8 @@ export default function RealizarRequisicoesForm(){
     const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
     const [typeSearch, setTypeSearch] = useState(1);
     // list of projects from database
-    const [listOfProjects, setListOfProjects] = useState(1);
+    const [listOfProjects, setListOfProjects] = useState([]);
+    const [associatedProject, setAssociatedProject] = useState(1);
 
     //Sets Default Value
     useEffect(() => {
@@ -31,8 +32,13 @@ export default function RealizarRequisicoesForm(){
                     ...prevData,
                     { tipo: "Kit" },
                 ]);
-                // gets all projects to fill drop down bos
                 
+                // gets all projects to fill drop down bos
+                const projects = await httpClient.get(
+                    `//localhost:5000/showprojects`
+                );
+                setListOfProjects(projects.data.projects);
+                console.log("LISTA DE PROJETOS => ", projects)
             } catch (e) {
                 console.log("Error getting types of materials");
             }
@@ -51,7 +57,6 @@ export default function RealizarRequisicoesForm(){
                 .then((res) => res.json())
                 .then((data) => {
                     setSearchResultList(data.list_kit_mateirals);
-                    console.log("Search Result =>>> ", data.list_kit_mateirals);
                 });
         } else if (searchInput.length <= 0) {
             setSearchResultList([]);
@@ -123,7 +128,7 @@ export default function RealizarRequisicoesForm(){
         try {
             await httpClient.post("//localhost:5000/makerequest", {
                 nome,
-                nome_projeto,
+                associatedProject,
                 requisicaoMaterialsList: requisicaoMaterialsList,
                 data_entrega_prevista,
             });
@@ -139,7 +144,7 @@ export default function RealizarRequisicoesForm(){
         try {
             await httpClient.post("//localhost:5000/makekitsrequest", {
                 nome,
-                nome_projeto,
+                associatedProject,
                 requisicaoKitsList,
                 data_entrega_prevista,
             });
@@ -216,13 +221,19 @@ export default function RealizarRequisicoesForm(){
                                         <label>Nome Projeto </label>
                                     </div>
                                     <div className="col-md-7">
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        value={nome_projeto}
-                                        onChange={(e) => setNomeProjeto(e.target.value)}
+                                    <select className="form-select"
+                                        onChange={(e) => {
+                                            console.log(e.target.value);
+                                            setAssociatedProject(e.target.value);         
+                                        }}
                                         id=""
-                                    />
+                                    >
+                                        {listOfProjects?.map((item) => (
+                                            <option key={item.nome} value={item.nome}>
+                                                {item.nome}
+                                            </option>
+                                        ))}
+                                    </select>
                                     </div>
                                 </div>
                             </div>
