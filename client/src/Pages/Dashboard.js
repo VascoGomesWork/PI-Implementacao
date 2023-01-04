@@ -1,9 +1,32 @@
-import React from "react";
 import Footer from "./Footer";
+import React, {useState, useEffect} from "react";
 
 export default function Dashboard(){
+
+    const [totalRequests, setTotalRequests] = useState([]);
+    const [totalReturns, setTotalReturns] = useState([]);
+
+    // gets number of returns and requests
+    useEffect(() => {
+        fetch(
+            `//localhost:5000/getrequestsandreturns`
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                setTotalRequests(data.total_requests)
+                setTotalReturns(data.total_returns)
+                //console.log(data)
+            });
+    }, [totalRequests, totalReturns]);
+
     return(
         <div id="layoutSidenav_content">
+
+            <div>
+                <p>Requisições feitas: {totalRequests}</p>
+                <p>Devoluções feitas: {totalReturns}</p>
+            </div>
+
             <main>
                 <div className="container-fluid px-4">
                     <h1 className="mt-4">Dashboard</h1>

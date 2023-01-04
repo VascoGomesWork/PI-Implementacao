@@ -36,11 +36,28 @@ def get_curretn_user():
         "email": user.email
     })
 
+# Gets number of requests and returns
+@app.route("/getrequestsandreturns", methods=["GET"])
+def get_totalrequests_totalreturns():
+    requests = Requisitar_Devolver.query.filter_by(esta_requisitado=1).all()
+    requisitar_devolver_schema = Requisitar_DevolverSchema(many=True)
+    total_requests = requisitar_devolver_schema.dump(requests)
+    #print("\n\n\n\nRequests=> ", len(total_requests), " END!!\n")
+
+    returns = Requisitar_Devolver.query.filter_by(esta_devolvido=1).all()
+    requisitar_devolver_schema = Requisitar_DevolverSchema(many=True)
+    total_returns = requisitar_devolver_schema.dump(returns)
+
+    return jsonify({
+        "total_requests": len(total_requests),
+        "total_returns" : len(total_returns)
+        })
+
 # Get Materials By Name
 @app.route("/showmaterialsbyname", methods=["GET", "POST"])
 def materials_list():
     # How to get Parameters out of URL -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
-    print("REQUEST = ", request.args.get("search"))
+    #print("REQUEST = ", request.args.get("search"))
     # How to check if a column contains substring -> https://stackoverflow.com/questions/4926757/sqlalchemy-query-where-a-column-contains-a-substring
     materials_list = Material.query.filter(
         Material.nome.contains(request.args.get("search"))).all()
