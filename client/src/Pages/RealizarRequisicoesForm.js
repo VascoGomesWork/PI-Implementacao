@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import httpClient from "../httpClient";
-import Footer from "./Footer";
 
 export default function RealizarRequisicoesForm(){
     const [nome, setNome] = useState([]);
@@ -15,12 +14,14 @@ export default function RealizarRequisicoesForm(){
     const [requisicaoKitsList, setRequisicaoKitsList] = useState([]);
     const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
     const [typeSearch, setTypeSearch] = useState(1);
+    // list of projects from database
+    const [listOfProjects, setListOfProjects] = useState(1);
 
     //Sets Default Value
     useEffect(() => {
         (async () => {
             try {
-                //Vai buscar tipos de materiais e preenche a dropdown
+                //gets all types of materials to fill dropwdown box
                 const types = await httpClient.get(
                     `//localhost:5000/showtypesmaterials`
                 );
@@ -30,6 +31,8 @@ export default function RealizarRequisicoesForm(){
                     ...prevData,
                     { tipo: "Kit" },
                 ]);
+                // gets all projects to fill drop down bos
+                
             } catch (e) {
                 console.log("Error getting types of materials");
             }

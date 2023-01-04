@@ -11,6 +11,8 @@ export default function AddMaterialForm(){
     // List of Projects and types of materials
     const [tipos, setTipos] = useState([]);
     const [projetos, setProjetos] = useState([]);
+    // Date
+    const [dataAquisicao, setDataAquisicao] = useState([]);
 
     const addMaterial = async (e) => {
         try {
@@ -19,7 +21,8 @@ export default function AddMaterialForm(){
                 quantidade,
                 observacao,
                 tipo_material,
-                projeto
+                projeto,
+                dataAquisicao
             });
             window.location.href = "/addmaterial";
         } catch (e) {
@@ -141,6 +144,23 @@ export default function AddMaterialForm(){
                                     </div>
                                 </div>
                             </div>
+                            <div className="form-floating mb-2">
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <label>Data de Aquisição </label>
+                                </div>
+                                <div className="col-md-5">
+                                    <input
+                                        className='form-control'
+                                        type="date"
+                                        id="start"
+                                        value={dataAquisicao}
+                                        min="2009-01-01"
+                                        max="2999-12-31"
+                                        onChange={(e) => setDataAquisicao(e.target.value)}/>
+                                </div>
+                            </div>
+                        </div>
                             <button className="btn btn-primary" type="button" onClick={addMaterial}>
                                 Adicionar Material
                             </button>

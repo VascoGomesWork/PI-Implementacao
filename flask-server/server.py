@@ -478,7 +478,11 @@ def add_material():
     nome = request.json["nome"]
     quantidade = request.json["quantidade"]
     observacao = request.json["observacao"]
-    data = datetime.now()
+    #data = datetime.now()
+    print("\n\n DATA==>", request.json["dataAquisicao"])
+    #data = datetime.strptime(request.json["dataAquisicao"] + ' 00:00:00.000000', '%y/%m/%d %H:%M:%S')
+    data = datetime.strptime(request.json["dataAquisicao"], '%Y-%m-%d')
+
     # FKs
     type = Tipo_Material.query.filter_by(
         id=request.json["tipo_material"]).first()
