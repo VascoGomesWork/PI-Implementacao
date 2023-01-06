@@ -5,7 +5,7 @@ from models import *
 #from models import db, User, Material, MaterialSchema, Projeto, ProjetoSchema, Requisitar_Devolver, Requisitar_DevolverSchema, Tipo_Material, Tipo_MaterialSchema, Kit_Material, Kit_MaterialSchema
 from config import ApplicationConfig
 from flask_cors import CORS, cross_origin
-from datetime import datetime
+from datetime import datetime, date
 
 # .\venv\Scripts\activate -> activate virtual envirement
 # pip install -r .\requirements.txt
@@ -498,7 +498,10 @@ def add_material():
     #data = datetime.now()
     print("\n\n DATA==>", request.json["dataAquisicao"])
     #data = datetime.strptime(request.json["dataAquisicao"] + ' 00:00:00.000000', '%y/%m/%d %H:%M:%S')
-    data = datetime.strptime(request.json["dataAquisicao"], '%Y-%m-%d')
+    if request.json["dataAquisicao"] == 0:
+        data = date.today()
+    else:
+        data = datetime.strptime(request.json["dataAquisicao"], '%Y-%m-%d')
 
     # FKs
     type = Tipo_Material.query.filter_by(
@@ -552,18 +555,23 @@ def add_material_type():
 def make_request():
     #request_variables = request.json["tipo"]
     print("REQUEST = ", request.json)
+    data_entrega = ""
+    if request.json["data_entrega_prevista"] == 0:
+        data_entrega = date.today()
+    else:
+        data_entrega=datetime.strptime(request.json["data_entrega_prevista"], '%Y-%m-%d')
+
     for item in request.json["requisicaoMaterialsList"]:
 
         new_request = Requisitar_Devolver(
             nome_pessoa_requisitar=request.json["nome"],
-            boolean_projeto=False if request.json["associatedProject"] == "" else True,
-            nome_projeto=request.json["associatedProject"],
+            boolean_projeto=False if request.json["project"] == "" else True,
+            nome_projeto=request.json["project"],
             esta_requisitado=True,
             esta_devolvido=False,
             quantidade_requisitada=item["quantidade"],
             data_requisicao=datetime.now(),
-            data_devolucao_prevista=datetime.strptime(
-                request.json["data_entrega_prevista"], '%Y-%m-%d'),
+            data_devolucao_prevista=data_entrega,
             data_devolucao_real=None,
             id_user=session.get("user_id"),
             id_material=item["id"],
@@ -613,6 +621,13 @@ def make_return():
 # makes a kit request
 @app.route("/makekitsrequest", methods=["POST"])
 def make_kits_request():
+
+    data_entrega = ""
+    if request.json["data_entrega_prevista"] == 0:
+        data_entrega = date.today()
+    else:
+        data_entrega=datetime.strptime(request.json["data_entrega_prevista"], '%Y-%m-%d')
+
     # iterates over the kits
     for kit in request.json["requisicaoKitsList"]:
         list_mats_in_kit = Kit_Material.query.filter_by(id_kit=kit["id"]).all()
@@ -624,16 +639,15 @@ def make_kits_request():
             print("material =>", mat)
             new_material_kit_request = Requisitar_Devolver(
                 nome_pessoa_requisitar=request.json["nome"],
-                boolean_projeto=False if request.json["associatedProject"] == "" else True,
-                nome_projeto=request.json["associatedProject"],
+                boolean_projeto=False if request.json["project"] == "" else True,
+                nome_projeto=request.json["project"],
                 esta_requisitado=True,
                 esta_devolvido=False,
                 # mateiral qty multiplied by kit qty
                 quantidade_requisitada=(
                     mat["quantidade"] * int(kit["quantidade"])),
                 data_requisicao=datetime.now(),
-                data_devolucao_prevista=datetime.strptime(
-                    request.json["data_entrega_prevista"], '%Y-%m-%d'),
+                data_devolucao_prevista=data_entrega,
                 data_devolucao_real=None,
                 id_user=session.get("user_id"),
                 id_material=mat["id_material"],

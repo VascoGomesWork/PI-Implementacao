@@ -12,9 +12,10 @@ export default function AddMaterialForm(){
     const [tipos, setTipos] = useState([]);
     const [projetos, setProjetos] = useState([]);
     // Date
-    const [dataAquisicao, setDataAquisicao] = useState([]);
+    const [dataAquisicao, setDataAquisicao] = useState(0);
 
     const addMaterial = async (e) => {
+
         try {
             await httpClient.post("//localhost:5000/addmaterial", {
                 nome,

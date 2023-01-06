@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import httpClient from "../httpClient";
+import Alert from "./Alert";
 
 export default function RealizarRequisicoesForm(){
     const [nome, setNome] = useState([]);
     const [projeto, setProjeto] = useState("true");
     const [nome_projeto, setNomeProjeto] = useState("");
-    const [data_entrega_prevista, setDataEntregaPrevista] = useState([]);
+    const [data_entrega_prevista, setDataEntregaPrevista] = useState(0);
     const [comboboxMaterialRequisicao, setComboboxMaterialRequisicao] = useState(
         []
     );
@@ -125,10 +126,31 @@ export default function RealizarRequisicoesForm(){
     };
 
     const makeMaterialsRequisition = async (e) => {
+
+        requisicaoKitsList.forEach((element) => {
+            if (element.quantidade === null) {
+                Alert("Preencha Todos os Campos")
+            }
+        })
+
+        requisicaoMaterialsList.forEach((element) => {
+            if (element.quantidade === null) {
+                Alert("Preencha Todos os Campos")
+            }
+        });
+        if(nome === [] || data_entrega_prevista == null){
+            console.log("TESTE")
+            alert("Preencha Todos os Campos")
+        }
+        let project = associatedProject
         try {
+            //Gets the default project name
+            if(associatedProject === 1){
+                project = listOfProjects[0].nome
+            }
             await httpClient.post("//localhost:5000/makerequest", {
                 nome,
-                associatedProject,
+                project,
                 requisicaoMaterialsList: requisicaoMaterialsList,
                 data_entrega_prevista,
             });
@@ -141,13 +163,19 @@ export default function RealizarRequisicoesForm(){
     };
 
     const makeKitsRequisition = async (e) => {
+        let project = associatedProject
         try {
+            //Gets the default project name
+            if(associatedProject === 1){
+                project = listOfProjects[0].nome
+            }
             await httpClient.post("//localhost:5000/makekitsrequest", {
                 nome,
-                associatedProject,
+                project,
                 requisicaoKitsList,
                 data_entrega_prevista,
             });
+            //Alert("Requisição Realizada com Sucesso!!")
             window.location.href = "/realizarrequisicoes";
         } catch (e) {
             if (e.response.status === 401) {
