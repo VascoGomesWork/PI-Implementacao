@@ -168,7 +168,7 @@ export default function RealizarRequisicoesForm(){
                 requisicaoMaterialsList: requisicaoMaterialsList,
                 data_entrega_prevista,
             });
-            setAlert(prevState => !prevState)
+            setTimeout(() => {setAlert(prevState => !prevState)}, 3000)
             //Sets Variables to their initial state
             resetState()
             //Changes the state of the alert
