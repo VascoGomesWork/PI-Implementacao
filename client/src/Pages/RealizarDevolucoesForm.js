@@ -170,21 +170,28 @@ export default function RealizarDevolucoesForm() {
 
   const makeKitsReturn = async (e) => {
     //Fazer UPDATE NA TABELA
-    console.log();
-    try {
-      await httpClient.post("//localhost:5000/makereturn", {
-        requisicaoMaterialsList: requisicaoKitsList,
-      });
-      setTimeout(() => {
+    if (wrongQuantity === true) {
+      // show error message
+      console.log("quanitades incorretas, n fez commit na db");
+      setWrongQuantity(false)
+      setWrongQuantityFinal(true)
+      setTimeout(() => { setWrongQuantityFinal(false)}, 3000)
+    } else {
+      try {
+        await httpClient.post("//localhost:5000/makereturn", {
+          requisicaoMaterialsList: requisicaoKitsList,
+        });
+        setTimeout(() => {
+          setAlert((prevState) => !prevState);
+        }, 3000);
+        //Sets Variables to their initial state
+        resetState();
+        //Changes the state of the alert
         setAlert((prevState) => !prevState);
-      }, 3000);
-      //Sets Variables to their initial state
-      resetState();
-      //Changes the state of the alert
-      setAlert((prevState) => !prevState);
-    } catch (e) {
-      if (e.response.status === 401) {
-        alert("Invalid Type Info");
+      } catch (e) {
+        if (e.response.status === 401) {
+          alert("Invalid Type Info");
+        }
       }
     }
   };

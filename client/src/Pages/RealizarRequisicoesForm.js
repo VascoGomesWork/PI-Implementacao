@@ -40,7 +40,7 @@ export default function RealizarRequisicoesForm() {
         // gets all projects to fill drop down bos
         const projects = await httpClient.get(`//localhost:5000/showprojects`);
         setListOfProjects(projects.data.projects);
-        console.log("LISTA DE PROJETOS => ", projects);
+        //console.log("LISTA DE PROJETOS => ", projects);
       } catch (e) {
         console.log("Error getting types of materials");
       }
@@ -87,7 +87,8 @@ export default function RealizarRequisicoesForm() {
     }
   };
 
-  const addkitToRequisicao = async (id, nome) => {
+  const addkitToRequisicao = async (id, nome, quantidadeTotal, listaMateriais) => {
+    console.log(listaMateriais)
     const found = requisicaoKitsList.some((kit) => kit.id === id);
     if (!found) {
       setRequisicaoKitsList([
@@ -95,16 +96,37 @@ export default function RealizarRequisicoesForm() {
         {
           id: id,
           nome: nome,
+          quantidadeTotal: quantidadeTotal,
+          listaMateriais: listaMateriais
         },
       ]);
     }
   };
 
-  const changeKitsQuantity = async (id, quantity) => {
+  const changeKitsQuantity = async (id, quantity, listaQuantidade) => {
+
+    console.log(listaQuantidade)
+    let quantidade_total = 0
+    let quantidadeKit = 0
+    listaQuantidade.map((material) => {
+      material.mat_info.map((specific) => {
+        console.log("QUANTIDADE TOTAL = " + specific.quantidade);
+        quantidade_total=specific.quantidade
+      })
+      console.log("KIT = " + material.mat_quantidade_kit);
+      quantidadeKit = material.mat_quantidade_kit
+    })
+    console.log(quantity)
+    if ((quantity * quantidadeKit) > quantidade_total || quantity < 0) {
+      setWrongQuantity(true);
+    } else {
+      setWrongQuantity(false);
+    }
+
     requisicaoKitsList.forEach((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
-        console.log("element quantiaty => ", element);
+        //console.log("element quantiaty => ", element);
       }
     });
   };
@@ -125,7 +147,7 @@ export default function RealizarRequisicoesForm() {
 
   const changeProject = async (e) => {
     setProjeto(e.target.value);
-    console.log("EVENT = " + projeto);
+    //console.log("EVENT = " + projeto);
   };
 
   const removeKitsList = async (id) => {
@@ -154,21 +176,7 @@ export default function RealizarRequisicoesForm() {
   }
 
   const makeMaterialsRequisition = async (e) => {
-    /*requisicaoKitsList.forEach((element) => {
-            if (element.quantidade === null) {
-                Alert("Preencha Todos os Campos")
-            }
-        })
 
-        requisicaoMaterialsList.forEach((element) => {
-            if (element.quantidade === null) {
-                Alert("Preencha Todos os Campos")
-            }
-        });
-        if(nome === [] || data_entrega_prevista == null){
-            console.log("TESTE")
-            alert("Preencha Todos os Campos")
-        }*/
     if (wrongQuantity === true) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db")
@@ -208,25 +216,47 @@ export default function RealizarRequisicoesForm() {
   };
 
   const makeKitsRequisition = async (e) => {
-    let project = associatedProject;
-    try {
-      //Gets the default project name
-      if (associatedProject === 1) {
-        project = listOfProjects[0].nome;
+    let permit = true
+    console.log("KIT LIST = " + JSON.stringify(requisicaoKitsList))
+    requisicaoKitsList.map((kitList) =>{
+      console.log("KIT LIST = " + kitList.quantidade)
+      if(kitList.quantidade === undefined){
+        setWrongQuantityFinal(true)
+        permit = false
       }
-      await httpClient.post("//localhost:5000/makekitsrequest", {
-        nome,
-        project,
-        requisicaoKitsList,
-        data_entrega_prevista,
-      });
-      setAlert((prevState) => !prevState);
-      //Sets Variables to their initial state
-      resetState();
-      setAlert((prevState) => !prevState);
-    } catch (e) {
-      if (e.response.status === 401) {
-        alert("Invalid Type Info");
+    })
+    if (wrongQuantity === true && permit === false) {
+      // show error message
+      console.log("quanitades incorretas, n fez commit na db")
+      //TODO SHOW ERROR MSG
+      setWrongQuantity(false)
+      setWrongQuantityFinal(true)
+      setTimeout(() => { setWrongQuantityFinal(false)}, 3000)
+
+    } else {
+      let project = associatedProject;
+      try {
+        //Gets the default project name
+        if (associatedProject === 1) {
+          project = listOfProjects[0].nome;
+        }
+        await httpClient.post("//localhost:5000/makekitsrequest", {
+          nome,
+          project,
+          requisicaoKitsList,
+          data_entrega_prevista,
+        });
+        setTimeout(() => {
+          setAlert((prevState) => !prevState);
+        }, 3000);
+        //Sets Variables to their initial state
+        resetState();
+        //Changes the state of the alert
+        setAlert((prevState) => !prevState);
+      } catch (e) {
+        if (e.response.status === 401) {
+          alert("Invalid Type Info");
+        }
       }
     }
   };
@@ -299,7 +329,7 @@ export default function RealizarRequisicoesForm() {
                       <select
                         className="form-select"
                         onChange={(e) => {
-                          console.log(e.target.value);
+                          //console.log(e.target.value);
                           setAssociatedProject(e.target.value);
                         }}
                         id=""
@@ -336,7 +366,7 @@ export default function RealizarRequisicoesForm() {
                     <select
                       className="form-select"
                       onChange={(e) => {
-                        console.log(e.target.value);
+                        //console.log(e.target.value);
                         setTypeSearch(e.target.value);
                       }}
                       id=""
@@ -361,7 +391,7 @@ export default function RealizarRequisicoesForm() {
                           <tr key="table head kit">
                             <th>Kit</th>
                             <th>Material</th>
-                            <th>Quantidade Total</th>
+                            <th>Quantidade Total Existente em Kit</th>
                             <th>Adicionar</th>
                           </tr>
                         ) : (
@@ -396,7 +426,9 @@ export default function RealizarRequisicoesForm() {
                                     onClick={(e) => {
                                       addkitToRequisicao(
                                         kit.kit_id,
-                                        kit.kit_name
+                                        kit.kit_name,
+                                        kit.mat_quantidade_kit,
+                                        kit.mat_list
                                       );
                                     }}
                                   >
@@ -437,13 +469,13 @@ export default function RealizarRequisicoesForm() {
                         {typeSearch === "Kit" ? (
                           <tr key="table head kit add">
                             <th>Kit</th>
-                            <th>Quantidade Total</th>
+                            <th>Quantidade Kits Total</th>
                             <th>Adicionar</th>
                           </tr>
                         ) : (
                           <tr key="table head material add">
                             <th>Material</th>
-                            <th>Quantidade Total</th>
+                            <th>Quantidade Material Total</th>
                             <th>Adicionar</th>
                           </tr>
                         )}
@@ -456,7 +488,7 @@ export default function RealizarRequisicoesForm() {
                                     className="form-control"
                                     type="number"
                                     onChange={(e) =>
-                                      changeKitsQuantity(kit.id, e.target.value)
+                                      changeKitsQuantity(kit.id, e.target.value, kit.listaMateriais)
                                     }
                                   />
                                 </th>
