@@ -580,6 +580,14 @@ def make_request():
         db.session.add(new_request)
         db.session.commit()
 
+        # Remove quantity from database
+        mat_id = item["id"]
+        mat_qty = item["quantidade"]
+        new_mat_qty = Material.query.filter_by(id=mat_id).first()
+        new_mat_qty.quantidade = new_mat_qty.quantidade - int(mat_qty)
+        new_mat_qty.quantidade_disponivel = new_mat_qty.quantidade_disponivel - int(mat_qty)
+        db.session.commit()
+
     return jsonify({
         "": ""
     })
@@ -589,21 +597,20 @@ def make_request():
 @app.route("/makereturn", methods=["POST"])
 def make_return():
     #request_variables = request.json["tipo"]
-    print("REQUEST = ", request.json)
+    #print("REQUEST = ", request.json)
     for item in request.json["requisicaoMaterialsList"]:
-        #print("ITEM = ", item,"\n\n\n\n\n")
+        print("ITEM = ", item,"\n\n\n\n\n")
 
         return_update = Requisitar_Devolver.query.filter_by(
             id=item["id"]).first()
-        print("QUANTIDADE REQUISITADA = ",
-              return_update.quantidade_requisitada, "\n\n\n\n\n")
+        #print("QUANTIDADE REQUISITADA = ", return_update.quantidade_requisitada, "\n\n\n\n\n")
+        print("\n\nID do material => ", return_update.id_material)
         # Checks if Quantity is between baudaries
         if int(item["quantidade"]) > int(return_update.quantidade_requisitada):
             return jsonify({
                 "error": "Quantidade Excede o Máximo"
             })
         elif int(item["quantidade"]) < int(return_update.quantidade_requisitada) and int(item["quantidade"]) >= 0:
-            print("CARAI")
             return_update.quantidade_requisitada = int(
                 return_update.quantidade_requisitada) - int(item["quantidade"])
         else:
@@ -611,6 +618,12 @@ def make_return():
             return_update.esta_devolvido = True
             return_update.quantidade_requisitada = 0
             return_update.data_devolucao_real = datetime.now()
+
+            # Add quantity back to database
+            new_stock = Material.query.filter_by(id=return_update.id_material).first()
+            new_stock.quantidade = new_stock.quantidade + int(item["quantidade"])
+            new_stock.quantidade_disponivel = new_stock.quantidade_disponivel + int(item["quantidade"])
+            db.session.commit()
 
         db.session.commit()
 
@@ -654,6 +667,15 @@ def make_kits_request():
                 id_kit=mat["id_kit"]
             )
             db.session.add(new_material_kit_request)
+            db.session.commit()
+
+            # removes kit quanity from database
+            # Remove quantity from database
+            mat_id = mat["id_material"]
+            mat_qty = mat["quantidade"] * int(kit["quantidade"])
+            new_mat_qty = Material.query.filter_by(id=mat_id).first()
+            new_mat_qty.quantidade = new_mat_qty.quantidade - int(mat_qty)
+            new_mat_qty.quantidade_disponivel = new_mat_qty.quantidade_disponivel - int(mat_qty)
             db.session.commit()
 
     return jsonify({

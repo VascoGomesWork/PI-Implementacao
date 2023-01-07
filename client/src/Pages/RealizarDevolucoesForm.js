@@ -60,13 +60,6 @@ export default function RealizarDevolucoesForm(){
     };
 
     function addMaterialToReturn(id, projeto, nome, quantidade, data_requisicao, docente, kit){
-        //console.log("TESTE INSIDE FUNCTION")
-        console.log("ID = " + id)
-        console.log("NOME = " + nome)
-        console.log("QUANTIDADE = " + quantidade)
-        console.log("DATA REQUISIÇÃO = " + data_requisicao)
-        console.log("DOCENTE = " + docente)
-        console.log("KIT = " + kit)
         const found = requisicaoMaterialsList.some((material) => material.id === id);
         if (!found) {
             setRequisicaoMaterialsList([
@@ -85,13 +78,6 @@ export default function RealizarDevolucoesForm(){
     };
 
     const addkitToReturn = async (id, nome, quantidade, data_requisicao, docente, kit) => {
-
-        console.log("ID = " + id)
-        console.log("NOME = " + nome)
-        console.log("QUANTIDADE = " + quantidade)
-        console.log("DATA REQUISIÇÃO = " + data_requisicao)
-        console.log("DOCENTE = " + docente)
-        console.log("KIT = " + kit)
         const found = requisicaoKitsList.some((kit) => kit.id === id);
         if (!found) {
             setRequisicaoKitsList([
@@ -106,7 +92,7 @@ export default function RealizarDevolucoesForm(){
                 },
             ]);
         }
-        console.log("REQUISICAO KIT KIT = " + JSON.stringify(requisicaoKitsList))
+        //console.log("REQUISICAO KIT KIT = " + JSON.stringify(requisicaoKitsList))
     };
 
     const makeMaterialsReturn = async (e) => {
