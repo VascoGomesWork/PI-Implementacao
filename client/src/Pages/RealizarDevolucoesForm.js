@@ -40,8 +40,6 @@ export default function RealizarDevolucoesForm() {
   }, [searchInput, typeSearch]);
 
   const changeKitsQuantity = async (id, quantity, totalQuantity) => {
-    //console.log("total_qty => ", totalQuantity)
-    //console.log("quantity => ", quantity)
     if (quantity > totalQuantity || quantity < 0) {
       setWrongQuantity(true);
     } else {
@@ -141,7 +139,18 @@ export default function RealizarDevolucoesForm() {
   };
 
   const makeMaterialsReturn = async (e) => {
-    if (wrongQuantity === true) {
+    let permit = true
+    requisicaoMaterialsList.map((materialsList) =>{
+      //console.log("KIT LIST = " + JSON.stringify(materialsList))
+      console.log("mat lsit to return = " + materialsList)
+      if(materialsList.quantidade === materialsList.quantidade_total){
+        console.log("ENTROU")
+        //setWrongQuantityFinal(true)
+        permit = false
+      }
+    })
+
+    if (wrongQuantity === true || permit === false) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db");
       setWrongQuantity(false)
@@ -169,8 +178,18 @@ export default function RealizarDevolucoesForm() {
   };
 
   const makeKitsReturn = async (e) => {
+    let permit = true
+    requisicaoKitsList.map((materialsList) =>{
+      //console.log("KIT LIST = " + JSON.stringify(materialsList))
+      console.log("mat lsit to return = " + materialsList)
+      if(materialsList.quantidade === materialsList.quantidade_total){
+        console.log("ENTROU")
+        //setWrongQuantityFinal(true)
+        permit = false
+      }
+    })
     //Fazer UPDATE NA TABELA
-    if (wrongQuantity === true) {
+    if (wrongQuantity === true || permit === false) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db");
       setWrongQuantity(false)

@@ -179,19 +179,16 @@ export default function RealizarRequisicoesForm() {
   const makeMaterialsRequisition = async (e) => {
 
     let permit = true
-
     requisicaoMaterialsList.map((materialsList) =>{
-      console.log("KIT LIST = " + JSON.stringify(materialsList))
-      console.log("KIT LIST = " + materialsList.quantidade)
-
+      //console.log("KIT LIST = " + JSON.stringify(materialsList))
+      //console.log("KIT LIST = " + materialsList.quantidade)
       if(materialsList.quantidade === materialsList.quantidade_total){
         console.log("ENTROU")
         //setWrongQuantityFinal(true)
         permit = false
       }
-
     })
-    if (wrongQuantity === true|| permit === false) {
+    if (wrongQuantity === true || permit === false) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db")
       //TODO SHOW ERROR MSG
