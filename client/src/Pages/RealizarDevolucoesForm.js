@@ -39,7 +39,15 @@ export default function RealizarDevolucoesForm() {
     }
   }, [searchInput, typeSearch]);
 
-  const changeKitsQuantity = async (id, quantity) => {
+  const changeKitsQuantity = async (id, quantity, totalQuantity) => {
+    //console.log("total_qty => ", totalQuantity)
+    //console.log("quantity => ", quantity)
+    if (quantity > totalQuantity || quantity < 0) {
+      setWrongQuantity(true);
+    } else {
+      setWrongQuantity(false);
+    }
+
     requisicaoKitsList.forEach((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
@@ -111,7 +119,8 @@ export default function RealizarDevolucoesForm() {
     quantidade,
     data_requisicao,
     docente,
-    kit
+    kit,
+    quantidade_total,
   ) => {
     const found = requisicaoKitsList.some((kit) => kit.id === id);
     if (!found) {
@@ -124,6 +133,7 @@ export default function RealizarDevolucoesForm() {
           data_requisicao: data_requisicao,
           docente: docente,
           kit: kit,
+          quantidade_total: quantidade_total,
         },
       ]);
     }
@@ -286,7 +296,8 @@ export default function RealizarDevolucoesForm() {
                                           atribute["quantidade"],
                                           atribute["data_requisicao"],
                                           atribute["user"][0].nome,
-                                          atribute["kit"][0].nome
+                                          atribute["kit"][0].nome,
+                                          atribute["quantidade"]
                                         );
                                       }}
                                     >
@@ -386,7 +397,7 @@ export default function RealizarDevolucoesForm() {
                                     className="form-control"
                                     type="number"
                                     onChange={(e) =>
-                                      changeKitsQuantity(kit.id, e.target.value)
+                                      changeKitsQuantity(kit.id, e.target.value, kit.quantidade_total)
                                     }
                                     id=""
                                   />
