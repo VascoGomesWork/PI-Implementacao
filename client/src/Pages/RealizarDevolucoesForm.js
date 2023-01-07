@@ -3,12 +3,24 @@ import httpClient from "../httpClient";
 import Alert from "./Alert";
 
 export default function RealizarDevolucoesForm() {
+  const [alert, setAlert] = useState(false);
   const [searchInput, setSearchInput] = useState([]);
   const [searchResultList, setSearchResultList] = useState([]);
   const [requisicaoKitsList, setRequisicaoKitsList] = useState([]);
   const [requisicaoMaterialsList, setRequisicaoMaterialsList] = useState([]);
   const [typeSearch, setTypeSearch] = useState("nome_projeto");
   const [wrongQuantity, setWrongQuantity] = useState(false);
+  const [wrongQuantityFinal, setWrongQuantityFinal] = useState(false);
+
+  function resetState() {
+    setAlert(false)
+    setSearchInput([])
+    setSearchResultList([])
+    setRequisicaoKitsList([])
+    setRequisicaoMaterialsList([])
+    setWrongQuantity(false)
+    setWrongQuantityFinal(false)
+  }
 
   useEffect(() => {
     if (searchInput.length > 0) {
@@ -38,7 +50,7 @@ export default function RealizarDevolucoesForm() {
 
   const changeQuantity = async (id, quantity, totalQuantity) => {
     // Verifies the quantity
-    if (quantity > totalQuantity) {
+    if (quantity > totalQuantity || quantity < 0) {
       setWrongQuantity(true);
     } else {
       setWrongQuantity(false);
@@ -122,13 +134,22 @@ export default function RealizarDevolucoesForm() {
     if (wrongQuantity === true) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db");
+      setWrongQuantity(false)
+      setWrongQuantityFinal(true)
+      setTimeout(() => { setWrongQuantityFinal(false)}, 3000)
     } else {
       //Fazer UPDATE NA TABELA
       try {
         await httpClient.post("//localhost:5000/makereturn", {
           requisicaoMaterialsList: requisicaoMaterialsList,
         });
-        window.location.href = "/realizardevolucoes";
+        setTimeout(() => {
+          setAlert((prevState) => !prevState);
+        }, 3000);
+        //Sets Variables to their initial state
+        resetState();
+        //Changes the state of the alert
+        setAlert((prevState) => !prevState);
       } catch (e) {
         if (e.response.status === 401) {
           alert("Invalid Type Info");
@@ -144,7 +165,13 @@ export default function RealizarDevolucoesForm() {
       await httpClient.post("//localhost:5000/makereturn", {
         requisicaoMaterialsList: requisicaoKitsList,
       });
-      window.location.href = "/realizardevolucoes";
+      setTimeout(() => {
+        setAlert((prevState) => !prevState);
+      }, 3000);
+      //Sets Variables to their initial state
+      resetState();
+      //Changes the state of the alert
+      setAlert((prevState) => !prevState);
     } catch (e) {
       if (e.response.status === 401) {
         alert("Invalid Type Info");
@@ -415,6 +442,10 @@ export default function RealizarDevolucoesForm() {
                             ))}
                       </tbody>
                     </table>
+                    {wrongQuantity && (
+                        <Alert id="alert" tipo={"insuccess"} props={"Quantidades Incorretas"} />
+                    )}
+                    {wrongQuantityFinal && (<Alert id="alert" tipo={"wrong_qty"} props={"Não foi Possível Efetuar a Requisição devido a Quantidades Incorretas"} />)}
                   </div>
                 </div>
               </div>
@@ -429,8 +460,8 @@ export default function RealizarDevolucoesForm() {
                   Fazer Devolucao
                 </button>
               </div>
-              {wrongQuantity && (
-                <Alert id="alert" props={"Quantidades Incorretas"} />
+              {alert && (
+                  <Alert id="alert" tipo={"success"} props={"Requisição Realizada com Sucesso"} />
               )}
             </form>
           </div>

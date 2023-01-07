@@ -20,6 +20,7 @@ export default function RealizarRequisicoesForm() {
   const [associatedProject, setAssociatedProject] = useState(1);
   const [alert, setAlert] = useState(false);
   const [wrongQuantity, setWrongQuantity] = useState(false);
+  const [wrongQuantityFinal, setWrongQuantityFinal] = useState(false);
 
   //Sets Default Value
   useEffect(() => {
@@ -110,7 +111,7 @@ export default function RealizarRequisicoesForm() {
 
   const changeQuantity = async (id, quantity, quantidade_total) => {
     // Verifies the quantity
-    if (quantity > quantidade_total) {
+    if (quantity > quantidade_total || quantity < 0) {
       setWrongQuantity(true);
     } else {
       setWrongQuantity(false);
@@ -172,6 +173,9 @@ export default function RealizarRequisicoesForm() {
       // show error message
       console.log("quanitades incorretas, n fez commit na db")
       //TODO SHOW ERROR MSG
+      setWrongQuantity(false)
+      setWrongQuantityFinal(true)
+      setTimeout(() => { setWrongQuantityFinal(false)}, 3000)
 
     } else {
       let project = associatedProject;
@@ -502,6 +506,10 @@ export default function RealizarRequisicoesForm() {
                             ))}
                       </tbody>
                     </table>
+                    {wrongQuantity && (
+                        <Alert id="alert" tipo={"insuccess"} props={"Quantidades Incorretas"} />
+                    )}
+                    {wrongQuantityFinal && (<Alert id="alert" tipo={"wrong_qty"} props={"Não foi Possível Efetuar a Requisição devido a Quantidades Incorretas"} />)}
                   </div>
                 </div>
               </div>
@@ -536,11 +544,10 @@ export default function RealizarRequisicoesForm() {
                 Fazer Requisição
               </button>
               {alert && (
-                <Alert id="alert" props={"Requisição Realizada com Sucesso"} />
+                <Alert id="alert" tipo={"success"} props={"Requisição Realizada com Sucesso"} />
               )}
-              {wrongQuantity && (
-                <Alert id="alert" props={"Quantidades Incorretas"} />
-              )}
+
+
             </form>
           </div>
         </div>
