@@ -18,6 +18,7 @@ export default function RealizarRequisicoesForm(){
     // list of projects from database
     const [listOfProjects, setListOfProjects] = useState([]);
     const [associatedProject, setAssociatedProject] = useState(1);
+    const [alert, setAlert] = useState(false)
 
     //Sets Default Value
     useEffect(() => {
@@ -125,6 +126,19 @@ export default function RealizarRequisicoesForm(){
         );
     };
 
+    function resetState() {
+        setNome([])
+        setProjeto(true)
+        setDataEntregaPrevista(0)
+        setSearchInput([])
+        setSearchResultList([])
+        setRequisicaoKitsList([])
+        setRequisicaoMaterialsList([])
+        setTypeSearch(1)
+        setAssociatedProject(1)
+        setAlert(false)
+    }
+
     const makeMaterialsRequisition = async (e) => {
 
         requisicaoKitsList.forEach((element) => {
@@ -154,7 +168,13 @@ export default function RealizarRequisicoesForm(){
                 requisicaoMaterialsList: requisicaoMaterialsList,
                 data_entrega_prevista,
             });
-            window.location.href = "/realizarrequisicoes";
+            setAlert(prevState => !prevState)
+            //Sets Variables to their initial state
+            resetState()
+            //Changes the state of the alert
+            setAlert(prevState => !prevState)
+
+            //window.location.href = "/realizarrequisicoes";
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Type Info");
@@ -175,8 +195,11 @@ export default function RealizarRequisicoesForm(){
                 requisicaoKitsList,
                 data_entrega_prevista,
             });
-            //Alert("Requisição Realizada com Sucesso!!")
-            window.location.href = "/realizarrequisicoes";
+            setAlert(prevState => !prevState)
+            //Sets Variables to their initial state
+            resetState()
+            setAlert(prevState => !prevState)
+
         } catch (e) {
             if (e.response.status === 401) {
                 alert("Invalid Type Info");
@@ -481,6 +504,7 @@ export default function RealizarRequisicoesForm(){
                         >
                             Fazer Requisição
                         </button>
+                        {alert && <Alert id="alert" props={"Requisição Realizada com Sucesso"}/>}
                     </form>
                 </div>
                 </div>
