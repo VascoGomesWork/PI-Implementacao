@@ -132,6 +132,7 @@ export default function RealizarRequisicoesForm() {
   };
 
   const changeQuantity = async (id, quantity, quantidade_total) => {
+
     // Verifies the quantity
     if (quantity > quantidade_total || quantity < 0) {
       setWrongQuantity(true);
@@ -177,7 +178,20 @@ export default function RealizarRequisicoesForm() {
 
   const makeMaterialsRequisition = async (e) => {
 
-    if (wrongQuantity === true) {
+    let permit = true
+
+    requisicaoMaterialsList.map((materialsList) =>{
+      console.log("KIT LIST = " + JSON.stringify(materialsList))
+      console.log("KIT LIST = " + materialsList.quantidade)
+
+      if(materialsList.quantidade === materialsList.quantidade_total){
+        console.log("ENTROU")
+        //setWrongQuantityFinal(true)
+        permit = false
+      }
+
+    })
+    if (wrongQuantity === true|| permit === false) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db")
       //TODO SHOW ERROR MSG
@@ -217,11 +231,8 @@ export default function RealizarRequisicoesForm() {
 
   const makeKitsRequisition = async (e) => {
     let permit = true
-    console.log("KIT LIST = " + JSON.stringify(requisicaoKitsList))
     requisicaoKitsList.map((kitList) =>{
-      console.log("KIT LIST = " + typeof kitList.quantidade)
       if(typeof (kitList.quantidade) === "undefined"){
-        console.log("ENTROU")
         //setWrongQuantityFinal(true)
         permit = false
       }
