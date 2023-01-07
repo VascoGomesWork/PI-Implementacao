@@ -219,13 +219,14 @@ export default function RealizarRequisicoesForm() {
     let permit = true
     console.log("KIT LIST = " + JSON.stringify(requisicaoKitsList))
     requisicaoKitsList.map((kitList) =>{
-      console.log("KIT LIST = " + kitList.quantidade)
-      if(kitList.quantidade === undefined){
-        setWrongQuantityFinal(true)
+      console.log("KIT LIST = " + typeof kitList.quantidade)
+      if(typeof (kitList.quantidade) === "undefined"){
+        console.log("ENTROU")
+        //setWrongQuantityFinal(true)
         permit = false
       }
     })
-    if (wrongQuantity === true && permit === false) {
+    if (wrongQuantity === true || permit === false) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db")
       //TODO SHOW ERROR MSG
