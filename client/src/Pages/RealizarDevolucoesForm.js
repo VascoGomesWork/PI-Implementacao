@@ -141,11 +141,7 @@ export default function RealizarDevolucoesForm() {
   const makeMaterialsReturn = async (e) => {
     let permit = true
     requisicaoMaterialsList.map((materialsList) =>{
-      //console.log("KIT LIST = " + JSON.stringify(materialsList))
-      console.log("mat lsit to return = " + materialsList)
       if(materialsList.quantidade === materialsList.quantidade_total){
-        console.log("ENTROU")
-        //setWrongQuantityFinal(true)
         permit = false
       }
     })
@@ -180,18 +176,14 @@ export default function RealizarDevolucoesForm() {
   const makeKitsReturn = async (e) => {
     let permit = true
     requisicaoKitsList.map((materialsList) =>{
-      //console.log("KIT LIST = " + JSON.stringify(materialsList))
-      console.log("mat lsit to return = " + materialsList)
       if(materialsList.quantidade === materialsList.quantidade_total){
-        console.log("ENTROU")
-        //setWrongQuantityFinal(true)
         permit = false
       }
     })
     //Fazer UPDATE NA TABELA
     if (wrongQuantity === true || permit === false) {
       // show error message
-      console.log("quanitades incorretas, n fez commit na db");
+      //console.log("quanitades incorretas, n fez commit na db");
       setWrongQuantity(false)
       setWrongQuantityFinal(true)
       setTimeout(() => { setWrongQuantityFinal(false)}, 3000)

@@ -21,6 +21,7 @@ export default function RealizarRequisicoesForm() {
   const [alert, setAlert] = useState(false);
   const [wrongQuantity, setWrongQuantity] = useState(false);
   const [wrongQuantityFinal, setWrongQuantityFinal] = useState(false);
+  const [wrongName, setWrongName] = useState(false);
 
   //Sets Default Value
   useEffect(() => {
@@ -87,8 +88,13 @@ export default function RealizarRequisicoesForm() {
     }
   };
 
-  const addkitToRequisicao = async (id, nome, quantidadeTotal, listaMateriais) => {
-    console.log(listaMateriais)
+  const addkitToRequisicao = async (
+    id,
+    nome,
+    quantidadeTotal,
+    listaMateriais
+  ) => {
+    console.log(listaMateriais);
     const found = requisicaoKitsList.some((kit) => kit.id === id);
     if (!found) {
       setRequisicaoKitsList([
@@ -97,27 +103,26 @@ export default function RealizarRequisicoesForm() {
           id: id,
           nome: nome,
           quantidadeTotal: quantidadeTotal,
-          listaMateriais: listaMateriais
+          listaMateriais: listaMateriais,
         },
       ]);
     }
   };
 
   const changeKitsQuantity = async (id, quantity, listaQuantidade) => {
-
-    console.log(listaQuantidade)
-    let quantidade_total = 0
-    let quantidadeKit = 0
+    console.log(listaQuantidade);
+    let quantidade_total = 0;
+    let quantidadeKit = 0;
     listaQuantidade.map((material) => {
       material.mat_info.map((specific) => {
         console.log("QUANTIDADE TOTAL = " + specific.quantidade);
-        quantidade_total=specific.quantidade
-      })
+        quantidade_total = specific.quantidade;
+      });
       console.log("KIT = " + material.mat_quantidade_kit);
-      quantidadeKit = material.mat_quantidade_kit
-    })
-    console.log(quantity)
-    if ((quantity * quantidadeKit) > quantidade_total || quantity < 0) {
+      quantidadeKit = material.mat_quantidade_kit;
+    });
+    console.log(quantity);
+    if (quantity * quantidadeKit > quantidade_total || quantity < 0) {
       setWrongQuantity(true);
     } else {
       setWrongQuantity(false);
@@ -132,7 +137,6 @@ export default function RealizarRequisicoesForm() {
   };
 
   const changeQuantity = async (id, quantity, quantidade_total) => {
-
     // Verifies the quantity
     if (quantity > quantidade_total || quantity < 0) {
       setWrongQuantity(true);
@@ -177,25 +181,26 @@ export default function RealizarRequisicoesForm() {
   }
 
   const makeMaterialsRequisition = async (e) => {
-
-    let permit = true
-    requisicaoMaterialsList.map((materialsList) =>{
-      //console.log("KIT LIST = " + JSON.stringify(materialsList))
-      //console.log("KIT LIST = " + materialsList.quantidade)
-      if(materialsList.quantidade === materialsList.quantidade_total){
-        console.log("ENTROU")
-        //setWrongQuantityFinal(true)
-        permit = false
+    let permit = true;
+    requisicaoMaterialsList.map((materialsList) => {
+      if (materialsList.quantidade === materialsList.quantidade_total) {
+        permit = false;
       }
-    })
+    });
     if (wrongQuantity === true || permit === false) {
       // show error message
-      console.log("quanitades incorretas, n fez commit na db")
+      console.log("quanitades incorretas, n fez commit na db");
       //TODO SHOW ERROR MSG
-      setWrongQuantity(false)
-      setWrongQuantityFinal(true)
-      setTimeout(() => { setWrongQuantityFinal(false)}, 3000)
-
+      setWrongQuantity(false);
+      setWrongQuantityFinal(true);
+      setTimeout(() => {
+        setWrongQuantityFinal(false);
+      }, 3000);
+    } else if (nome.length <= 0) {
+      setWrongName(true);
+      setTimeout(() => {
+        setWrongName(false);
+      }, 3000);
     } else {
       let project = associatedProject;
       try {
@@ -227,21 +232,26 @@ export default function RealizarRequisicoesForm() {
   };
 
   const makeKitsRequisition = async (e) => {
-    let permit = true
-    requisicaoKitsList.map((kitList) =>{
-      if(typeof (kitList.quantidade) === "undefined"){
-        //setWrongQuantityFinal(true)
-        permit = false
+    let permit = true;
+    requisicaoKitsList.map((kitList) => {
+      if (typeof kitList.quantidade === "undefined") {
+        permit = false;
       }
-    })
+    });
     if (wrongQuantity === true || permit === false) {
       // show error message
-      console.log("quanitades incorretas, n fez commit na db")
+      console.log("quanitades incorretas, n fez commit na db");
       //TODO SHOW ERROR MSG
-      setWrongQuantity(false)
-      setWrongQuantityFinal(true)
-      setTimeout(() => { setWrongQuantityFinal(false)}, 3000)
-
+      setWrongQuantity(false);
+      setWrongQuantityFinal(true);
+      setTimeout(() => {
+        setWrongQuantityFinal(false);
+      }, 3000);
+    } else if (nome.length <= 0) {
+      setWrongName(true);
+      setTimeout(() => {
+        setWrongName(false);
+      }, 3000);
     } else {
       let project = associatedProject;
       try {
@@ -497,7 +507,11 @@ export default function RealizarRequisicoesForm() {
                                     className="form-control"
                                     type="number"
                                     onChange={(e) =>
-                                      changeKitsQuantity(kit.id, e.target.value, kit.listaMateriais)
+                                      changeKitsQuantity(
+                                        kit.id,
+                                        e.target.value,
+                                        kit.listaMateriais
+                                      )
                                     }
                                   />
                                 </th>
@@ -548,9 +562,21 @@ export default function RealizarRequisicoesForm() {
                       </tbody>
                     </table>
                     {wrongQuantity && (
-                        <Alert id="alert" tipo={"insuccess"} props={"Quantidades Incorretas"} />
+                      <Alert
+                        id="alert"
+                        tipo={"insuccess"}
+                        props={"Quantidades Incorretas"}
+                      />
                     )}
-                    {wrongQuantityFinal && (<Alert id="alert" tipo={"wrong_qty"} props={"Não foi Possível Efetuar a Requisição devido a Quantidades Incorretas"} />)}
+                    {wrongQuantityFinal && (
+                      <Alert
+                        id="alert"
+                        tipo={"wrong_qty"}
+                        props={
+                          "Não foi Possível Efetuar a Requisição devido a Quantidades Incorretas"
+                        }
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -585,10 +611,19 @@ export default function RealizarRequisicoesForm() {
                 Fazer Requisição
               </button>
               {alert && (
-                <Alert id="alert" tipo={"success"} props={"Requisição Realizada com Sucesso"} />
+                <Alert
+                  id="alert"
+                  tipo={"success"}
+                  props={"Requisição Realizada com Sucesso"}
+                />
               )}
-
-
+              {wrongName && (
+                <Alert
+                  id="alert"
+                  tipo={"danger"}
+                  props={"Por favor inserir Nome"}
+                />
+              )}
             </form>
           </div>
         </div>
