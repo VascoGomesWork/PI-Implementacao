@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import httpClient from "../httpClient";
+import Alert from "./Alert";
 
 export default function AddMaterialForm(){
     const [nome, setNome] = useState([]);
@@ -13,22 +14,51 @@ export default function AddMaterialForm(){
     const [projetos, setProjetos] = useState([]);
     // Date
     const [dataAquisicao, setDataAquisicao] = useState(0);
+    const [alert, setAlert] = useState(false);
+    const [missingData, setMissingData] = useState(false);
+
+    /**
+     * @Resume: Function that Resets the State
+     */
+    function resetState() {
+        setNome([])
+        setQuantidade([])
+        setObservacao([])
+        setDataAquisicao(0)
+        setAlert(false)
+        setMissingData(false)
+    }
 
     const addMaterial = async (e) => {
 
-        try {
-            await httpClient.post("//localhost:5000/addmaterial", {
-                nome,
-                quantidade,
-                observacao,
-                tipo_material,
-                projeto,
-                dataAquisicao
-            });
-            window.location.href = "/addmaterial";
-        } catch (e) {
-            if (e.response.status === 401) {
-                alert("Invalid Material Info");
+        if(nome.length <= 0 || quantidade.length <= 0 || observacao.length <= 0 || dataAquisicao.length <= 0){
+            //sets missing data state to the prevState
+            setMissingData((prevState) => !prevState);
+            //sets the missing data state to the prevState after 3 seconds
+            setTimeout(() => {
+                setMissingData((prevState) => !prevState);
+            }, 3000);
+        } else {
+            try {
+                await httpClient.post("//localhost:5000/addmaterial", {
+                    nome,
+                    quantidade,
+                    observacao,
+                    tipo_material,
+                    projeto,
+                    dataAquisicao
+                });
+                setTimeout(() => {
+                    setAlert((prevState) => !prevState);
+                }, 3000);
+                //Sets Variables to their initial state
+                resetState();
+                //Changes the state of the alert
+                setAlert((prevState) => !prevState);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    alert("Invalid Material Info");
+                }
             }
         }
     };
@@ -65,7 +95,7 @@ export default function AddMaterialForm(){
         <div id="layoutSidenav_content">
             <main>
                 <div className="container-fluid px-4">
-                    <h1 className="mt-4">Adiconar Novo Material</h1>
+                    <h1 className="mt-4">Adicionar Novo Material</h1>
                     <div>
                         <form>
                             <div className="form-floating mb-2">
@@ -165,6 +195,20 @@ export default function AddMaterialForm(){
                             <button className="btn btn-primary" type="button" onClick={addMaterial}>
                                 Adicionar Material
                             </button>
+                            {alert && (
+                                <Alert
+                                    id="alert"
+                                    tipo={"success"}
+                                    props={"Projeto Criado com Sucesso"}
+                                />
+                            )}
+                            {missingData && (
+                                <Alert
+                                    id="alert"
+                                    tipo={"danger"}
+                                    props={"Por Favor Insira Todos os Dados Necessários"}
+                                />
+                            )}
                         </form>
                     </div>
                 </div>

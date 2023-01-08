@@ -1,18 +1,47 @@
 import React, {useState} from "react";
 import httpClient from "../httpClient";
+import Alert from "./Alert";
 
 export default function AddMaterialTypeForm(){
+
     const [tipo, setTipo] = useState([]);
+    const [alert, setAlert] = useState(false);
+    const [missingData, setMissingData] = useState(false);
+
+    /**
+     * @Resume: Function that Resets the State
+     */
+    function resetState() {
+        setTipo([])
+        setAlert(false)
+        setMissingData(false)
+    }
 
     const addMaterialType = async (e) => {
-        try {
-            await httpClient.post("//localhost:5000/addmaterialtype", {
-                tipo,
-            });
-            window.location.href = "/addmaterialtype";
-        } catch (e) {
-            if (e.response.status === 401) {
-                alert("Invalid Type Info");
+
+        if(tipo.length <= 0){
+            //sets missing data state to the prevState
+            setMissingData((prevState) => !prevState);
+            //sets the missing data state to the prevState after 3 seconds
+            setTimeout(() => {
+                setMissingData((prevState) => !prevState);
+            }, 3000);
+        } else {
+            try {
+                await httpClient.post("//localhost:5000/addmaterialtype", {
+                    tipo,
+                });
+                setTimeout(() => {
+                    setAlert((prevState) => !prevState);
+                }, 3000);
+                //Sets Variables to their initial state
+                resetState();
+                //Changes the state of the alert
+                setAlert((prevState) => !prevState);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    alert("Invalid Type Info");
+                }
             }
         }
     };
@@ -43,6 +72,20 @@ export default function AddMaterialTypeForm(){
                             <button className="btn btn-primary" type="button" onClick={addMaterialType}>
                                 Adicionar
                             </button>
+                            {alert && (
+                                <Alert
+                                    id="alert"
+                                    tipo={"success"}
+                                    props={"Projeto Criado com Sucesso"}
+                                />
+                            )}
+                            {missingData && (
+                                <Alert
+                                    id="alert"
+                                    tipo={"danger"}
+                                    props={"Por Favor Insira Todos os Dados Necessários"}
+                                />
+                            )}
                         </form>
                     </div>
                 </div>

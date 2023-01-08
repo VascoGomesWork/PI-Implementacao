@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import httpClient from "../httpClient";
+import Alert from "./Alert";
 
 export default function CreateKitForm(){
     const [nomeKit, setNomeKit] = useState([]);
@@ -7,18 +8,54 @@ export default function CreateKitForm(){
     const [searchInput, setSearchInput] = useState([]);
     const [searchResultList, setSearchResultList] = useState([]);
     const [kitMaterialsList, setKitMaterialsList] = useState([]);
+    const [alert, setAlert] = useState(false);
+    const [missingData, setMissingData] = useState(false);
 
+    /**
+     * @Resume: Function that Resets the State
+     */
+    function resetState() {
+        setNomeKit([])
+        setObservacao([])
+        setSearchInput([])
+        setSearchResultList([])
+        setKitMaterialsList([])
+        setAlert(false)
+        setMissingData(false)
+    }
+
+    /**
+     * @Resume: Function the Create Kit
+     * @param e
+     * @returns {Promise<void>}
+     */
     const createKit = async (e) => {
-        try {
-            await httpClient.post("//localhost:5000/addkit", {
-                nomeKit,
-                observacao,
-                kitMaterialsList,
-            });
-            window.location.href = "/createkits";
-        } catch (e) {
-            if (e.response.status === 401) {
-                alert("Invalid Kit Info");
+
+        if(nomeKit.length <= 0 || observacao.length <= 0 || kitMaterialsList.length <= 0){
+            //sets missing data state to the prevState
+            setMissingData((prevState) => !prevState);
+            //sets the missing data state to the prevState after 3 seconds
+            setTimeout(() => {
+                setMissingData((prevState) => !prevState);
+            }, 3000);
+        } else {
+            try {
+                await httpClient.post("//localhost:5000/addkit", {
+                    nomeKit,
+                    observacao,
+                    kitMaterialsList,
+                });
+                setTimeout(() => {
+                    setAlert((prevState) => !prevState);
+                }, 3000);
+                //Sets Variables to their initial state
+                resetState();
+                //Changes the state of the alert
+                setAlert((prevState) => !prevState);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    alert("Invalid Kit Info");
+                }
             }
         }
     };
@@ -210,6 +247,20 @@ export default function CreateKitForm(){
                             <button className="btn btn-primary" type="button" onClick={createKit}>
                                 Adicionar Kit
                             </button>
+                            {alert && (
+                                <Alert
+                                    id="alert"
+                                    tipo={"success"}
+                                    props={"Projeto Criado com Sucesso"}
+                                />
+                            )}
+                            {missingData && (
+                                <Alert
+                                    id="alert"
+                                    tipo={"danger"}
+                                    props={"Por Favor Insira Todos os Dados Necessários"}
+                                />
+                            )}
                         </form>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import httpClient from "../httpClient";
+import Alert from "./Alert";
 
 export default function UpdateMaterialForm(){
     const [stocks, setStocks] = useState([]);
@@ -7,6 +8,21 @@ export default function UpdateMaterialForm(){
     const [quantidade, setQuantidade] = useState([]);
     const [searchInput, setSearchInput] = useState([]);
     const [typeSearch, setTypeSearch] = useState("nome_material");
+    const [alert, setAlert] = useState(false);
+    const [missingData, setMissingData] = useState(false);
+
+    /**
+     * @Resume: Function that Resets the State
+     */
+    function resetState() {
+        setStocks([])
+        setId([])
+        setQuantidade([])
+        setSearchInput([])
+        setTypeSearch("nome_material")
+        setAlert(false)
+        setMissingData(false)
+    }
 
     // search bar
     useEffect(() => {
@@ -25,15 +41,31 @@ export default function UpdateMaterialForm(){
     const updateStock = async (e) => {
         console.log("id: ", id);
         console.log("qty: ", quantidade);
-        try {
-            await httpClient.post("//localhost:5000/updatestock", {
-                id,
-                quantidade,
-            });
-            window.location.href = "/updatematerial";
-        } catch (e) {
-            if (e.response.status === 401) {
-                alert("Invalid Material Info");
+
+        if(quantidade.length <= 0){
+            //sets missing data state to the prevState
+            setMissingData((prevState) => !prevState);
+            //sets the missing data state to the prevState after 3 seconds
+            setTimeout(() => {
+                setMissingData((prevState) => !prevState);
+            }, 3000);
+        } else {
+            try {
+                await httpClient.post("//localhost:5000/updatestock", {
+                    id,
+                    quantidade,
+                });
+                setTimeout(() => {
+                    setAlert((prevState) => !prevState);
+                }, 3000);
+                //Sets Variables to their initial state
+                resetState();
+                //Changes the state of the alert
+                setAlert((prevState) => !prevState);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    alert("Invalid Material Info");
+                }
             }
         }
     };
@@ -110,6 +142,20 @@ export default function UpdateMaterialForm(){
                                             <button className="btn btn-primary" type="button" onClick={updateStock}>
                                                 Atualizar
                                             </button>
+                                            {alert && (
+                                                <Alert
+                                                    id="alert"
+                                                    tipo={"success"}
+                                                    props={"Projeto Criado com Sucesso"}
+                                                />
+                                            )}
+                                            {missingData && (
+                                                <Alert
+                                                    id="alert"
+                                                    tipo={"danger"}
+                                                    props={"Por Favor Insira Todos os Dados Necessários"}
+                                                />
+                                            )}
                                         </th>
                                     </tr>
                                 ))}
