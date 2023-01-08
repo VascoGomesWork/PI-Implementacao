@@ -1,24 +1,64 @@
 import React, {useState} from "react";
 import httpClient from "../httpClient";
+import Alert from "./Alert";
 
 export default function AddProjectForm(){
     const [nome, setNome] = useState([]);
+    const [alert, setAlert] = useState(false);
+    const [missingData, setMissingData] = useState(false);
     const [observacoes, setObservacoes] = useState([]);
     const [data_inicio, setDataInicio] = useState([]);
     const [data_fim, setDataFim] = useState([]);
 
+    /**
+     * @Resume: Function that Resets the State
+     */
+    function resetState() {
+        setNome([])
+        setAlert(false)
+        setMissingData(false)
+        setObservacoes([])
+        setDataInicio([])
+        setDataFim([])
+    }
+
+    /**
+     * Resume: Function that Creates a New Project
+     * @param e
+     * @returns {Promise<void>}
+     */
     const addProject = async (e) => {
-        try {
-            await httpClient.post("//localhost:5000/addproject", {
-                nome,
-                observacoes,
-                data_inicio,
-                data_fim,
-            });
-            window.location.href = "/addproject";
-        } catch (e) {
-            if (e.response.status === 401) {
-                alert("Invalid Project Info");
+        console.log("Nome Length = " + nome.length)
+        console.log("Observacoes Length = " + observacoes.length)
+        console.log("Data Inicio Length = " + data_inicio.length)
+        console.log("Data Fim Length = " + data_fim.length)
+        if(nome.length <= 0 || observacoes.length <= 0 || data_inicio.length <= 0 || data_fim.length <= 0){
+            console.log("TESTE")
+            //sets missing data state to the prevState
+            setMissingData((prevState) => !prevState);
+            //sets the missing data state to the prevState after 3 seconds
+            setTimeout(() => {
+                setMissingData((prevState) => !prevState);
+            }, 3000);
+        } else {
+            try {
+                await httpClient.post("//localhost:5000/addproject", {
+                    nome,
+                    observacoes,
+                    data_inicio,
+                    data_fim,
+                });
+                setTimeout(() => {
+                    setAlert((prevState) => !prevState);
+                }, 3000);
+                //Sets Variables to their initial state
+                resetState();
+                //Changes the state of the alert
+                setAlert((prevState) => !prevState);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    alert("Invalid Project Info");
+                }
             }
         }
     };
@@ -102,6 +142,20 @@ export default function AddProjectForm(){
                 <button className="btn btn-primary" type="button" onClick={addProject}>
                     Add Project
                 </button>
+                {alert && (
+                    <Alert
+                        id="alert"
+                        tipo={"success"}
+                        props={"Projeto Criado com Sucesso"}
+                    />
+                )}
+                {missingData && (
+                    <Alert
+                        id="alert"
+                        tipo={"danger"}
+                        props={"Por Favor Insira Todos os Dados Necessários"}
+                    />
+                )}
             </form>
         </div>
         </div>
