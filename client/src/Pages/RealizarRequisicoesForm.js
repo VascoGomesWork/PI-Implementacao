@@ -50,7 +50,9 @@ export default function RealizarRequisicoesForm() {
 
   // search bar
   useEffect(() => {
+    //checks if search bar has data
     if (searchInput.length > 0) {
+      //gets data from the API
       fetch(
         `//localhost:5000/showmaterialsbynamebytype?search=` +
           searchInput +
@@ -59,6 +61,7 @@ export default function RealizarRequisicoesForm() {
       )
         .then((res) => res.json())
         .then((data) => {
+          //sets searchResultList with data that came from the API
           setSearchResultList(data.list_kit_mateirals);
         });
     } else if (searchInput.length <= 0) {
@@ -66,16 +69,26 @@ export default function RealizarRequisicoesForm() {
     }
   }, [searchInput, typeSearch]);
 
+  /**
+   * @Resume: Function that Adds Materials to Requisicao List
+   * @param id
+   * @param nome
+   * @param quantidade
+   * @param quantidade_total
+   * @returns {Promise<void>}
+   */
   const addMaterialToRequisicao = async (
     id,
     nome,
     quantidade,
     quantidade_total
   ) => {
+    //checks if material id exists in requisicaoMaterialList -> https://www.w3schools.com/jsref/jsref_some.asp
     const found = requisicaoMaterialsList.some(
       (material) => material.id === id
     );
     if (!found) {
+      //setRequisicaoMaterialList with the previous value and adds an object with some atributes
       setRequisicaoMaterialsList([
         ...requisicaoMaterialsList,
         {
@@ -88,6 +101,14 @@ export default function RealizarRequisicoesForm() {
     }
   };
 
+  /**
+   * @Resume: Function that Adds Kits to Requisicao List
+   * @param id
+   * @param nome
+   * @param quantidadeTotal
+   * @param listaMateriais
+   * @returns {Promise<void>}
+   */
   const addkitToRequisicao = async (
     id,
     nome,
@@ -95,8 +116,10 @@ export default function RealizarRequisicoesForm() {
     listaMateriais
   ) => {
     console.log(listaMateriais);
+    //checks if kit id exists in requisicaoKitList -> https://www.w3schools.com/jsref/jsref_some.asp
     const found = requisicaoKitsList.some((kit) => kit.id === id);
     if (!found) {
+      //setRequisicaoKitsList with the previous value and adds an object with some atributes
       setRequisicaoKitsList([
         ...requisicaoKitsList,
         {
@@ -109,10 +132,18 @@ export default function RealizarRequisicoesForm() {
     }
   };
 
+  /**
+   * @Resume: Function that Changes Kits Quantity
+   * @param id
+   * @param quantity
+   * @param listaQuantidade
+   * @returns {Promise<void>}
+   */
   const changeKitsQuantity = async (id, quantity, listaQuantidade) => {
     console.log(listaQuantidade);
     let quantidade_total = 0;
     let quantidadeKit = 0;
+    //loops through listQuantidade
     listaQuantidade.map((material) => {
       material.mat_info.map((specific) => {
         console.log("QUANTIDADE TOTAL = " + specific.quantidade);
@@ -122,6 +153,7 @@ export default function RealizarRequisicoesForm() {
       quantidadeKit = material.mat_quantidade_kit;
     });
     console.log(quantity);
+    //multiplies quantity by quantidadeKit and checks if it greater than quantidade_total or if quantity is less than 0
     if (quantity * quantidadeKit > quantidade_total || quantity < 0) {
       setWrongQuantity(true);
     } else {
@@ -136,6 +168,13 @@ export default function RealizarRequisicoesForm() {
     });
   };
 
+  /**
+   * @Resume: Function that Changes Materials Quantity
+   * @param id
+   * @param quantity
+   * @param quantidade_total
+   * @returns {Promise<void>}
+   */
   const changeQuantity = async (id, quantity, quantidade_total) => {
     // Verifies the quantity
     if (quantity > quantidade_total || quantity < 0) {
@@ -150,23 +189,41 @@ export default function RealizarRequisicoesForm() {
     });
   };
 
+  /**
+   * @Resume: Function that Changes Project from Combobox
+   * @param e
+   * @returns {Promise<void>}
+   */
   const changeProject = async (e) => {
     setProjeto(e.target.value);
     //console.log("EVENT = " + projeto);
   };
 
+  /**
+   * @Resume: Function that Removes Kit from List
+   * @param id
+   * @returns {Promise<void>}
+   */
   const removeKitsList = async (id) => {
     setRequisicaoKitsList((requisicaoKitList) =>
       requisicaoKitList.filter((element) => element.id !== id)
     );
   };
 
+  /**
+   * @Resume: Function that Removes Material from List
+   * @param id
+   * @returns {Promise<void>}
+   */
   const removeMaterialsList = async (id) => {
     setRequisicaoMaterialsList((requisicaoMaterialsList) =>
       requisicaoMaterialsList.filter((element) => element.id !== id)
     );
   };
 
+  /**
+   * @Resume: Function that Resets All States
+   */
   function resetState() {
     setNome([]);
     setProjeto(true);
@@ -180,27 +237,43 @@ export default function RealizarRequisicoesForm() {
     setAlert(false);
   }
 
+  /**
+   * @Resume: Function that Makes Materials Requisition
+   * @param e
+   * @returns {Promise<void>}
+   */
   const makeMaterialsRequisition = async (e) => {
+    //boolean variable to permit the requesition to happend
     let permit = true;
+    //loops throught requisicaoMaterialList
     requisicaoMaterialsList.map((materialsList) => {
+      //checks if quantidade is equal to quantidade_total meaning that the quantidade filed has been left empty
       if (materialsList.quantidade === materialsList.quantidade_total) {
         permit = false;
       }
     });
+    //if a wrong quantity is input like above the value or a negative number ou the permit is false throws an alert
     if (wrongQuantity === true || permit === false) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db");
       //TODO SHOW ERROR MSG
+      //changes wrongQuantity state to false and to true the wrongQuantityFinal
       setWrongQuantity(false);
       setWrongQuantityFinal(true);
+      //unsets the timeout to 3 seconds and changes wrongQuantityFinal state to false to make alert disappear
       setTimeout(() => {
         setWrongQuantityFinal(false);
       }, 3000);
-    } else if (nome.length <= 0) {
-      setWrongName(true);
-      setTimeout(() => {
-        setWrongName(false);
-      }, 3000);
+
+    } else
+      //checks if name input has data or if the requisicaoMaterialsList is empty
+      if (nome.length <= 0 || requisicaoMaterialsList.length === 0) {
+        //if it puts wrongName state to true and activates the alert for 3 seconds
+        setWrongName(true);
+        //deactivates the alert after 3 seconds
+        setTimeout(() => {
+          setWrongName(false);
+        }, 3000);
     } else {
       let project = associatedProject;
       try {
@@ -208,12 +281,14 @@ export default function RealizarRequisicoesForm() {
         if (associatedProject === 1) {
           project = listOfProjects[0].nome;
         }
+        //sends data to API
         await httpClient.post("//localhost:5000/makerequest", {
           nome,
           project,
           requisicaoMaterialsList: requisicaoMaterialsList,
           data_entrega_prevista,
         });
+        //sets alert to change state after 3 seconds
         setTimeout(() => {
           setAlert((prevState) => !prevState);
         }, 3000);
@@ -221,8 +296,6 @@ export default function RealizarRequisicoesForm() {
         resetState();
         //Changes the state of the alert
         setAlert((prevState) => !prevState);
-
-        //window.location.href = "/realizarrequisicoes";
       } catch (e) {
         if (e.response.status === 401) {
           alert("Invalid Type Info");
@@ -231,27 +304,42 @@ export default function RealizarRequisicoesForm() {
     }
   };
 
+  /**
+   * @Resume: Function that Makes Kit Requesition
+   * @param e
+   * @returns {Promise<void>}
+   */
   const makeKitsRequisition = async (e) => {
+    //boolean variable to permit the requesition to happend
     let permit = true;
+    //loops throught requisicaokitsList
     requisicaoKitsList.map((kitList) => {
+      //checks if typeof quantidade is undefined therefore being empty and possibly throwing an error
       if (typeof kitList.quantidade === "undefined") {
         permit = false;
       }
     });
+    //checks if a wrong quantity is input like above the value or a negative number ou the permit is false throws an alert
     if (wrongQuantity === true || permit === false) {
       // show error message
       console.log("quanitades incorretas, n fez commit na db");
       //TODO SHOW ERROR MSG
+      //changes wrongQuantity state to false and to true the wrongQuantityFinal
       setWrongQuantity(false);
       setWrongQuantityFinal(true);
+      //unsets the timeout to 3 seconds and changes wrongQuantityFinal state to false to make alert disappear
       setTimeout(() => {
         setWrongQuantityFinal(false);
       }, 3000);
-    } else if (nome.length <= 0) {
-      setWrongName(true);
-      setTimeout(() => {
-        setWrongName(false);
-      }, 3000);
+    } else
+      //checks if name input has data or if the requisicaoKitsList is empty
+      if (nome.length <= 0 || requisicaoKitsList.length === 0) {
+        //if it puts wrongName state to true and activates the alert for 3 seconds
+        setWrongName(true);
+        //deactivates the alert after 3 seconds
+        setTimeout(() => {
+          setWrongName(false);
+        }, 3000);
     } else {
       let project = associatedProject;
       try {
@@ -259,12 +347,14 @@ export default function RealizarRequisicoesForm() {
         if (associatedProject === 1) {
           project = listOfProjects[0].nome;
         }
+        //sends data to API
         await httpClient.post("//localhost:5000/makekitsrequest", {
           nome,
           project,
           requisicaoKitsList,
           data_entrega_prevista,
         });
+        //sets alert to change state after 3 seconds
         setTimeout(() => {
           setAlert((prevState) => !prevState);
         }, 3000);
