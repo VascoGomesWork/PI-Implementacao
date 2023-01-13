@@ -94,7 +94,7 @@ const RegisterPage = () => {
                         </div>
 
                         <div className="d-flex align-items-center justify-content-between mt-4 mb-0">
-                          <a className="btn btn-primary" onClick={registerUser}>Registar Utilizador</a>
+                          <button className="btn btn-primary" onClick={registerUser}>Registar Utilizador</button>
                         </div>
                       </form>
                     </div>

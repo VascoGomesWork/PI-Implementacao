@@ -7,9 +7,9 @@ export default function Footer(){
                 <div className="d-flex align-items-center justify-content-between small">
                     <div className="text-muted">Copyright &copy; Your Website 2022</div>
                     <div>
-                        <a href="#">Privacy Policy</a>
+                        <button href="#">Privacy Policy</button>
                         &middot;
-                        <a href="#">Terms &amp; Conditions</a>
+                        <button href="#">Terms &amp; Conditions</button>
                     </div>
                 </div>
             </div>

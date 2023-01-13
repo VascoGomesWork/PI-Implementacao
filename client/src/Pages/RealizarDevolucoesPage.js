@@ -1,29 +1,22 @@
-import React, {useEffect, useState} from "react";
-import httpClient from "../httpClient";
+import React from "react";
 import Head from "./Head";
 import TopBar from "./TopBar";
 import Nav from "./Nav";
-import Dashboard from "./Dashboard";
 import Scripts from "./Scripts";
 import RealizarDevolucoesForm from "./RealizarDevolucoesForm";
 
 export default function RealizarDevolucoesPage() {
-
   return (
-      <div>
+    <div>
 
-        <Head />
+      <TopBar />
+      <div id="layoutSidenav">
+        <Nav />
 
-        <TopBar />
-        <div id="layoutSidenav">
-          <Nav />
-
-          <RealizarDevolucoesForm />
-        </div>
-
-        <Scripts />
-
+        <RealizarDevolucoesForm />
       </div>
-  );
 
+      <Scripts />
+    </div>
+  );
 }

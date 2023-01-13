@@ -79,66 +79,67 @@ export default function Nav(){
                         <div className="nav">
 
                             <div className="sb-sidenav-menu-heading">Operações do Sistema</div>
-                            <a className="nav-link" onClick={realizarRequisicoes}>
+
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={realizarRequisicoes}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Realizar Requisições
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={realizarDevolucoes}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={realizarDevolucoes}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Realizar Devoluções
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={checkStocks}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={checkStocks}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Lista de Materiais
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={atualizarStocks}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={atualizarStocks}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Atualizar Stocks
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={adicionarMaterial}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={adicionarMaterial}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Adicionar Material
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={criarKits}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={criarKits}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Criar Kit de Material
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={verKits}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={verKits}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Lista de Kits
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={adicionarTipoMaterial}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={adicionarTipoMaterial}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Adicionar Tipo Material
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={adicionarProjeto}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={adicionarProjeto}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Criar Projeto
-                            </a>
+                            </button>
 
-                            <a className="nav-link" onClick={verProjetos}>
+                            <button className="nav-link sb-sidenav-dark border-0" onClick={verProjetos}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Lista de Projetos
-                            </a>
+                            </button>
 
                             <div className="collapse" id="collapsePages" aria-labelledby="headingTwo"
                                  data-bs-parent="#sidenavAccordion">
                                 <nav className="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a className="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    <button className="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                        data-bs-target="#pagesCollapseAuth" aria-expanded="false"
                                        aria-controls="pagesCollapseAuth">
                                         Authentication
                                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i>
                                         </div>
-                                    </a>
+                                    </button>
                                     <div className="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                          data-bs-parent="#sidenavAccordionPages">
                                         <nav className="sb-sidenav-menu-nested nav">

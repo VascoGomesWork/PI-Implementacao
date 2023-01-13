@@ -8,7 +8,7 @@ import Dashboard from "./Dashboard";
 
 const LandingPage = () => {
   const [user, setUser] = useState([]);
-  //console.log(user)
+  console.log(user)
 
   useEffect(() => {
     (async () => {
@@ -23,8 +23,6 @@ const LandingPage = () => {
 
   return (
     <div>
-
-      <Head />
 
       <TopBar />
         <div id="layoutSidenav">

@@ -140,7 +140,7 @@ export default function RealizarDevolucoesForm() {
 
   const makeMaterialsReturn = async (e) => {
     let permit = true
-    requisicaoMaterialsList.map((materialsList) =>{
+    requisicaoMaterialsList.forEach((materialsList) =>{
       if(materialsList.quantidade === materialsList.quantidade_total){
         permit = false
       }
@@ -175,7 +175,7 @@ export default function RealizarDevolucoesForm() {
 
   const makeKitsReturn = async (e) => {
     let permit = true
-    requisicaoKitsList.map((materialsList) =>{
+    requisicaoKitsList.forEach((materialsList) =>{
       if(materialsList.quantidade === materialsList.quantidade_total){
         permit = false
       }

@@ -5,7 +5,7 @@ import Alert from "./Alert";
 export default function RealizarRequisicoesForm() {
   const [nome, setNome] = useState([]);
   const [projeto, setProjeto] = useState("true");
-  const [nome_projeto, setNomeProjeto] = useState("");
+  //const [nome_projeto, setNomeProjeto] = useState("");
   const [data_entrega_prevista, setDataEntregaPrevista] = useState(0);
   const [comboboxMaterialRequisicao, setComboboxMaterialRequisicao] = useState(
     []
@@ -140,19 +140,16 @@ export default function RealizarRequisicoesForm() {
    * @returns {Promise<void>}
    */
   const changeKitsQuantity = async (id, quantity, listaQuantidade) => {
-    console.log(listaQuantidade);
     let quantidade_total = 0;
     let quantidadeKit = 0;
+
     //loops through listQuantidade
-    listaQuantidade.map((material) => {
-      material.mat_info.map((specific) => {
-        console.log("QUANTIDADE TOTAL = " + specific.quantidade);
-        quantidade_total = specific.quantidade;
-      });
-      console.log("KIT = " + material.mat_quantidade_kit);
-      quantidadeKit = material.mat_quantidade_kit;
-    });
-    console.log(quantity);
+    listaQuantidade.forEach((material) =>
+      material.mat_info.forEach(
+        (specific) => (quantidade_total = specific.quantidade)
+      )((quantidadeKit = material.mat_quantidade_kit))
+    );
+
     //multiplies quantity by quantidadeKit and checks if it greater than quantidade_total or if quantity is less than 0
     if (quantity * quantidadeKit > quantidade_total || quantity < 0) {
       setWrongQuantity(true);
@@ -246,7 +243,7 @@ export default function RealizarRequisicoesForm() {
     //boolean variable to permit the requesition to happend
     let permit = true;
     //loops throught requisicaoMaterialList
-    requisicaoMaterialsList.map((materialsList) => {
+    requisicaoMaterialsList.forEach((materialsList) => {
       //checks if quantidade is equal to quantidade_total meaning that the quantidade filed has been left empty
       if (materialsList.quantidade === materialsList.quantidade_total) {
         permit = false;
@@ -264,16 +261,15 @@ export default function RealizarRequisicoesForm() {
       setTimeout(() => {
         setWrongQuantityFinal(false);
       }, 3000);
-
-    } else
-      //checks if name input has data or if the requisicaoMaterialsList is empty
-      if (nome.length <= 0 || requisicaoMaterialsList.length === 0) {
-        //if it puts wrongName state to true and activates the alert for 3 seconds
-        setWrongName(true);
-        //deactivates the alert after 3 seconds
-        setTimeout(() => {
-          setWrongName(false);
-        }, 3000);
+    }
+    //checks if name input has data or if the requisicaoMaterialsList is empty
+    else if (nome.length <= 0 || requisicaoMaterialsList.length === 0) {
+      //if it puts wrongName state to true and activates the alert for 3 seconds
+      setWrongName(true);
+      //deactivates the alert after 3 seconds
+      setTimeout(() => {
+        setWrongName(false);
+      }, 3000);
     } else {
       let project = associatedProject;
       try {
@@ -313,7 +309,7 @@ export default function RealizarRequisicoesForm() {
     //boolean variable to permit the requesition to happend
     let permit = true;
     //loops throught requisicaokitsList
-    requisicaoKitsList.map((kitList) => {
+    requisicaoKitsList.forEach((kitList) => {
       //checks if typeof quantidade is undefined therefore being empty and possibly throwing an error
       if (typeof kitList.quantidade === "undefined") {
         permit = false;
@@ -331,15 +327,15 @@ export default function RealizarRequisicoesForm() {
       setTimeout(() => {
         setWrongQuantityFinal(false);
       }, 3000);
-    } else
-      //checks if name input has data or if the requisicaoKitsList is empty
-      if (nome.length <= 0 || requisicaoKitsList.length === 0) {
-        //if it puts wrongName state to true and activates the alert for 3 seconds
-        setWrongName(true);
-        //deactivates the alert after 3 seconds
-        setTimeout(() => {
-          setWrongName(false);
-        }, 3000);
+    }
+    //checks if name input has data or if the requisicaoKitsList is empty
+    else if (nome.length <= 0 || requisicaoKitsList.length === 0) {
+      //if it puts wrongName state to true and activates the alert for 3 seconds
+      setWrongName(true);
+      //deactivates the alert after 3 seconds
+      setTimeout(() => {
+        setWrongName(false);
+      }, 3000);
     } else {
       let project = associatedProject;
       try {
