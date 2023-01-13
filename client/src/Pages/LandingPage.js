@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
-import Head from "./Head";
 import TopBar from "./TopBar";
 import Nav from "./Nav";
 import Scripts from "./Scripts";
