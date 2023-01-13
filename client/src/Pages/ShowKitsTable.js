@@ -42,7 +42,7 @@ export default function ShowKitsTable(){
                                     <div className="col-md-2">
                                         <label>Pesquisa: </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-5">
                                         <input
                                             className="form-control"
                                             type="search"
@@ -53,7 +53,7 @@ export default function ShowKitsTable(){
                                             id=""
                                         />
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-5">
                                         <select
                                             className="form-select"
                                             onChange={(e) => {
@@ -71,7 +71,7 @@ export default function ShowKitsTable(){
                             <br />
                             <div className="form-floating mb-2">
                                 <div className="row">
-                                    <div className="col-md-7">
+                                    <div className="col-md-12">
                                     <table className="table table-bordered" border="1" key={"table"}>
                                         <tbody>
                                         <tr key={"0"}>

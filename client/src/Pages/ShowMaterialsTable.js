@@ -31,7 +31,7 @@ export default function ShowMaterialsTable(){
                                     <div className="col-md-2">
                                         <label>Pesquisa: </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-5">
                                         <input
                                             className="form-control"
                                             type="search"
@@ -42,7 +42,7 @@ export default function ShowMaterialsTable(){
                                             id=""
                                         />
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-5">
                                         <select
                                             className="form-select"
                                             onChange={(e) => {

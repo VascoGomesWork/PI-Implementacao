@@ -58,7 +58,7 @@ export default function AddMaterialTypeForm(){
                                     <div className="col-md-2">
                                         <label>Nome </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-10">
                                         <input
                                             className="form-control"
                                             type="text"
@@ -76,7 +76,7 @@ export default function AddMaterialTypeForm(){
                                 <Alert
                                     id="alert"
                                     tipo={"success"}
-                                    props={"Projeto Criado com Sucesso"}
+                                    props={"Material Criado com Sucesso"}
                                 />
                             )}
                             {missingData && (

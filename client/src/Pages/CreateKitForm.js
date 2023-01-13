@@ -110,7 +110,7 @@ export default function CreateKitForm(){
         <div id="layoutSidenav_content">
             <main>
                 <div className="container-fluid px-4">
-                    <h1 className="mt-4">Adicionar novo Kit de Materiais</h1>
+                    <h1 className="mt-4">Adicionar Novo Kit de Materiais</h1>
                     <div>
                         <form>
                             <div className="form-floating mb-2">
@@ -118,7 +118,7 @@ export default function CreateKitForm(){
                                     <div className="col-md-2">
                                         <label>Nome Kit de Material </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-10">
                                         <input
                                             className="form-control"
                                             type="text"
@@ -135,7 +135,7 @@ export default function CreateKitForm(){
                                     <div className="col-md-2">
                                         <label>Pesquisa: </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-10">
                                         <input
                                             className="form-control"
                                             type="search"
@@ -229,10 +229,10 @@ export default function CreateKitForm(){
                             <br />
                             <div className="form-floating mb-2">
                                 <div className="row">
-                                    <div className="col-md-2">
+                                    <div className="col-md-3">
                                         <label>Observações Kit de Material </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-9">
                                         <input
                                             className="form-control"
                                             type="text"
@@ -251,7 +251,7 @@ export default function CreateKitForm(){
                                 <Alert
                                     id="alert"
                                     tipo={"success"}
-                                    props={"Projeto Criado com Sucesso"}
+                                    props={"Kit de Materiais Criado com Sucesso"}
                                 />
                             )}
                             {missingData && (

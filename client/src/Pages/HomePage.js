@@ -49,7 +49,7 @@ export default function HomePage() {
                               <label>Pesquisa: </label>
                             </p>
                           </div>
-                          <div className="col-md-3">
+                          <div className="col-md-5">
                             <input
                               className="form-control"
                               type="search"
@@ -61,7 +61,7 @@ export default function HomePage() {
                               id=""
                             />
                           </div>
-                          <div className="col-md-4">
+                          <div className="col-md-5">
                             <select
                               className="form-select"
                               onChange={(e) => {

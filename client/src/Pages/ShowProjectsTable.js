@@ -31,7 +31,7 @@ export default function ShowProjectsTable(){
                                     <div className="col-md-2">
                                         <label>Pesquisa: </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-5">
                                         <input
                                             className="form-control"
                                             type="search"
@@ -42,7 +42,7 @@ export default function ShowProjectsTable(){
                                             id=""
                                         />
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-5">
                                         <select
                                             className="form-select"
                                             onChange={(e) => {
@@ -60,7 +60,7 @@ export default function ShowProjectsTable(){
                             </div>
                             <div className="form-floating mb-2">
                                 <div className="row">
-                                    <div className="col-md-7">
+                                    <div className="col-md-12">
                                     <table className="table table-bordered" border="1">
                                         <tbody>
                                         <tr>

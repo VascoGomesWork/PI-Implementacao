@@ -1,8 +1,10 @@
 //import React, { useState, useEffect } from "react";
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
 import httpClient from "../httpClient";
 
 const RegisterPage = () => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState([]);
   const [password, setPassword] = useState([]);
   const [repeatPassword, setRepeatPassword] = useState([]);
@@ -94,12 +96,9 @@ const RegisterPage = () => {
                         </div>
 
                         <div className="d-flex align-items-center justify-content-between mt-4 mb-0">
-                          <button className="btn btn-primary" onClick={registerUser}>Registar Utilizador</button>
+                          <a className="btn btn-primary" onClick={registerUser}>Registar Utilizador</a>
                         </div>
                       </form>
-                    </div>
-                    <div className="card-footer text-center py-3">
-                      <div className="small"><a href="register.html">Need an account? Sign up!</a></div>
                     </div>
                   </div>
                 </div>

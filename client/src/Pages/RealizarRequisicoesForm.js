@@ -376,10 +376,10 @@ export default function RealizarRequisicoesForm() {
               <div>
                 <div className="form-floating mb-2">
                   <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                       <label>Nome Docente ou Aluno </label>
                     </div>
-                    <div className="col-md-7">
+                    <div className="col-md-9">
                       <input
                         className="form-control"
                         type="text"
@@ -394,7 +394,7 @@ export default function RealizarRequisicoesForm() {
               <div onChange={changeProject}>
                 <div className="form-floating mb-2">
                   <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                       <label>Projeto </label>
                     </div>
                     <div className="col-md-2">
@@ -409,7 +409,7 @@ export default function RealizarRequisicoesForm() {
                       />
                       <label>Usar em Projeto</label>
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                       <input
                         type="radio"
                         name="project"
@@ -427,7 +427,7 @@ export default function RealizarRequisicoesForm() {
               {projeto === "false" ? (
                 <div className="form-floating mb-2">
                   <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                       <label>Nome Projeto </label>
                     </div>
                     <div className="col-md-7">
@@ -453,7 +453,7 @@ export default function RealizarRequisicoesForm() {
               )}
               <div className="form-floating mb-2">
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-md-3">
                     <label>Pesquisa: </label>
                   </div>
                   <div className="col-md-4">
@@ -668,7 +668,7 @@ export default function RealizarRequisicoesForm() {
               </div>
               <div className="form-floating mb-2">
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-md-3">
                     <label>Data Entrega Prevista </label>
                   </div>
                   <div className="col-md-5">

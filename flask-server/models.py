@@ -17,7 +17,7 @@ class User(db.Model):
     nome = db.Column(db.String(345), unique=True)
     email = db.Column(db.String(345), unique=True)
     telefone = db.Column(db.String(345), unique=True)
-    tipo_utilizador = db.Column(db.String(345), unique=True)
+    tipo_utilizador = db.Column(db.String(345), unique=False)
     password = db.Column(db.Text(), nullable=False)
 
 class UsersSchema(ma.SQLAlchemyAutoSchema):

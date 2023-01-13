@@ -66,14 +66,14 @@ export default function AddProjectForm(){
     return (
         <div id="layoutSidenav_content">
         <div  className="container-fluid px-4">
-            <h1>Adicionar novo projeto</h1>
+            <h1>Adicionar Novo Projeto</h1>
             <form>
                 <div className="form-floating mb-2">
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md-2">
                             <label>Nome </label>
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-10">
                             <input
                                 className="form-control"
                                 type="text"
@@ -86,10 +86,10 @@ export default function AddProjectForm(){
                 </div>
                 <div className="form-floating mb-2">
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md-2">
                             <label>Observações </label>
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-10">
                             <input
                                 className="form-control"
                                 type="text"
@@ -102,10 +102,10 @@ export default function AddProjectForm(){
                 </div>
                 <div className="form-floating mb-2">
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md-2">
                             <label>Data Inicio </label>
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-10">
                             <input
                                 className="form-control"
                                 type="date"
@@ -121,10 +121,10 @@ export default function AddProjectForm(){
                 </div>
                 <div className="form-floating mb-2">
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md-2">
                             <label>Data Fim </label>
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-10">
                             <input
                                 className="form-control"
                                 type="date"

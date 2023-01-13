@@ -217,10 +217,10 @@ export default function RealizarDevolucoesForm() {
               <div>
                 <div className="form-floating mb-2">
                   <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-1">
                       <label>Pesquisa: </label>
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-md-5">
                       <input
                         className="form-control"
                         type="search"
@@ -232,7 +232,7 @@ export default function RealizarDevolucoesForm() {
                         id=""
                       />
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-md-6">
                       <select
                         className="form-select"
                         onChange={(e) => {

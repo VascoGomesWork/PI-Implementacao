@@ -24,6 +24,8 @@ export default function AddMaterialForm(){
         setNome([])
         setQuantidade([])
         setObservacao([])
+        setTipo_material([])
+        setProjeto([])
         setDataAquisicao(0)
         setAlert(false)
         setMissingData(false)
@@ -103,7 +105,7 @@ export default function AddMaterialForm(){
                                     <div className="col-md-2">
                                         <label>Nome do Material </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-10">
                                         <input
                                             className="form-control"
                                             type="text"
@@ -119,7 +121,7 @@ export default function AddMaterialForm(){
                                     <div className="col-md-2">
                                         <label>Quantidade </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-10">
                                         <input
                                             className="form-control"
                                             type="number"
@@ -135,7 +137,7 @@ export default function AddMaterialForm(){
                                     <div className="col-md-2">
                                         <label>Observações </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-10">
                                         <input
                                             className="form-control"
                                             type="text"
@@ -151,7 +153,7 @@ export default function AddMaterialForm(){
                                     <div className="col-md-2">
                                         <label>Tipo de Material </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-10">
                                         <select className="form-select" onChange={(choice) => setTipo_material(choice.target.value)}>
                                             {tipos.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.tipo}</option>
@@ -165,7 +167,7 @@ export default function AddMaterialForm(){
                                     <div className="col-md-2">
                                         <label>Associar a Projeto </label>
                                     </div>
-                                    <div className="col-md-2">
+                                    <div className="col-md-10">
                                         <select className="form-select" onChange={(choice) => setProjeto(choice.target.value)}>
                                             <option key="0" value="0">Não associar</option>
                                             {projetos.map((item) => (
@@ -180,7 +182,7 @@ export default function AddMaterialForm(){
                                 <div className="col-md-2">
                                     <label>Data de Aquisição </label>
                                 </div>
-                                <div className="col-md-5">
+                                <div className="col-md-10">
                                     <input
                                         className='form-control'
                                         type="date"
@@ -199,7 +201,7 @@ export default function AddMaterialForm(){
                                 <Alert
                                     id="alert"
                                     tipo={"success"}
-                                    props={"Projeto Criado com Sucesso"}
+                                    props={"Material Adicionado com Sucesso"}
                                 />
                             )}
                             {missingData && (

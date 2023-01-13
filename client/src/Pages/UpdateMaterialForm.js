@@ -81,7 +81,7 @@ export default function UpdateMaterialForm(){
                                 <div className="col-md-2">
                                     <label>Pesquisa: </label>
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-5">
                                     <input
                                         className="form-control"
                                         type="search"
@@ -92,7 +92,7 @@ export default function UpdateMaterialForm(){
                                         id=""
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-5">
                                     <select
                                         className="form-select"
                                         onChange={(e) => {
@@ -142,25 +142,25 @@ export default function UpdateMaterialForm(){
                                             <button className="btn btn-primary" type="button" onClick={updateStock}>
                                                 Atualizar
                                             </button>
-                                            {alert && (
-                                                <Alert
-                                                    id="alert"
-                                                    tipo={"success"}
-                                                    props={"Projeto Criado com Sucesso"}
-                                                />
-                                            )}
-                                            {missingData && (
-                                                <Alert
-                                                    id="alert"
-                                                    tipo={"danger"}
-                                                    props={"Por Favor Insira Todos os Dados Necessários"}
-                                                />
-                                            )}
                                         </th>
                                     </tr>
                                 ))}
                                 </tbody>
                             </table>
+                            {alert && (
+                                <Alert
+                                    id="alert"
+                                    tipo={"success"}
+                                    props={"Material Atualizado com Sucesso"}
+                                />
+                            )}
+                            {missingData && (
+                                <Alert
+                                    id="alert"
+                                    tipo={"danger"}
+                                    props={"Por Favor Insira Todos os Dados Necessários"}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
