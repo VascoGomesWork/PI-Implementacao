@@ -39,7 +39,7 @@ export default function HomePage() {
                         Aqui podem ser visualizadas as Ferramentas e os
                         Materiais que existem no laboratório, pode pesquisar os
                         materiais através da barra de pesquisa abaixo por
-                        quaquer um dos campos da tabela
+                        qualquer um dos campos da tabela
                       </h6>
 
                       <div className="form-floating mb-3">
