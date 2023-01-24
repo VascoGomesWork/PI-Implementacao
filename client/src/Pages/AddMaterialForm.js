@@ -305,8 +305,10 @@ export default function AddMaterialForm() {
         </div>
         <br />
         <div className="container-fluid px-4">
-          <h1 className="mt-4">Adicionar Novo Tipo de Material</h1>
-          <p>Adicionar lista de materiais de um ficheiro CSV ...</p>
+          <h1 className="mt-4">Adicionar Materiais apartir de ficheiro CSV</h1>
+          <p>A primeira linha do ficheiro deve conter os seguintes cabeçalhos:
+                [Name, Qty, Type]
+          </p>
           <form>
             <input
               type={"file"}
