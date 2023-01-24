@@ -496,7 +496,7 @@ def add_material():
     quantidade = request.json["quantidade"]
     observacao = request.json["observacao"]
     #data = datetime.now()
-    print("\n\n DATA==>", request.json["dataAquisicao"])
+    #print("\n\n DATA==>", request.json["dataAquisicao"])
     #data = datetime.strptime(request.json["dataAquisicao"] + ' 00:00:00.000000', '%y/%m/%d %H:%M:%S')
     if request.json["dataAquisicao"] == 0:
         data = date.today()
@@ -533,6 +533,35 @@ def add_material():
         "tipo_material": new_material.id_tipo_material,
         # "kit_material": new_material.id_kit_material,
         "projeto": new_material.id_projeto
+    })
+
+# Add material from csv file
+@app.route("/addmaterialfile", methods=["POST"])
+def add_material_file():
+    matList = request.json["matList"]
+
+    for mat in matList:
+        if mat["Name"] != "NA" or mat["Qty"] != "NA" or mat["Type"] != "NA":
+            tipo = Tipo_Material.query.filter(Tipo_Material.tipo.contains(mat["Type"])).first()
+            if(tipo is None):
+                id_tipo = 1
+            else:
+                id_tipo = tipo.id
+
+            new_material = Material(
+                            nome=mat["Name"],
+                            quantidade=int(mat["Qty"]),
+                            observacao="Adicionado por CSV",
+                            data=date.today(),
+                            id_tipo_material=id_tipo,
+                            quantidade_disponivel=int(mat["Qty"]),
+                            id_projeto=None)
+
+            db.session.add(new_material)
+            db.session.commit()
+
+    return jsonify({
+        "" : ""
     })
 
 # Add new material type
