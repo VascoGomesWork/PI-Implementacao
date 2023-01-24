@@ -211,7 +211,7 @@ export default function RealizarDevolucoesForm() {
     <div id="layoutSidenav_content">
       <main>
         <div className="container-fluid px-4">
-          <h1 className="mt-4">Realizar Devoluções de Material</h1>
+          <h1 className="mt-4">Devoluções de Material</h1>
           <div>
             <form>
               <div>

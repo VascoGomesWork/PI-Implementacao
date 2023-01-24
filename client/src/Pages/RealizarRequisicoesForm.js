@@ -144,11 +144,12 @@ export default function RealizarRequisicoesForm() {
     let quantidadeKit = 0;
 
     //loops through listQuantidade
-    listaQuantidade.forEach((material) =>
-      material.mat_info.forEach(
-        (specific) => (quantidade_total = specific.quantidade)
-      )((quantidadeKit = material.mat_quantidade_kit))
-    );
+    listaQuantidade.map((material) => {
+      material.mat_info.map((specific) => {
+        quantidade_total = specific.quantidade;
+      });
+      quantidadeKit = material.mat_quantidade_kit;
+    });
 
     //multiplies quantity by quantidadeKit and checks if it greater than quantidade_total or if quantity is less than 0
     if (quantity * quantidadeKit > quantidade_total || quantity < 0) {
@@ -157,7 +158,7 @@ export default function RealizarRequisicoesForm() {
       setWrongQuantity(false);
     }
 
-    requisicaoKitsList.forEach((element) => {
+    requisicaoKitsList.map((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
         //console.log("element quantiaty => ", element);
@@ -179,7 +180,7 @@ export default function RealizarRequisicoesForm() {
     } else {
       setWrongQuantity(false);
     }
-    requisicaoMaterialsList.forEach((element) => {
+    requisicaoMaterialsList.map((element) => {
       if (element.id === id) {
         element.quantidade = quantity;
       }
@@ -243,7 +244,7 @@ export default function RealizarRequisicoesForm() {
     //boolean variable to permit the requesition to happend
     let permit = true;
     //loops throught requisicaoMaterialList
-    requisicaoMaterialsList.forEach((materialsList) => {
+    requisicaoMaterialsList.map((materialsList) => {
       //checks if quantidade is equal to quantidade_total meaning that the quantidade filed has been left empty
       if (materialsList.quantidade === materialsList.quantidade_total) {
         permit = false;
@@ -309,7 +310,7 @@ export default function RealizarRequisicoesForm() {
     //boolean variable to permit the requesition to happend
     let permit = true;
     //loops throught requisicaokitsList
-    requisicaoKitsList.forEach((kitList) => {
+    requisicaoKitsList.map((kitList) => {
       //checks if typeof quantidade is undefined therefore being empty and possibly throwing an error
       if (typeof kitList.quantidade === "undefined") {
         permit = false;
@@ -370,7 +371,7 @@ export default function RealizarRequisicoesForm() {
     <div id="layoutSidenav_content">
       <main>
         <div className="container-fluid px-4">
-          <h1 className="mt-4">Realizar Requisição de Material</h1>
+          <h1 className="mt-4">Requisição de Material</h1>
           <div>
             <form>
               <div>

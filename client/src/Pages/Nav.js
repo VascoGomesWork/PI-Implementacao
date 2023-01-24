@@ -82,12 +82,12 @@ export default function Nav(){
 
                             <button className="nav-link sb-sidenav-dark border-0" onClick={realizarRequisicoes}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
-                                Realizar Requisições
+                                Requisições
                             </button>
 
                             <button className="nav-link sb-sidenav-dark border-0" onClick={realizarDevolucoes}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
-                                Realizar Devoluções
+                                Devoluções
                             </button>
 
                             <button className="nav-link sb-sidenav-dark border-0" onClick={checkStocks}>
