@@ -55,7 +55,9 @@ export default function AddMaterialTypeForm(){
                         <form>
                             <div className="form-floating mb-2">
                                 <div className="row">
-                                    <label>Crie um novo tipo de material preenchendo o campo abaixo.</label>
+                                    <div className="card-body">
+                                        <h6>Crie um novo tipo de material preenchendo o campo abaixo.</h6>
+                                    </div>
                                     <div className="col-md-2">
                                         <label>Nome </label>
                                     </div>

@@ -78,7 +78,9 @@ export default function UpdateMaterialForm(){
                     <div>
                         <div className="form-floating mb-2">
                             <div className="row">
-                                <label>Atualize os stocks dos materiais efetuando uma pesquisa pelos atributos presentes na caixa de seleçao e insira a nova quantidade desejada</label>
+                                <div className="card-body">
+                                    <h6>Atualize os stocks dos materiais efetuando uma pesquisa pelos atributos presentes na caixa de seleçao e insira a nova quantidade desejada</h6>
+                                </div>
                                 <div className="col-md-2">
                                     <label>Pesquisa: </label>
                                 </div>

@@ -70,7 +70,9 @@ export default function AddProjectForm(){
             <form>
                 <div className="form-floating mb-2">
                     <div className="row">
-                        <label>Adicione um novo projeto preenchendo todos os campos do formulário abaixo.</label>
+                        <div className="card-body">
+                            <h6>Adicione um novo projeto preenchendo todos os campos do formulário abaixo.</h6>
+                        </div>
                         <div className="col-md-2">
                             <label>Nome </label>
                         </div>

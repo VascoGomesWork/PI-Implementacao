@@ -217,9 +217,11 @@ export default function RealizarDevolucoesForm() {
               <div>
                 <div className="form-floating mb-2">
                   <div className="row">
-                    <label>Para realizar uma devolução efetue uma pesquisa pelos atributos presentes na caixa de pesquisa e selecione a quantidade que deseja devolver.
-                      Podem ser efetuadas devoluções parciais.
-                      Preencha todos os campos!</label>
+                    <div className="card-body">
+                      <h6>Para realizar uma devolução efetue uma pesquisa pelos atributos presentes na caixa de pesquisa e selecione a quantidade que deseja devolver.
+                        Podem ser efetuadas devoluções parciais.
+                        Preencha todos os campos!</h6>
+                    </div>
                     <br/>
                     <div className="col-md-1">
                       <label>Pesquisa: </label>

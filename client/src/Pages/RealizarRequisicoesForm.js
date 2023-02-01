@@ -377,8 +377,9 @@ export default function RealizarRequisicoesForm() {
               <div>
                 <div className="form-floating mb-2">
                   <div className="row">
-                    <label>Para realizar uma requisição efetue uma pesquisa pelo tipo de material que deseja requisitar e pesquise pelo nome do mesmo na caixa de pesquisa. Preencha todos os campos</label>
-                    <br/>
+                    <div className="card-body">
+                      <h6>Para realizar uma requisição efetue uma pesquisa pelo tipo de material que deseja requisitar e pesquise pelo nome do mesmo na caixa de pesquisa. Preencha todos os campos</h6>
+                    </div>
                     <div className="col-md-3">
                       <label>Nome Docente ou Aluno </label>
                     </div>

@@ -172,8 +172,10 @@ export default function AddMaterialForm() {
             <form>
               <div className="form-floating mb-2">
                 <div className="row">
-                  <label>Adicione um novo material preenchando todos os campos abaixo e selecionando todas as caixas de seleção.
-                    Pode ainda adicionar materiais através de um ficheiro CSV</label>
+                  <div className="card-body">
+                    <h6>Adicione um novo material preenchando todos os campos abaixo e selecionando todas as caixas de seleção.
+                      Pode ainda adicionar materiais através de um ficheiro CSV</h6>
+                  </div>
                   <div className="col-md-2">
                     <label>Nome do Material </label>
                   </div>
