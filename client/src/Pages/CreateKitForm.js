@@ -115,6 +115,8 @@ export default function CreateKitForm(){
                         <form>
                             <div className="form-floating mb-2">
                                 <div className="row">
+                                    <label>Adicione um novo kit preenchendo todos os campos do formulário abaixo.
+                                        Efetue a pesquisa de materiais na caixa de pesquisa.</label>
                                     <div className="col-md-2">
                                         <label>Nome Kit de Material </label>
                                     </div>

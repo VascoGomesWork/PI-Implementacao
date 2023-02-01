@@ -28,6 +28,7 @@ export default function ShowProjectsTable(){
                         <div>
                             <div className="form-floating mb-2">
                                 <div className="row">
+                                    <label>Efetue a pesquisa de projetos selecionando um dos atributos da caixa de pesquisa pelo qual deseja pesquisar</label>
                                     <div className="col-md-2">
                                         <label>Pesquisa: </label>
                                     </div>
