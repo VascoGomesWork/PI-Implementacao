@@ -497,6 +497,7 @@ def add_material():
     observacao = request.json["observacao"]
     #data = datetime.now()
     #print("\n\n DATA==>", request.json["dataAquisicao"])
+    #test
     #data = datetime.strptime(request.json["dataAquisicao"] + ' 00:00:00.000000', '%y/%m/%d %H:%M:%S')
     if request.json["dataAquisicao"] == 0:
         data = date.today()

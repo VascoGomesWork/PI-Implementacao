@@ -28,8 +28,8 @@ export default function AddMaterialForm() {
     setNome([]);
     setQuantidade([]);
     setObservacao([]);
-    setTipo_material([]);
-    setProjeto([]);
+    setTipo_material(1);
+    setProjeto("0");
     setDataAquisicao(0);
     setAlert(false);
     setMissingData(false);
