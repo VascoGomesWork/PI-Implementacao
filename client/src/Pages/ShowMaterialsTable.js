@@ -53,7 +53,7 @@ export default function ShowMaterialsTable(){
                                                 setTypeSearch(e.target.value);
                                             }}
                                             id="">
-                                            <option value="nome_material">Nome Material</option>
+                                            <option value="nome_material">Designação</option>
                                             <option value="quantidade">Quantidade</option>
                                             <option value="data_requisicao">Data de Requisicao</option>
                                         </select>
@@ -65,7 +65,7 @@ export default function ShowMaterialsTable(){
                                 <table className="table table-bordered" border="1">
                                     <tbody>
                                     <tr>
-                                        <th>Material</th>
+                                        <th>Designação</th>
                                         <th>Quantidade</th>
                                         <th>Observações</th>
                                         <th>Data de Aquisição</th>

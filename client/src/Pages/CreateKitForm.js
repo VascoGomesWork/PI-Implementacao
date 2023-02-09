@@ -120,7 +120,7 @@ export default function CreateKitForm(){
                                             Efetue a pesquisa de materiais na caixa de pesquisa.</h6>
                                     </div>
                                     <div className="col-md-2">
-                                        <label>Nome Kit de Material </label>
+                                        <label>Nome</label>
                                     </div>
                                     <div className="col-md-10">
                                         <input
@@ -161,7 +161,7 @@ export default function CreateKitForm(){
                                         <table className="table table-bordered" border="1">
                                             <tbody>
                                             <tr>
-                                                <th>Material</th>
+                                                <th>Designação</th>
                                                 <th>Quantidade Total</th>
                                                 <th>Adicionar</th>
                                             </tr>
@@ -197,7 +197,7 @@ export default function CreateKitForm(){
                                         <table className="table table-bordered" border="1">
                                             <tbody>
                                             <tr>
-                                                <th>Material</th>
+                                                <th>Designação</th>
                                                 <th>Quantidade no Kit</th>
                                                 <th>Adicionar</th>
                                             </tr>

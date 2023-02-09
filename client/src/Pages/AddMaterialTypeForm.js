@@ -50,7 +50,7 @@ export default function AddMaterialTypeForm(){
         <div id="layoutSidenav_content">
             <main>
                 <div className="container-fluid px-4">
-                    <h1 className="mt-4">Adicionar Novo Tipo de Material</h1>
+                    <h1 className="mt-4">Adicionar Nova Categoria de Material</h1>
                     <div>
                         <form>
                             <div className="form-floating mb-2">
@@ -73,7 +73,7 @@ export default function AddMaterialTypeForm(){
                                 </div>
                             </div>
                             <button className="btn btn-primary" type="button" onClick={addMaterialType}>
-                                Adicionar
+                                Adicionar Categoria de Material
                             </button>
                             {alert && (
                                 <Alert

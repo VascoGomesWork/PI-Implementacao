@@ -104,7 +104,7 @@ export default function UpdateMaterialForm(){
                                         }}
                                         id=""
                                     >
-                                        <option value="nome_material">Nome Material</option>
+                                        <option value="nome_material">Designação</option>
                                         <option value="quantidade">Quantidade</option>
                                         <option value="data_requisicao">Data de Requisicao</option>
                                     </select>
@@ -116,7 +116,7 @@ export default function UpdateMaterialForm(){
                             <table className="table table-bordered" border="1">
                                 <tbody>
                                 <tr>
-                                    <th>Material</th>
+                                    <th>Designação</th>
                                     <th>Observação</th>
                                     <th>Data de Aquisição</th>
                                     <th>Quantidade</th>

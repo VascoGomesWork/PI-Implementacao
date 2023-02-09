@@ -66,7 +66,7 @@ export default function AddProjectForm(){
     return (
         <div id="layoutSidenav_content">
         <div  className="container-fluid px-4">
-            <h1>Adicionar Novo Projeto</h1>
+            <h1>Adicionar Projeto</h1>
             <form>
                 <div className="form-floating mb-2">
                     <div className="row">
@@ -143,7 +143,7 @@ export default function AddProjectForm(){
                 </div>
                 <br />
                 <button className="btn btn-primary" type="button" onClick={addProject}>
-                    Add Project
+                    Adicionar Projeto
                 </button>
                 {alert && (
                     <Alert

@@ -27,12 +27,12 @@ export default function Dashboard(){
                     <div className="row">
                         <div className="col-xl-6 col-md-6">
                             <div className="card bg-primary text-white mb-4" id="card">
-                                <div className="card-body">Requisições feitas: {totalRequests}</div>
+                                <div className="card-body">Requisições: {totalRequests}</div>
                             </div>
                         </div>
                         <div className="col-xl-6 col-md-6">
                             <div className="card bg-success text-white mb-4" id="card">
-                                <div className="card-body">Devoluções feitas: {totalReturns}</div>
+                                <div className="card-body">Devoluções: {totalReturns}</div>
                             </div>
                         </div>
                     </div>

@@ -31,7 +31,7 @@ export default function HomePage() {
                     <div className="card-header">
                       <h3 className="text-center font-weight-light my-4">
                         <img alt="" id="logo1" src="../../img/logo_sepsi.png" />
-                        Sistema de Gestão de Stocks SEPSI
+                        Sistema de Gestão SEPSI de Stocks
                       </h3>
                     </div>
                     <div className="card-body">

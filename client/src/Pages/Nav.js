@@ -117,7 +117,7 @@ export default function Nav(){
 
                             <button className="nav-link sb-sidenav-dark border-0" onClick={adicionarTipoMaterial}>
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
-                                Adicionar Tipo Material
+                                Adicionar Categoria
                             </button>
 
                             <button className="nav-link sb-sidenav-dark border-0" onClick={adicionarProjeto}>
